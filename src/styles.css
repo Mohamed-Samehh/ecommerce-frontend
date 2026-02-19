@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --primary-color-bg: #E8D1C5;
+  --secondary-color-bg: #ffffff;
+  --text-color: #26150F;
+  --selection-color: #57595B;
+  --highlighted-text-color: #732A10;
+  --button-bg-color: #26150F;
+  --button-text-color: #ffffff;
+  --cards--bg-color: #F3E8DF;
+  --badge--color: #D9A86C;
+
+  --main-font: Arial, sans-serif;
+  --footer-bg-color: #26150F;
+  --card-shadow: rgba(0, 0, 0, 0.08);
+  --radius-sm: 4px;
+
+  --radius-md: 8px;
+
+  --radius-lg: 16px;
+  --radius-full: 999px;
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.25rem;
+  --font-xl: 2rem;
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+}
