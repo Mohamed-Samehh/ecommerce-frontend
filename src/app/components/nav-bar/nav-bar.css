@@ -1,0 +1,7 @@
+.text-primary-color {
+  color: var(--text-color) ;
+}
+.logo-image{
+  width: 6rem;
+  height: 6rem;
+}
