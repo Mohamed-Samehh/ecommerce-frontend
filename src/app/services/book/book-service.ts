@@ -10,7 +10,7 @@ export class BookService {
   apiUrl = environment.apiUrl;
   private http = inject(HttpClient);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  testLocalhost(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  getAllBooks(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/books`);
   }
 }

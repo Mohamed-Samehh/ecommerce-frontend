@@ -1,8 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { BookService } from '../../services/book/book-service';
+import { NavBar } from '../../components/nav-bar/nav-bar';
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [NavBar],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -10,7 +11,6 @@ export class Home implements OnInit {
   message = signal<string>('');
   error: string | null = null;
   serviceApi = inject(BookService);
-  //constructor(private serviceApi: ServiceApi) {}
 
   ngOnInit() {
     this.testUrl();
@@ -19,7 +19,7 @@ export class Home implements OnInit {
   testUrl() {
     this.error = null;
 
-    this.serviceApi.testLocalhost().subscribe({
+    this.serviceApi.getAllBooks().subscribe({
       next: (data) => {
         this.message.set(data);
       },
