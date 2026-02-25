@@ -1,0 +1,45 @@
+.error-container {
+  background-color: var(--secondary-color-bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 900;
+  color: var(--text-color);
+  letter-spacing: -5px;
+  margin: 0;
+}
+
+.error-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-color);
+  margin-top: 10px;
+}
+
+.error-text {
+  color: var(--selection-color);
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.btn-glow {
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  padding: 14px 40px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-glow:hover {
+  background-color: var(--highlighted-text-color);
+  transform: translateY(-3px);
+}
