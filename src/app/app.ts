@@ -4,9 +4,10 @@ import { Cart } from "./pages/cart/cart";
 import { CategoryAdmin } from "./components/category-admin/category-admin";
 import { Home } from './pages/home/home';
 import { Footer } from "./components/footer/footer";
+import { NotFound } from "./pages/not-found/not-found";
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Cart, CategoryAdmin, Home, Footer],
+  imports: [RouterOutlet, Cart, CategoryAdmin, Home, Footer, NotFound],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
