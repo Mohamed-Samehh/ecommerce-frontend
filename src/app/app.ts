@@ -3,9 +3,10 @@ import { RouterOutlet } from '@angular/router';
 import { Cart } from "./pages/cart/cart";
 import { CategoryAdmin } from "./components/category-admin/category-admin";
 import { Home } from './pages/home/home';
+import { Footer } from "./components/footer/footer";
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Cart, CategoryAdmin,Home],
+  imports: [RouterOutlet, Cart, CategoryAdmin, Home, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
