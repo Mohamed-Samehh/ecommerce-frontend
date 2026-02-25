@@ -1,1 +1,20 @@
-<p>search-bar works!</p>
+<form (ngSubmit)="onSubmit()">
+
+  <div class="input-group">
+    <button type="button" class="btn button-color dropdown-toggle " data-bs-toggle="dropdown"
+      aria-expanded="false">
+      Categories
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" (click)="onCategorySelect($event)">
+      @for (category of categories(); track category) {
+        <li class="dropdown-item drop-category" [data-id]="">{{category.name}}</li>
+      }
+    </ul>
+    <input type="search" class="form-control input-search text-primary-color" name="searchQuery" [formControl]="searchQuery"
+      id="searchQuery" [maxlength]="maxLength" [placeholder]="placeHolder" /> <button type="button"
+      class="btn button-color"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+  </div>
+
+
+</form>
