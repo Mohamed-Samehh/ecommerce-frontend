@@ -1,0 +1,39 @@
+<div class="review-form-wrapper">
+    <div *ngIf="isLoading" class="loading-spinner">
+        Checking review eligibility...
+    </div>
+
+    <div *ngIf="!isLoading">
+        <div class="review-form-container" *ngIf="isPurchased && !hasAlreadyReviewed">
+            <h3>Write a Review</h3>
+            <p class="explanation">You purchased this book. Share your thoughts with others!</p>
+
+            <div class="form-group">
+                <label>Your Rating</label>
+                <app-star-rating [rating]="rating" (ratingChange)="rating = $event"></app-star-rating>
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Your Comment (Optional)</label>
+                <textarea id="comment" [(ngModel)]="comment" placeholder="What did you think of the book?"
+                    rows="4"></textarea>
+            </div>
+
+            <div *ngIf="error" class="error-msg">
+                {{ error }}
+            </div>
+
+            <button class="submit-btn" (click)="submitReview()" [disabled]="isSubmitting || rating === 0">
+                {{ isSubmitting ? 'Submitting...' : 'Post Review' }}
+            </button>
+        </div>
+
+        <div class="status-msg-container" *ngIf="isPurchased && hasAlreadyReviewed">
+            <p class="success-msg">You have already reviewed this book. Thank you for your feedback!</p>
+        </div>
+
+        <div class="not-purchased-msg" *ngIf="!isPurchased">
+            <p>Only verified purchasers can review this book.</p>
+        </div>
+    </div>
+</div>

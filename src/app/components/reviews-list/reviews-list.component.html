@@ -1,0 +1,33 @@
+<div class="reviews-section" id="reviews-section">
+    <h2>Reviews ({{ reviews.length }})</h2>
+
+    <div *ngIf="isLoading" class="loading">Loading reviews...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <div *ngIf="!isLoading && reviews.length === 0" class="no-reviews">
+        No reviews yet. Be the first to review this book!
+    </div>
+
+    <div class="reviews-container" *ngIf="!isLoading && reviews.length > 0">
+        <div *ngFor="let review of reviews" class="review-card">
+            <div class="review-header">
+                <div class="user-info">
+                    <span class="avatar">{{ getUserName(review).charAt(0) }}</span>
+                    <div class="meta">
+                        <span class="user-name">{{ getUserName(review) }}</span>
+                        <span class="date">{{ review.createdAt | date:'mediumDate' }}</span>
+                    </div>
+                </div>
+                <app-star-rating [rating]="review.rating" [readonly]="true"></app-star-rating>
+            </div>
+
+            <p class="comment" *ngIf="review.comment">
+                {{ review.comment }}
+            </p>
+
+            <div class="review-actions" *ngIf="canDelete(review)">
+                <button class="delete-btn" (click)="deleteReview(review._id!)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
