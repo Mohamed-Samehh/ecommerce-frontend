@@ -5,6 +5,12 @@ import { Observable } from 'rxjs';
 import { Order } from '../../interfaces/order';
 import { environment } from '../../../environments/environment';
 
+export interface ApiResponse<T> {
+  status: string;
+  data: T;
+  message?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,23 +30,23 @@ export class OrderService {
     });
   }
 
-  createOrder(orderData: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, orderData, { headers: this.getHeaders() });
+  createOrder(orderData: Partial<Order>): Observable<ApiResponse<Order>> {
+    return this.http.post<ApiResponse<Order>>(this.apiUrl, orderData, { headers: this.getHeaders() });
   }
 
-  getMyOrders(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/my`, { headers: this.getHeaders() });
+  getMyOrders(): Observable<ApiResponse<Order[]>> {
+    return this.http.get<ApiResponse<Order[]>>(`${this.apiUrl}/my`, { headers: this.getHeaders() });
   }
 
-  getAllOrders(): Observable<any> {
-    return this.http.get<any>(this.apiUrl, { headers: this.getHeaders() });
+  getAllOrders(): Observable<ApiResponse<Order[]>> {
+    return this.http.get<ApiResponse<Order[]>>(this.apiUrl, { headers: this.getHeaders() });
   }
 
-  updateOrderStatus(orderId: string, status: string): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${orderId}/status`, { status }, { headers: this.getHeaders() });
+  updateOrderStatus(orderId: string, status: string): Observable<ApiResponse<Order>> {
+    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/${orderId}/status`, { status }, { headers: this.getHeaders() });
   }
 
-  updatePaymentStatus(orderId: string, paymentStatus: string): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${orderId}/payment`, { paymentStatus }, { headers: this.getHeaders() });
+  updatePaymentStatus(orderId: string, paymentStatus: string): Observable<ApiResponse<Order>> {
+    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/${orderId}/payment`, { paymentStatus }, { headers: this.getHeaders() });
   }
 }
