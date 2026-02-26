@@ -6,6 +6,23 @@ import { OrderService } from '../../services/order/order-service';
 import { Book } from '../../interfaces/book';
 import { Order, OrderItem } from '../../interfaces/order';
 
+// Local helper types to describe possible API shapes
+type BookLike = Partial<Book> & { _id?: string; id?: string; coverImage?: string };
+
+type ApiBookRef = string | BookLike;
+
+interface ApiOrderItem {
+  bookId: ApiBookRef;
+  bookName?: string;
+  quantity?: number;
+  priceAtPurchase?: number;
+  subtotal?: number;
+}
+
+interface ApiOrder extends Omit<Order, 'items'> {
+  items?: ApiOrderItem[];
+}
+
 @Component({
   selector: 'app-order-history',
   standalone: true,
@@ -43,10 +60,10 @@ export class OrderHistory implements OnInit {
     this.error = null;
 
     this.orderService.getMyOrders().subscribe({
-      next: (response: { data?: (Omit<Order, 'items'> & { items: any[] })[] }) => {
-        const fetchedOrders: Order[] = (response.data || []).map((order) => ({
+      next: (response: { data?: ApiOrder[] }) => {
+        const fetchedOrders: Order[] = (response.data || []).map((order: ApiOrder) => ({
           ...order,
-          items: (order.items || []).map((item: any) => {
+          items: (order.items || []).map((item: ApiOrderItem) => {
             let imageUrl = '';
             let bookIdStr = '';
 
@@ -54,9 +71,9 @@ export class OrderHistory implements OnInit {
             if (typeof bookRef === 'string') {
               bookIdStr = bookRef;
             } else if (bookRef && typeof bookRef === 'object') {
-              const book = bookRef as Book;
+              const book = bookRef as BookLike;
               imageUrl = book.coverImage || '';
-              bookIdStr = (book as any)._id || book.id || '';
+              bookIdStr = book._id || book.id || '';
             }
 
             return {
