@@ -1,5 +1,7 @@
+import { Book } from './book';
+
 export interface OrderItem {
-  bookId: string;
+  bookId: string | Book;
   bookName: string;
   imageUrl?: string;
   quantity: number;

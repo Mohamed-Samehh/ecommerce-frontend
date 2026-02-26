@@ -3,14 +3,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from '../../services/order/order-service';
+import { Book } from '../../interfaces/book';
 import { Order, OrderItem } from '../../interfaces/order';
-
-// Types representing possible API shapes coming from backend
-type ApiBookRef = string | { _id?: string; id?: string; coverImage?: string };
-
-type ApiOrderItem = Partial<OrderItem> & { bookId: ApiBookRef };
-
-type ApiOrder = Omit<Order, 'items'> & { items: ApiOrderItem[] };
 
 @Component({
   selector: 'app-order-history',
@@ -49,19 +43,20 @@ export class OrderHistory implements OnInit {
     this.error = null;
 
     this.orderService.getMyOrders().subscribe({
-      next: (response: { data?: ApiOrder[] }) => {
-        const fetchedOrders: Order[] = (response.data || []).map((order: ApiOrder) => ({
+      next: (response: { data?: (Omit<Order, 'items'> & { items: any[] })[] }) => {
+        const fetchedOrders: Order[] = (response.data || []).map((order) => ({
           ...order,
-          items: (order.items || []).map((item: ApiOrderItem) => {
+          items: (order.items || []).map((item: any) => {
             let imageUrl = '';
             let bookIdStr = '';
 
-            if (typeof item.bookId === 'string') {
-              bookIdStr = item.bookId;
-            } else if (item.bookId) {
-              const bookRef = item.bookId as { _id?: string; id?: string; coverImage?: string };
-              imageUrl = bookRef.coverImage || '';
-              bookIdStr = bookRef._id || bookRef.id || '';
+            const bookRef = item.bookId;
+            if (typeof bookRef === 'string') {
+              bookIdStr = bookRef;
+            } else if (bookRef && typeof bookRef === 'object') {
+              const book = bookRef as Book;
+              imageUrl = book.coverImage || '';
+              bookIdStr = (book as any)._id || book.id || '';
             }
 
             return {

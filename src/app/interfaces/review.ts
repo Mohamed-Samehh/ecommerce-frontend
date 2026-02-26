@@ -1,3 +1,5 @@
+import { Book } from './book';
+
 export interface ReviewUser {
   _id: string;
   firstName: string;
@@ -7,7 +9,7 @@ export interface ReviewUser {
 export interface Review {
   _id?: string;
   userId: string | ReviewUser;
-  bookId: string;
+  bookId: string | Book;
   rating: number;
   comment?: string;
   createdAt?: Date;

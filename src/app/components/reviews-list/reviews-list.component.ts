@@ -2,6 +2,7 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReviewService } from '../../services/review/review-service';
 import { Review, ReviewUser } from '../../interfaces/review';
+import { Book } from '../../interfaces/book';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 
 @Component({

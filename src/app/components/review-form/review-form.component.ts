@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReviewService } from '../../services/review/review-service';
 import { OrderService } from '../../services/order/order-service';
+import { Book } from '../../interfaces/book';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 
 @Component({

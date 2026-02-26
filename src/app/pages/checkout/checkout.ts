@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { OrderService } from '../../services/order/order-service';
+import { Book } from '../../interfaces/book';
 
 interface CheckoutItem {
     id: string;
@@ -10,6 +11,7 @@ interface CheckoutItem {
     price: number;
     quantity: number;
     image: string;
+    book?: Book; // Link to full book data
 }
 
 @Component({
