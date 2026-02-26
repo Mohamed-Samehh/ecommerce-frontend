@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
 import { Cart } from './pages/cart/cart';
 import { CategoryAdmin } from './components/category-admin/category-admin';
 import { Home } from './pages/home/home';
@@ -16,5 +17,4 @@ import { NotFound } from './pages/not-found/not-found';
 })
 export class App {
   protected readonly title = signal('ecommerce-frontend');
-
 }

@@ -1,0 +1,91 @@
+<div class="admin-container">
+    <header class="admin-header">
+        <div class="header-content">
+            <h1>Orders Management</h1>
+            <p>Manage and track all customer orders</p>
+        </div>
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-val">{{ orders.length }}</span>
+                <span class="stat-label">Total Orders</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-content">
+        <!-- Filters Toolbar -->
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fa fa-search"></i>
+                <input type="text" [(ngModel)]="searchTerm" (input)="applyFilters()"
+                    placeholder="Search by name or ID...">
+            </div>
+
+            <div class="filters">
+                <select [(ngModel)]="statusFilter" (change)="applyFilters()">
+                    <option value="all">All Statuses</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-overlay">
+            <p>Loading orders...</p>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="table-container" *ngIf="!isLoading">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of filteredOrders">
+                        <td class="order-id">#{{ order._id?.substring(0, 8) || 'N/A' }}...</td>
+                        <td class="customer-info">
+                            <div class="avatar-small">{{ $any(order.userId)?.firstName?.[0] || '?' }}</div>
+                            <span>{{ $any(order.userId)?.firstName || 'Guest' }} {{ $any(order.userId)?.lastName || ''
+                                }}</span>
+                        </td>
+                        <td>{{ order.createdAt | date:'shortDate' }}</td>
+                        <td class="amount">{{ order.totalAmount | currency }}</td>
+                        <td>
+                            <span class="badge" [class]="'pay-' + order.paymentStatus">
+                                {{ order.paymentStatus | titlecase }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge" [class]="order.status">
+                                {{ order.status | titlecase }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-dropdown">
+                                <select [ngModel]="order.status" (ngModelChange)="updateStatus(order, $event)">
+                                    <option value="processing">Processing</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="filteredOrders.length === 0">
+                        <td colspan="7" class="empty-state">No orders found matching your filters.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+<div class="checkout-page">
+    <div class="checkout-content">
+        <div class="form-sections">
+            <!-- Personal Information -->
+            <section class="checkout-section">
+                <h3>Personal Information</h3>
+                <div class="form-grid">
+                    <div class="form-group half">
+                        <label>First Name</label>
+                        <input type="text" placeholder="First Name">
+                    </div>
+                    <div class="form-group half">
+                        <label>Last Name</label>
+                        <input type="text" placeholder="Last Name">
+                    </div>
+                    <div class="form-group full">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Email Address">
+                    </div>
+                    <div class="form-group full">
+                        <label>Phone Number</label>
+                        <input type="tel" placeholder="Phone Number">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shipping Address -->
+            <section class="checkout-section">
+                <h3>Shipping Address</h3>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Address</label>
+                        <input type="text" placeholder="Address">
+                    </div>
+                    <div class="form-group half">
+                        <label>City</label>
+                        <input type="text" placeholder="City">
+                    </div>
+                    <div class="form-group half">
+                        <label>Postal Code</label>
+                        <input type="text" placeholder="Postal Code">
+                    </div>
+                    <div class="form-group full">
+                        <label>Country</label>
+                        <input type="text" placeholder="Country">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Voucher -->
+            <section class="checkout-section">
+                <h3>Voucher</h3>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Enter Voucher Code</label>
+                        <div class="input-with-button">
+                            <input type="text" placeholder="Voucher Code">
+                            <button class="apply-btn">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Payment Methods -->
+            <section class="checkout-section">
+                <h3>Payment Methods</h3>
+                <div class="payment-options">
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="cod">
+                        <span class="radio-label">Cash On Delivery / Credit or Debit</span>
+                    </label>
+                    <div class="card-details">
+                        <div class="form-group full">
+                            <label>Cardholder Name</label>
+                            <input type="text" placeholder="Cardholder Name">
+                        </div>
+                        <div class="form-group full">
+                            <label>Card Number</label>
+                            <input type="text" placeholder="Card Number">
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group half">
+                                <label>Exp. Date</label>
+                                <input type="text" placeholder="MM/YY">
+                            </div>
+                            <div class="form-group half">
+                                <label>CVV</label>
+                                <input type="text" placeholder="CVV">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <button class="checkout-submit-btn" (click)="placeOrder()">Checkout</button>
+        </div>
+
+        <!-- Order Summary Sidebar -->
+        <aside class="order-summary">
+            <div class="summary-card">
+                <h3>Item</h3>
+                <div class="summary-items">
+                    <div class="summary-item" *ngFor="let item of cartItems">
+                        <div class="item-visual">
+                            <img [src]="item.image" [alt]="item.name">
+                        </div>
+                        <div class="item-info">
+                            <p class="name">{{ item.name }}</p>
+                            <p class="price">{{ item.price | currency }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="summary-totals">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span>$40.99</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total</span>
+                        <span>$49.27</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
