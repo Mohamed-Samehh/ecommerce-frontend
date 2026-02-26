@@ -52,10 +52,11 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let order of filteredOrders">
-                        <td class="order-id">#{{ order._id.substring(0, 8) }}...</td>
+                        <td class="order-id">#{{ order._id?.substring(0, 8) || 'N/A' }}...</td>
                         <td class="customer-info">
-                            <div class="avatar-small">{{ order.userId.firstName[0] }}</div>
-                            <span>{{ order.userId.firstName }} {{ order.userId.lastName }}</span>
+                            <div class="avatar-small">{{ $any(order.userId)?.firstName?.[0] || '?' }}</div>
+                            <span>{{ $any(order.userId)?.firstName || 'Guest' }} {{ $any(order.userId)?.lastName || ''
+                                }}</span>
                         </td>
                         <td>{{ order.createdAt | date:'shortDate' }}</td>
                         <td class="amount">{{ order.totalAmount | currency }}</td>

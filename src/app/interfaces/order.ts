@@ -2,11 +2,11 @@ import { Book } from './book';
 
 export interface OrderItem {
   bookId: string | Book;
-  bookName: string;
+  bookName?: string;
   imageUrl?: string;
   quantity: number;
-  priceAtPurchase: number;
-  subtotal: number;
+  priceAtPurchase?: number;
+  subtotal?: number;
 }
 
 export interface ShippingAddress {
@@ -16,14 +16,22 @@ export interface ShippingAddress {
   postalCode: string;
 }
 
+export interface PopulatedUser {
+  id?: string;
+  _id?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 export interface Order {
   _id?: string;
-  userId: string;
-  orderNumber: string;
+  userId: string | PopulatedUser;
+  orderNumber?: string;
   items: OrderItem[];
   shippingAddress: ShippingAddress;
-  status: 'processing' | 'out for delivery' | 'delivered' | 'cancelled';
-  paymentStatus: 'pending' | 'success';
+  status: 'processing' | 'out for delivery' | 'delivered' | 'cancelled' | 'shipped';
+  paymentStatus: 'pending' | 'success' | 'paid';
   paymentMethod: 'COD' | 'Online';
   totalAmount: number;
   createdAt?: string | Date;

@@ -6,6 +6,18 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
+    path: 'admin/orders',
+    renderMode: RenderMode.Server
+  },
+  {
+    path: 'order-history',
+    renderMode: RenderMode.Server
+  },
+  {
+    path: 'checkout',
+    renderMode: RenderMode.Server
+  },
+  {
     path: '**',
     renderMode: RenderMode.Prerender
   }

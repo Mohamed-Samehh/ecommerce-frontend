@@ -2,19 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../services/order/order-service';
-
-interface AdminOrder {
-    _id: string;
-    userId: {
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
-    totalAmount: number;
-    status: 'processing' | 'shipped' | 'delivered' | 'cancelled';
-    paymentStatus: 'paid' | 'pending';
-    createdAt: string;
-}
+import { Order, PopulatedUser } from '../../interfaces/order';
 
 @Component({
     selector: 'app-admin-orders',
@@ -26,8 +14,8 @@ interface AdminOrder {
 export class AdminOrdersComponent implements OnInit {
     private orderService = inject(OrderService);
 
-    orders: AdminOrder[] = [];
-    filteredOrders: AdminOrder[] = [];
+    orders: Order[] = [];
+    filteredOrders: Order[] = [];
     searchTerm: string = '';
     statusFilter: string = 'all';
     isLoading = false;
@@ -53,17 +41,26 @@ export class AdminOrdersComponent implements OnInit {
 
     applyFilters(): void {
         this.filteredOrders = this.orders.filter(order => {
-            const customerName = `${order.userId.firstName} ${order.userId.lastName}`;
+            let customerName = 'Guest';
+            const userId = order.userId;
+
+            if (userId && typeof userId === 'object') {
+                const populatedUser = userId as PopulatedUser;
+                customerName = `${populatedUser.firstName} ${populatedUser.lastName}`;
+            }
+
             const matchesSearch = customerName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                order._id.includes(this.searchTerm);
+                (order._id && order._id.includes(this.searchTerm));
             const matchesStatus = this.statusFilter === 'all' || order.status === this.statusFilter;
             return matchesSearch && matchesStatus;
         });
     }
 
-    updateStatus(order: AdminOrder, newStatus: any): void {
+    updateStatus(order: Order, newStatus: any): void {
         const previousStatus = order.status;
         order.status = newStatus; // Optimistic update
+
+        if (!order._id) return;
 
         this.orderService.updateOrderStatus(order._id, newStatus).subscribe({
             next: (res) => {

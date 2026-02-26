@@ -1,4 +1,5 @@
 import { Book } from './book';
+import { PopulatedUser } from './order';
 
 export interface ReviewUser {
   _id: string;
@@ -8,7 +9,7 @@ export interface ReviewUser {
 
 export interface Review {
   _id?: string;
-  userId: string | ReviewUser;
+  userId: string | ReviewUser | PopulatedUser;
   bookId: string | Book;
   rating: number;
   comment?: string;
