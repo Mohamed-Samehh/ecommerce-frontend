@@ -11,7 +11,7 @@ import { SearchService } from '../../services/search/search-service';
 export class SearchBar implements OnInit{
   protected readonly categories = signal<Category[]>([]);
   serviceApi = inject(SearchService);
-  protected selectedCategory = signal<Category|undefined>(undefined);
+  protected selectedCategory = signal<string|undefined>(undefined);
   protected searchQuery = new FormControl('',[Validators.maxLength(200),Validators.minLength(1)]);
   protected readonly maxLength = 200;
   protected readonly placeHolder = 'Search for your favorite book';
@@ -21,9 +21,9 @@ export class SearchBar implements OnInit{
   }
   protected onSubmit(){
     if(this.searchQuery.valid){
-      console.log(this.searchQuery.value);
-    }else{
-      console.log('error');
+      const bookName = this.searchQuery.value;
+      const selectedCategory = this.selectedCategory;
+      getAllBooks(bookName,selectedCategory);
     }
   }
   getAllCategories(){
@@ -40,7 +40,14 @@ export class SearchBar implements OnInit{
       }
     });
   }
-  onCategorySelect(event : Event){
-    
+  onCategorySelect(categoryId : string){
+    this.selectedCategory.set(categoryId);
+
+  }
+  getAllBooks(bookName:string,selectedCategory:string){
+    const query = `?name=${bookName}`;
+    if(selectedCategory){
+      query+=`category[]`
+    }
   }
 }
