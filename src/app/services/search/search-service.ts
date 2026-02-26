@@ -16,7 +16,7 @@ export class SearchService {
   getAllCategories(): Observable<ApiResponse<Category[]>> {
     return this.http.get<ApiResponse<Category[]>>(`${this.apiUrl}/categories`);
   }
-  getAllBooks():Observable<ApiResponse<Book[]>>{
-    return this.http.get<ApiResponse<Book[]>>(`${this.apiUrl}/book`);
+  getAllBooks(query:string):Observable<ApiResponse<Book[]>>{
+    return this.http.get<ApiResponse<Book[]>>(`${this.apiUrl}/books${query}`);
   }
 }
