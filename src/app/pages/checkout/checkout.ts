@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { Router, RouterModule } from '@angular/router';
 import { OrderService } from '../../services/order/order-service';
 import { Book } from '../../interfaces/book';
+import { Order } from '../../interfaces/order';
 
 interface CheckoutItem {
     id: string;
@@ -75,10 +76,14 @@ export class CheckoutComponent implements OnInit {
         const shipping = this.checkoutForm.get('shipping')?.value;
         const payment = this.checkoutForm.get('payment')?.value;
 
-        const orderData = {
+        const orderData: Partial<Order> = {
             items: this.cartItems.map(item => ({
                 bookId: item.id,
-                quantity: item.quantity
+                bookName: item.name,
+                imageUrl: item.image,
+                quantity: item.quantity,
+                priceAtPurchase: item.price,
+                subtotal: item.price * item.quantity
             })),
             shippingAddress: {
                 country: shipping.country,
@@ -86,7 +91,8 @@ export class CheckoutComponent implements OnInit {
                 street: shipping.address,
                 postalCode: shipping.zipCode
             },
-            paymentMethod: payment.method === 'COD' ? 'COD' : 'Online'
+            paymentMethod: (payment.method === 'COD' ? 'COD' : 'Online') as 'COD' | 'Online',
+            totalAmount: this.total
         };
 
         this.isSubmitting = true;
@@ -94,7 +100,7 @@ export class CheckoutComponent implements OnInit {
             next: (response) => {
                 this.isSubmitting = false;
                 console.log('Order Successfully Placed:', response);
-                const orderId = response.data?._id || response.data?.id;
+                const orderId = response.data?._id;
                 this.router.navigate(['/order-confirmation', orderId]);
             },
             error: (err) => {

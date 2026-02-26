@@ -1,30 +1,24 @@
 export interface Author {
-    id: string;
-    firstName: string;
-    lastName: string;
-    nationality?: string;
-    biography?: string;
+    _id?: string;
+    name: string;
+    bio?: string;
 }
 
 export interface Category {
-    id: string;
+    _id?: string;
     name: string;
-    description?: string;
 }
 
 export interface Book {
-    id: string;
-    name: string;
-    coverImage: string;
-    coverImagePublicId: string;
+    _id?: string;
+    id?: string;
+    title: string;
+    author: string | Author;
+    description?: string;
     price: number;
-    stock: number;
-    authorId: string | Author;
-    categories: string[] | Category[];
-    description: string;
-    isDeleted: boolean;
-    status: 'avaliable' | 'out of stock' | 'low stock';
-    reviewCount?: number;
-    createdAt?: string;
-    updatedAt?: string;
+    category?: string | Category;
+    imageUrl?: string;
+    stock?: number;
+    createdAt?: string | Date;
+    updatedAt?: string | Date;
 }

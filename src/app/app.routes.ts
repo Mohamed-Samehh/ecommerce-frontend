@@ -5,26 +5,24 @@ import { OrderConfirmationComponent } from './pages/order-confirmation/order-con
 import { AdminOrdersComponent } from './pages/admin-orders/admin-orders';
 
 export const routes: Routes = [
-  {
-    path: 'admin/orders',
-    component: AdminOrdersComponent,
-    title: 'Admin Dashboard'
-  },
-  {
-    path: 'checkout',
-    component: CheckoutComponent,
-    title: 'Checkout'
-  },
-  {
-    path: 'order-confirmation/:id',
-    component: OrderConfirmationComponent,
-    title: 'Thank You'
-  },
-  {
-    path: 'order-history',
-    component: OrderHistory,
-    title: 'My Orders'
-  },
-  { path: '', redirectTo: 'order-history', pathMatch: 'full' },
-  { path: '**', redirectTo: 'order-history' }
+    {
+        path: 'admin/orders',
+        component: AdminOrdersComponent,
+        title: 'Admin Dashboard'
+    },
+    {
+        path: 'checkout',
+        component: CheckoutComponent,
+        title: 'Checkout'
+    },
+    {
+        path: 'order-confirmation/:id',
+        component: OrderConfirmationComponent,
+        title: 'Order Confirmation'
+    },
+    {
+        path: 'order-history',
+        component: OrderHistory,
+        title: 'Order History'
+    }
 ];
