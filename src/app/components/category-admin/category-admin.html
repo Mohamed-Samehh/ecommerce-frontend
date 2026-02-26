@@ -1,1 +1,48 @@
-<p>category-admin works!</p>
+<div class="category-admin-container">
+  <div class="header-section">
+    <h2 class="page-title">Manage Categories</h2>
+<button class="btn-add" (click)="addCategory()">Add Category</button>  </div>
+
+  <div class="search-section">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Search categories..."
+      [formControl]="searchControl"
+    />
+  </div>
+
+  <div class="table-container">
+    <table class="category-table">
+      <thead>
+        <tr>
+          <th>S/N</th>
+          <th>Category Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (category of filteredCategories; track category._id; let i = $index) {
+          <tr>
+            <td>{{i+1}}</td>
+            <td class="category-name">{{category.name}}</td>
+            <td class="actions-cell">
+              <button
+                class="btn btn-sm text-primary bg-primary bg-opacity-10 border-0 fw-semibold me-2"
+              (click)="editCategory(category)">
+                Edit
+              </button>
+              <button class="btn btn-sm text-danger bg-danger bg-opacity-10 border-0 fw-semibold" (click)="deleteCategory(category)">
+                Delete
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="3" class="empty-state">No categories found</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
