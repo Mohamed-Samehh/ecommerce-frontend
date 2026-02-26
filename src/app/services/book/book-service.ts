@@ -9,8 +9,11 @@ import { environment } from '../../../environments/environment.development';
 export class BookService {
   apiUrl = environment.apiUrl;
   private http = inject(HttpClient);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getAllBooks(): Observable<any> {
     return this.http.get(`${this.apiUrl}/books`);
+  }
+
+  getBookById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/books/${id}`);
   }
 }

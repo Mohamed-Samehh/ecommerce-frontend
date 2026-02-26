@@ -1,0 +1,84 @@
+<div class="confirmation-page">
+    <div class="confirmation-content">
+        <header class="order-header">
+            <div class="order-id-section">
+                <h2>Order ID: #{{ orderId }}</h2>
+                <span class="status-badge approved">Approved</span>
+            </div>
+            <p class="order-date">{{ orderDate | date:'fullDate' }}</p>
+        </header>
+
+        <div class="info-cards">
+            <!-- Recipient Information -->
+            <div class="info-card">
+                <div class="card-header">
+                    <i class="fa fa-user"></i>
+                    <h3>Recipient Information</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> Alaa Abdallah</p>
+                    <p><strong>E-mail:</strong> alaa@example.com</p>
+                    <p><strong>Phone:</strong> +20 123 456 789</p>
+                    <p><strong>City:</strong> Cairo</p>
+                    <p><strong>Address:</strong> 123 Smart Village, Giza</p>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="info-card">
+                <div class="card-header">
+                    <i class="fa fa-credit-card"></i>
+                    <h3>Payment Information</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Payment Method:</strong> Credit Card</p>
+                    <p><strong>Transaction ID:</strong> TXN_998877</p>
+                    <p><strong>Card Number:</strong> **** **** **** 4242</p>
+                </div>
+            </div>
+
+            <!-- Order Status -->
+            <div class="info-card">
+                <div class="card-header">
+                    <i class="fa fa-truck"></i>
+                    <h3>Order Status</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Status:</strong> Processing</p>
+                    <p><strong>Date Added:</strong> {{ orderDate | date:'shortDate' }}</p>
+                    <p><strong>Last Update:</strong> {{ orderDate | date:'shortDate' }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Table -->
+        <div class="products-section">
+            <h3>Products</h3>
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>I, Robot - Isaac Asimov</td>
+                        <td>$15.99</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Azincourt - Bernard Cornwell</td>
+                        <td>$12.50</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="confirmation-actions">
+            <button class="btn-primary" routerLink="/order-history">Back to My Orders</button>
+        </div>
+    </div>
+</div>

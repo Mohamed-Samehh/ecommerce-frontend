@@ -1,0 +1,211 @@
+.admin-container {
+    background-color: var(--primary-color-bg);
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+    color: var(--text-color);
+    font-family: var(--main-font);
+}
+
+.admin-header {
+    max-width: 1200px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1.5px solid rgba(45, 26, 18, 0.1);
+    padding-bottom: 1.5rem;
+}
+
+.admin-header h1 {
+    font-size: var(--font-xl);
+    font-weight: 800;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.admin-header p {
+    color: #6d5b54;
+    margin: 0.5rem 0 0 0;
+    font-weight: 500;
+}
+
+.stat-item {
+    background-color: var(--cards--bg-color);
+    padding: 1rem 2rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(45, 26, 18, 0.05);
+    text-align: center;
+    box-shadow: var(--card-shadow);
+}
+
+.stat-val {
+    display: block;
+    font-size: var(--font-lg);
+    font-weight: 800;
+    color: var(--highlighted-text-color);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #888;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Toolbar */
+.admin-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.toolbar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-box {
+    flex: 1;
+    position: relative;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.8rem;
+    border: 1px solid rgba(45, 26, 18, 0.1);
+    border-radius: var(--radius-md);
+    font-size: var(--font-md);
+    background-color: var(--secondary-color-bg);
+    font-family: var(--main-font);
+}
+
+.filters select {
+    padding: 0.8rem 2.5rem 0.8rem 1.2rem;
+    border: 1px solid rgba(45, 26, 18, 0.1);
+    border-radius: var(--radius-md);
+    background-color: var(--secondary-color-bg);
+    font-size: var(--font-md);
+    font-family: var(--main-font);
+    cursor: pointer;
+}
+
+/* Table styles */
+.table-container {
+    background-color: var(--secondary-color-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(45, 26, 18, 0.03);
+    overflow: hidden;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-table th {
+    background-color: var(--cards--bg-color);
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(45, 26, 18, 0.05);
+}
+
+.orders-table td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--primary-color-bg);
+    vertical-align: middle;
+}
+
+.order-id {
+    font-weight: 700;
+    color: var(--highlighted-text-color);
+}
+
+.customer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 600;
+}
+
+.avatar-small {
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-color-bg);
+    color: var(--highlighted-text-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.amount {
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+/* Badges */
+.badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge.processing {
+    background-color: var(--status-processing-bg);
+    color: var(--status-processing-text);
+}
+
+.badge.shipped {
+    background-color: #E3F2FD;
+    color: #1565C0;
+}
+
+.badge.delivered {
+    background-color: var(--status-delivered-bg);
+    color: var(--status-delivered-text);
+}
+
+.badge.pay-paid {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.badge.pay-pending {
+    background-color: var(--status-cancelled-bg);
+    color: var(--status-cancelled-text);
+}
+
+/* Actions */
+.action-dropdown select {
+    border: 1px solid rgba(45, 26, 18, 0.1);
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    background-color: var(--primary-color-bg);
+    cursor: pointer;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 0;
+    color: #999;
+    background-color: var(--secondary-color-bg);
+}
