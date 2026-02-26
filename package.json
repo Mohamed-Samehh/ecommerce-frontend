@@ -38,7 +38,7 @@
     "express": "^5.1.0",
     "ngx-pagination": "^6.0.3",
     "rxjs": "~7.8.0",
-    "sweetalert2": "^11.26.18",
+    "sweetalert2": "^11.26.20",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
