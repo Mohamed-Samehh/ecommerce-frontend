@@ -1,4 +1,5 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, inject, signal, computed, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -16,13 +17,14 @@ import {
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   private readonly baseUrl = `${environment.apiUrl}/auth`;
 
   private static readonly TOKEN_KEY = 'auth_token';
 
   private readonly _token = signal<string | null>(
-    localStorage.getItem(AuthService.TOKEN_KEY)
+    this.isBrowser ? localStorage.getItem(AuthService.TOKEN_KEY) : null
   );
   private readonly _currentUser = signal<User | null>(null);
 
@@ -58,14 +60,14 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem(AuthService.TOKEN_KEY);
+    if (this.isBrowser) localStorage.removeItem(AuthService.TOKEN_KEY);
     this._token.set(null);
     this._currentUser.set(null);
     this.router.navigate(['/login']);
   }
 
   private handleAuthSuccess(res: AuthResponse): void {
-    localStorage.setItem(AuthService.TOKEN_KEY, res.accessToken);
+    if (this.isBrowser) localStorage.setItem(AuthService.TOKEN_KEY, res.accessToken);
     this._token.set(res.accessToken);
 
     if (res.user) {
