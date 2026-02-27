@@ -1,0 +1,45 @@
+.card-bg {
+  background-color: var(--cards--bg-color);
+}
+
+.text-color {
+  color: var(--text-color);
+}
+
+.button-color {
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
+}
+
+.button-color:hover {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}
+
+.cover-wrapper {
+  background: var(--secondary-color-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.cover-img {
+  height: 420px;
+  object-fit: cover;
+}
+
+.desc {
+  line-height: 1.6;
+}
+
+.category-pill {
+  background-color: rgba(217, 168, 108, 0.25);
+  color: var(--text-color);
+  border: 1px solid rgba(217, 168, 108, 0.35);
+}
+
+@media (max-width: 768px) {
+  .cover-img {
+    height: 340px;
+  }
+}
+
+

@@ -5,6 +5,7 @@ export interface ReviewUser {
   _id: string;
   firstName: string;
   lastName: string;
+  avatar?: string;
 }
 
 export interface Review {
@@ -13,5 +14,5 @@ export interface Review {
   bookId: string | Book;
   rating: number;
   comment?: string;
-  createdAt?: Date;
+  createdAt?: string;
 }
