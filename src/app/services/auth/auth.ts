@@ -21,10 +21,10 @@ export class AuthService {
 
   private readonly baseUrl = `${environment.apiUrl}/auth`;
 
-  private static readonly TOKEN_KEY = 'auth_token';
+  private static readonly TOKEN_KEY = 'token';
 
   private readonly _token = signal<string | null>(
-    this.isBrowser ? localStorage.getItem(AuthService.TOKEN_KEY) : null
+    this.isBrowser ? (localStorage.getItem(AuthService.TOKEN_KEY) || localStorage.getItem('auth_token')) : null
   );
   private readonly _currentUser = signal<User | null>(null);
 

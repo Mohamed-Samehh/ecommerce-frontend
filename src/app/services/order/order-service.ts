@@ -1,52 +1,34 @@
-import { Injectable, inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Order } from '../../interfaces/order';
+import { ApiResponse } from '../../interfaces/api-response';
 import { environment } from '../../../environments/environment';
-
-export interface ApiResponse<T> {
-  status: string;
-  data: T;
-  message?: string;
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-
+  apiUrl = `${environment.apiUrl}/order`;
   private http = inject(HttpClient);
-  private platformId = inject(PLATFORM_ID);
-  private apiUrl = `${environment.apiUrl}/order`;
-
-  private getHeaders(): HttpHeaders {
-    let token = '';
-    if (isPlatformBrowser(this.platformId)) {
-      token = localStorage.getItem('token') || '';
-    }
-    return new HttpHeaders({
-      'Authorization': token ? `Bearer ${token}` : ''
-    });
-  }
 
   createOrder(orderData: Partial<Order>): Observable<ApiResponse<Order>> {
-    return this.http.post<ApiResponse<Order>>(this.apiUrl, orderData, { headers: this.getHeaders() });
+    return this.http.post<ApiResponse<Order>>(this.apiUrl, orderData);
   }
 
   getMyOrders(): Observable<ApiResponse<Order[]>> {
-    return this.http.get<ApiResponse<Order[]>>(`${this.apiUrl}/my`, { headers: this.getHeaders() });
+    return this.http.get<ApiResponse<Order[]>>(`${this.apiUrl}/my`);
   }
 
   getAllOrders(): Observable<ApiResponse<Order[]>> {
-    return this.http.get<ApiResponse<Order[]>>(this.apiUrl, { headers: this.getHeaders() });
+    return this.http.get<ApiResponse<Order[]>>(this.apiUrl);
   }
 
   updateOrderStatus(orderId: string, status: string): Observable<ApiResponse<Order>> {
-    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/${orderId}/status`, { status }, { headers: this.getHeaders() });
+    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/${orderId}/status`, { status });
   }
 
   updatePaymentStatus(orderId: string, paymentStatus: string): Observable<ApiResponse<Order>> {
-    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/${orderId}/payment`, { paymentStatus }, { headers: this.getHeaders() });
+    return this.http.patch<ApiResponse<Order>>(`${this.apiUrl}/${orderId}/payment`, { paymentStatus });
   }
 }

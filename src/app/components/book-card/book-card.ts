@@ -1,9 +1,10 @@
 import { Component, input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { Book } from '../../interfaces/book';
 
 @Component({
   selector: 'app-book-card',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './book-card.html',
   styleUrl: './book-card.css'
 })
