@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
-import {NotFound} from './pages/not-found/not-found';
+import { Register } from './pages/register/register';
+import { Login } from './pages/login/login';
+import { NotFound } from './pages/not-found/not-found';
 import { Admin } from './pages/admin/admin';
 import { CategoryAdmin } from './components/category-admin/category-admin';
 import { OrderHistory } from './pages/order-history/order-history';
@@ -8,6 +10,16 @@ import { OrderConfirmationComponent } from './pages/order-confirmation/order-con
 import { AdminOrdersComponent } from './pages/admin-orders/admin-orders';
 
 export const routes: Routes = [
+  {
+    path: 'login',
+    component: Login,
+    title: 'Sign In'
+  },
+  {
+    path: 'register',
+    component: Register,
+    title: 'Create Account'
+  },
   {
     path: 'admin/orders',
     component: AdminOrdersComponent,
@@ -33,10 +45,8 @@ export const routes: Routes = [
     component: Admin,
     children: [
       { path: 'categories', component: CategoryAdmin }
-      // add  admin routes
+      // add admin routes
     ]
   },
-
-  {path: '**', component: NotFound} //must be at end:  match any wrong path and redirect to 404 page
-
+  { path: '**', component: NotFound } // must be at end: match any wrong path and redirect to 404 page
 ];

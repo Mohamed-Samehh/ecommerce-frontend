@@ -1,0 +1,236 @@
+<div class="auth-page d-flex flex-column">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="flex-grow-1 row g-0">
+    <!-- Left: form panel -->
+    <div class="col-md-6 auth-left d-flex align-items-center justify-content-center p-4 p-xl-5">
+      <div class="auth-form-wrapper">
+
+        <!-- Brand -->
+        <div class="d-flex align-items-center gap-2 mb-4">
+          <img src="logo.png" alt="" class="auth-logo"/>
+          <span class="auth-brand-name">Wyrmhole Books</span>
+        </div>
+
+        @if (step() === 'details') {
+          <h1 class="h3 fw-bold mb-1">Register</h1>
+          <p class="text-muted small mb-4">Create your account today 👋</p>
+
+          <form [formGroup]="registerForm" (ngSubmit)="submitDetails()" novalidate>
+            <!-- First Name + Last Name -->
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <input
+                  id="firstName"
+                  type="text"
+                  formControlName="firstName"
+                  class="form-control auth-input"
+                  [class.is-invalid]="firstNameCtrl.invalid && firstNameCtrl.touched"
+                  placeholder="First Name"
+                  autocomplete="given-name"
+                />
+                <div class="invalid-feedback">
+                  @if (firstNameCtrl.hasError('required')) {
+                    First name is required.
+                  } @else if (firstNameCtrl.hasError('minlength')) {
+                    Min 2 characters.
+                  } @else if (firstNameCtrl.hasError('maxlength')) {
+                    Max 50 characters.
+                  }
+                </div>
+              </div>
+              <div class="col-6">
+                <input
+                  id="lastName"
+                  type="text"
+                  formControlName="lastName"
+                  class="form-control auth-input"
+                  [class.is-invalid]="lastNameCtrl.invalid && lastNameCtrl.touched"
+                  placeholder="Last Name"
+                  autocomplete="family-name"
+                />
+                <div class="invalid-feedback">
+                  @if (lastNameCtrl.hasError('required')) {
+                    Last name is required.
+                  } @else if (lastNameCtrl.hasError('minlength')) {
+                    Min 2 characters.
+                  } @else if (lastNameCtrl.hasError('maxlength')) {
+                    Max 50 characters.
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                class="form-control auth-input"
+                [class.is-invalid]="emailCtrl.invalid && emailCtrl.touched"
+                placeholder="Email"
+                autocomplete="email"
+              />
+              <div class="invalid-feedback">
+                @if (emailCtrl.hasError('required')) {
+                  Email is required.
+                } @else if (emailCtrl.hasError('email')) {
+                  Please enter a valid email address.
+                }
+              </div>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <input
+                  id="dob"
+                  type="date"
+                  formControlName="dob"
+                  class="form-control auth-input"
+                  [class.is-invalid]="dobCtrl.invalid && dobCtrl.touched"
+                  [max]="maxDob"
+                  autocomplete="bday"
+                  
+                />
+                <div class="invalid-feedback">
+                  @if (dobCtrl.hasError('required')) {
+                    Date of birth is required.
+                  }
+                </div>
+              </div>
+              <div class="col-6 d-flex align-items-center">
+                <small class="text-muted">Date of birth</small>
+              </div>
+            </div>
+
+            <!-- Password + Confirm Password -->
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <input
+                  id="password"
+                  type="password"
+                  formControlName="password"
+                  class="form-control auth-input"
+                  [class.is-invalid]="passwordCtrl.invalid && passwordCtrl.touched"
+                  placeholder="Password"
+                  autocomplete="new-password"
+                />
+                <div class="invalid-feedback">
+                  @if (passwordCtrl.hasError('required')) {
+                    Password is required.
+                  } @else if (passwordCtrl.hasError('minlength')) {
+                    Min 6 characters.
+                  }
+                </div>
+              </div>
+              <div class="col-6">
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  formControlName="confirmPassword"
+                  class="form-control auth-input"
+                  [class.is-invalid]="(confirmPasswordCtrl.invalid && confirmPasswordCtrl.touched) || passwordMismatch"
+                  placeholder="Confirm Password"
+                  autocomplete="new-password"
+                />
+                <div class="invalid-feedback">
+                  @if (confirmPasswordCtrl.hasError('required') && confirmPasswordCtrl.touched) {
+                    Please confirm your password.
+                  } @else if (passwordMismatch) {
+                    Passwords do not match.
+                  }
+                </div>
+              </div>
+            </div>
+
+            @if (errorMessage()) {
+              <div class="alert alert-danger py-2 small mb-3" role="alert">{{ errorMessage() }}</div>
+            }
+
+            <button
+              type="submit"
+              class="btn btn-auth-primary w-100"
+              [disabled]="isLoading()"
+            >
+              @if (isLoading()) {
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                Creating account…
+              } @else {
+                Register
+              }
+            </button>
+          </form>
+
+          <p class="text-center small text-muted mt-4 mb-0">
+            Already have an account?
+            <a routerLink="/login" class="auth-link">Sign in</a>
+          </p>
+        }
+
+        @if (step() === 'otp') {
+          <h1 class="h3 fw-bold mb-1">Verify your email</h1>
+          <p class="text-muted small mb-4">
+            We sent a 6-digit code to <strong>{{ email() }}</strong>
+          </p>
+
+          <form [formGroup]="otpForm" (ngSubmit)="submitOtp()" novalidate>
+            <div class="mb-4">
+              <label for="otp" class="form-label fw-semibold">One-time password</label>
+              <input
+                id="otp"
+                type="text"
+                inputmode="numeric"
+                formControlName="otp"
+                class="form-control auth-input text-center otp-input"
+                [class.is-invalid]="otpCtrl.invalid && otpCtrl.touched"
+                placeholder="123456"
+                maxlength="6"
+                autocomplete="one-time-code"
+              />
+              <div class="invalid-feedback">
+                @if (otpCtrl.hasError('required')) {
+                  OTP is required.
+                } @else if (otpCtrl.hasError('pattern')) {
+                  OTP must be exactly 6 digits.
+                }
+              </div>
+            </div>
+
+            @if (errorMessage()) {
+              <div class="alert alert-danger py-2 small mb-3" role="alert">{{ errorMessage() }}</div>
+            }
+
+            <button
+              type="submit"
+              class="btn btn-auth-primary w-100"
+              [disabled]="isLoading()"
+            >
+              @if (isLoading()) {
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                Verifying…
+              } @else {
+                Verify &amp; Activate Account
+              }
+            </button>
+          </form>
+
+          <button
+            type="button"
+            class="btn btn-link p-0 text-muted text-decoration-none small mt-3"
+            (click)="goBack()"
+          >
+            <i class="fa fa-arrow-left me-1"></i> Back to registration
+          </button>
+        }
+
+      </div>
+    </div>
+
+    <!-- Right: image -->
+    <div class="col-md-6 auth-right d-none d-md-flex align-items-center justify-content-center">
+      <img src="sign.png" alt="" class="auth-image" />
+    </div>
+  </div>
+</div>
