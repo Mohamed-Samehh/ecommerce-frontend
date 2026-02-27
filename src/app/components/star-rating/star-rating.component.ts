@@ -9,17 +9,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './star-rating.component.css'
 })
 export class StarRatingComponent {
-    @Input() rating = 0;
+    @Input() value = 0;
     @Input() readonly = false;
-    @Output() ratingChange = new EventEmitter<number>();
+    @Output() valueChange = new EventEmitter<number>();
 
     stars: number[] = [1, 2, 3, 4, 5];
     hoveredRating = 0;
 
     rate(val: number): void {
       if (!this.readonly) {
-        this.rating = val;
-        this.ratingChange.emit(this.rating);
+        this.value = val;
+        this.valueChange.emit(this.value);
       }
     }
 

@@ -1,5 +1,6 @@
 @if(book()){
-<div class="card card-bg rounded-5 " style="width: 20rem; height: 36rem; overflow: hidden;">
+<a class="text-decoration-none" [routerLink]="['/book', book()?._id]">
+<div class="card card-bg rounded-5 shadow-hover" style="width: 20rem; height: 35rem; overflow: hidden;">
   <div class="position-relative m-4">
     <img [src]="book()?.coverImage" class="card-img-top rounded-5" alt="book image"
       style="height: 20rem; object-fit: cover;">
@@ -26,9 +27,10 @@
     </div>
     <p class="card-text text-truncate-2" >{{ book()?.description }}
     </p>
-    <div class=" d-flex justify-content-center align-items-center ">
-      <a href="#" class="btn button-color px-5"><i class="fa-solid fa-cart-plus"></i> Add to cart</a>
+    <div class=" d-flex justify-content-center">
+      <span class="btn button-color px-5 disabled"><i class="fa-solid fa-cart-plus"></i> Add to cart</span>
     </div>
   </div>
 </div>
+</a>
 }

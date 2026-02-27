@@ -3,94 +3,109 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReviewService } from '../../services/review/review-service';
 import { OrderService } from '../../services/order/order-service';
-import { Book } from '../../interfaces/book';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
+import { AuthService } from '../../services/auth/auth';
+import { Order, OrderItem } from '../../interfaces/order'; // English comment: Using your existing interfaces
+import { Book } from '../../interfaces/book';
 
 @Component({
-    selector: 'app-review-form',
-    standalone: true,
-    imports: [CommonModule, FormsModule, StarRatingComponent],
-    templateUrl: './review-form.component.html',
-    styleUrl: './review-form.component.css'
+  selector: 'app-review-form',
+  standalone: true,
+  imports: [CommonModule, FormsModule, StarRatingComponent],
+  templateUrl: './review-form.component.html',
+  styleUrl: './review-form.component.css'
 })
 export class ReviewFormComponent implements OnInit {
-    @Input() bookId!: string;
-    @Output() reviewAdded = new EventEmitter<void>();
+  @Input() bookId!: string;
+  @Output() reviewAdded = new EventEmitter<void>();
 
-    private reviewService = inject(ReviewService);
-    private orderService = inject(OrderService);
+  private readonly reviewService = inject(ReviewService);
+  private readonly orderService = inject(OrderService);
+  private readonly authService = inject(AuthService);
 
-    rating: number = 0;
-    comment: string = '';
-    isPurchased: boolean = false;
-    hasAlreadyReviewed: boolean = false;
-    isSubmitting: boolean = false;
-    isLoading: boolean = true;
-    error: string | null = null;
+  rating = 0;
+  comment = '';
+  isPurchased = false;
+  hasAlreadyReviewed = false;
+  isSubmitting = false;
+  isLoading = true;
+  error: string | null = null;
 
-    ngOnInit(): void {
-        this.initializeComponent();
+  ngOnInit(): void {
+    this.initializeComponent();
+  }
+
+  async initializeComponent(): Promise<void> {
+    this.isLoading = true;
+
+    const token = this.authService.token();
+    if (!token) {
+      this.isPurchased = false;
+      this.isLoading = false;
+      return;
     }
 
-    async initializeComponent(): Promise<void> {
-        this.isLoading = true;
-        try {
-            await this.checkPurchaseStatus();
-        } catch (err) {
-            console.error('Error during review form initialization', err);
-        } finally {
-            this.isLoading = false;
+    try {
+      await this.checkPurchaseStatus();
+    } catch {
+      this.error = 'Error during review form initialization';
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  checkPurchaseStatus(): Promise<void> {
+    return new Promise((resolve) => {
+      this.orderService.getMyOrders().subscribe({
+        next: (response) => {
+          const orders = (response.data || []) as Order[];
+
+          this.isPurchased = orders.some((order: Order) =>
+            order.status === 'delivered' &&
+            order.items.some((item: OrderItem) => {
+              const bookData = item.bookId;
+              const itemId = (bookData && typeof bookData === 'object' && '_id' in bookData)
+                ? (bookData as Book)._id
+                : (bookData as string);
+
+              return itemId === this.bookId;
+            })
+          );
+          resolve();
+        },
+        error: () => {
+          this.isPurchased = false;
+          resolve();
         }
+      });
+    });
+  }
+
+  submitReview(): void {
+    if (this.rating === 0) {
+      this.error = 'Please select a rating.';
+      return;
     }
 
-    checkPurchaseStatus(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.orderService.getMyOrders().subscribe({
-                next: (response) => {
-                    const orders = response.data || [];
-                    this.isPurchased = orders.some((order: any) =>
-                        order.status === 'delivered' &&
-                        order.items.some((item: any) => {
-                            const itemId = item.bookId?._id || item.bookId?.id || item.bookId;
-                            return itemId === this.bookId;
-                        })
-                    );
-                    resolve();
-                },
-                error: (err) => {
-                    console.error('Failed to check purchase status', err);
-                    this.isPurchased = false;
-                    resolve();
-                }
-            });
-        });
-    }
+    this.isSubmitting = true;
+    this.error = null;
 
-    submitReview(): void {
-        if (this.rating === 0) {
-            this.error = 'Please select a rating.';
-            return;
-        }
-
-        this.isSubmitting = true;
-        this.error = null;
-
-        this.reviewService.addReview({
-            bookId: this.bookId,
-            rating: this.rating,
-            comment: this.comment
-        }).subscribe({
-            next: () => {
-                this.isSubmitting = false;
-                this.rating = 0;
-                this.comment = '';
-                this.hasAlreadyReviewed = true;
-                this.reviewAdded.emit();
-            },
-            error: (err) => {
-                this.isSubmitting = false;
-                this.error = err.error?.message || 'Failed to submit review.';
-            }
-        });
-    }
+    this.reviewService.addReview({
+      bookId: this.bookId,
+      rating: this.rating,
+      comment: this.comment
+    }).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.rating = 0;
+        this.comment = '';
+        this.hasAlreadyReviewed = true;
+        this.reviewAdded.emit();
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.error = err.error?.message || 'Failed to submit review.';
+      }
+    });
+  }
 }

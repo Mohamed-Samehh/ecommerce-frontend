@@ -28,7 +28,9 @@ export class AdminOrdersComponent implements OnInit {
         this.isLoading = true;
         this.orderService.getAllOrders().subscribe({
             next: (response) => {
-                this.orders = response.data;
+                const ordersData = response.data;
+                // Handle various API response formats safely
+                this.orders = Array.isArray(ordersData) ? ordersData : (ordersData as { data: Order[] }).data || [];
                 this.filteredOrders = [...this.orders];
                 this.isLoading = false;
             },
@@ -56,7 +58,7 @@ export class AdminOrdersComponent implements OnInit {
         });
     }
 
-    updateStatus(order: Order, newStatus: any): void {
+    updateStatus(order: Order, newStatus: Order['status']): void {
         const previousStatus = order.status;
         order.status = newStatus; // Optimistic update
 

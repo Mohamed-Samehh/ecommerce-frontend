@@ -1,11 +1,13 @@
 import { Component, input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { Book } from '../../interfaces/book';
 import { StaticStarRating } from '../static-star-rating/static-star-rating';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-book-card',
-  imports: [StaticStarRating,JsonPipe],
+
+  imports: [StaticStarRating,RouterModule],
+
   templateUrl: './book-card.html',
   styleUrl: './book-card.css'
 })
