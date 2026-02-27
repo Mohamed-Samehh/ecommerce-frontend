@@ -44,7 +44,8 @@ export const routes: Routes = [
     path: 'admin',
     component: Admin,
     children: [
-      { path: 'categories', component: CategoryAdmin }
+      { path: 'categories', component: CategoryAdmin, title: 'Admin Dashboard'},
+      { path: 'orders', component: AdminOrdersComponent, title: 'Admin Dashboard'}
       // add admin routes
     ]
   },
