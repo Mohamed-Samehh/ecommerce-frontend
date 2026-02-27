@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { Register } from './pages/register/register';
+import { Login } from './pages/login/login';
 import { NotFound } from './pages/not-found/not-found';
 import { Admin } from './pages/admin/admin';
 import { CategoryAdmin } from './components/category-admin/category-admin';
@@ -20,6 +22,16 @@ export const routes: Routes = [
     path: 'book/:id',
     component: BookDetails,
     title: 'Book Details'
+  },
+  {
+    path: 'login',
+    component: Login,
+    title: 'Sign In'
+  },
+  {
+    path: 'register',
+    component: Register,
+    title: 'Create Account'
   },
   {
     path: 'checkout',
@@ -46,7 +58,5 @@ export const routes: Routes = [
       { path: '', redirectTo: 'orders', pathMatch: 'full' }
     ]
   },
-
-  { path: '**', component: NotFound } //must be at end:  match any wrong path and redirect to 404 page
-
+  { path: '**', component: NotFound } // must be at end: match any wrong path and redirect to 404 page
 ];
