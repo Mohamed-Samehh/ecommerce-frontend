@@ -5,8 +5,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { OrderService } from '../../services/order/order-service';
 import { Book } from '../../interfaces/book';
 import { Order, OrderItem } from '../../interfaces/order';
+import { Footer } from "../../components/footer/footer";
+import { NavBar } from "../../components/nav-bar/nav-bar";
+import { AuthService } from '../../services/auth/auth';
 
-// Local helper types to describe possible API shapes
 type BookLike = Partial<Book> & { _id?: string; id?: string; coverImage?: string };
 
 type ApiBookRef = string | BookLike;
@@ -26,7 +28,7 @@ interface ApiOrder extends Omit<Order, 'items'> {
 @Component({
   selector: 'app-order-history',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, Footer, NavBar],
   templateUrl: './order-history.html',
   styleUrls: ['./order-history.css']
 })
@@ -35,6 +37,7 @@ export class OrderHistory implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   private platformId = inject(PLATFORM_ID);
+  private authService = inject(AuthService);
 
   orders: Order[] = [];
   isLoading = true;
@@ -47,7 +50,7 @@ export class OrderHistory implements OnInit {
   fetchOrders(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    const token = localStorage.getItem('token');
+    const token = this.authService.token();
 
     if (!token) {
       this.error = 'You are not logged in. Please log in to view your orders.';

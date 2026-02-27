@@ -1,0 +1,71 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container my-4">
+  <div *ngIf="isLoading()" class="d-flex justify-content-center py-5">
+    <div class="spinner-border text-color" role="status"></div>
+  </div>
+
+  <div *ngIf="error()" class="alert alert-danger">
+    {{ error() }}
+  </div>
+
+  @if (book(); as b) {
+  <div class="card card-bg border-0 rounded-5 shadow-sm p-3 p-md-4">
+    <div class="row g-4 align-items-start">
+      <div class="col-12 col-md-5">
+        <div class="cover-wrapper rounded-5 overflow-hidden">
+          <img [src]="b.coverImage" [alt]="b.name" class="w-100 cover-img" />
+        </div>
+
+        <div class="d-flex gap-2 mt-3 flex-wrap">
+          <span class="badge card-bg rounded-pill px-3 py-2 text-color">${{ b.price }}</span>
+          <span class="badge" [class.bg-success]="b.stock > 2" [class.bg-danger]="b.stock <= 2">
+            {{ b.stock > 2 ? 'In Stock' : 'Low Stock' }}
+          </span>
+          <span class="badge bg-secondary" *ngIf="b.averageRating != null">
+            ⭐ {{ b.averageRating }} ({{ b.reviewCount || 0 }})
+          </span>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-7">
+        <h2 class="text-color fw-bold mb-2">{{ b.name }}</h2>
+        <div class="meta mb-3">
+          <div class="text-muted"><span class="fw-semibold text-color">Author:</span> {{ authorName(b.author) }}</div>
+          <p class="text-color desc mt-3">{{ b.description || 'No description available.' }}</p>
+        </div>
+        <div class="d-flex gap-3 mt-4">
+          <button class="btn button-color px-4"><i class="fa-solid fa-cart-plus me-2"></i>Add to cart</button>
+          <a class="btn btn-outline-dark px-4" routerLink="/order-history">View my orders</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="reviews-section" class="mt-5">
+    <h3 class="text-color fw-bold mb-4">Customer Reviews</h3>
+
+    <div class="mb-4">
+      @if (isCheckingEligibility()) {
+      <div class="text-muted small py-2">Checking if you can review...</div>
+      } @else if (canReview()) {
+      <app-review-form [bookId]="b.id || b._id" (reviewAdded)="onReviewAdded()"></app-review-form>
+      } @else {
+      <div class="alert alert-light border rounded-4 py-3 shadow-sm">
+        <p class="mb-0 text-muted small">
+          <i class="fa-solid fa-circle-info me-2 text-primary"></i>
+          Only customers who purchased and received this book can leave a review.
+        </p>
+      </div>
+      }
+    </div>
+
+    <div class="mt-5 pt-3 border-top">
+      <h4 class="h6 fw-bold text-color mb-4">All Community Feedback</h4>
+      <app-reviews-list #reviewsList [bookId]="b.id || b._id"></app-reviews-list>
+    </div>
+  </div>
+  }
+</div>
+
+<app-footer></app-footer>

@@ -1,100 +1,54 @@
-.reviews-section {
-    margin-top: 2rem;
+.reviews-list-container {
+  margin-top: 1rem;
 }
 
-h2 {
-    font-size: 1.5rem;
-    color: var(--text-color, #2D1A12);
-    margin-bottom: 1.5rem;
+.reviews-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.reviews-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.review-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
 }
 
-.review-card {
-    border-bottom: 1px solid #f0f0f0;
-    padding-bottom: 1.5rem;
+.review-item:last-child {
+  border-bottom: none;
 }
 
-.review-card:last-child {
-    border-bottom: none;
+.text-color {
+  color: var(--text-color, #2D1A12);
 }
 
-.review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
+.review-comment {
+  line-height: 1.5;
+  color: #555;
+  margin-top: 0.5rem;
 }
 
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.extra-small {
+  font-size: 0.75rem;
 }
 
-.avatar {
-    width: 40px;
-    height: 40px;
-    background-color: var(--primary-color-bg, #FDF9F3);
-    color: var(--highlighted-text-color, #732A10);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    border: 1px solid var(--highlighted-text-color, #732A10);
-}
-
-.meta {
-    display: flex;
-    flex-direction: column;
-}
-
-.user-name {
-    font-weight: 600;
-    color: var(--text-color, #2D1A12);
-}
-
-.date {
-    font-size: 0.8rem;
-    color: #888;
-}
-
-.comment {
-    margin: 0;
-    line-height: 1.6;
-    color: #444;
-}
-
-.review-actions {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.delete-btn {
-    background: none;
-    border: none;
-    color: #d32f2f;
-    font-size: 0.85rem;
-    cursor: pointer;
-    padding: 0;
-    opacity: 0.8;
-}
-
-.delete-btn:hover {
-    text-decoration: underline;
-    opacity: 1;
-}
-
-.loading,
-.error,
 .no-reviews {
-    padding: 2rem;
-    text-align: center;
-    color: #666;
+  border: 1px dashed #ddd;
+  background-color: #fcfcfc;
+}
+
+.italic {
+  font-style: italic;
+}
+
+/* Spinner and alerts */
+.spinner-border {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.alert-warning {
+  border-radius: 12px;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
 }
