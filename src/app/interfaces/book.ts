@@ -1,24 +1,14 @@
-export interface Author {
-    _id?: string;
-    name: string;
-    bio?: string;
-}
-
-export interface Category {
-    _id?: string;
-    name: string;
-}
-
 export interface Book {
-    _id?: string;
-    id?: string;
-    title: string;
-    author: string | Author;
-    description?: string;
-    price: number;
-    category?: string | Category;
-    imageUrl?: string;
-    stock?: number;
-    createdAt?: string | Date;
-    updatedAt?: string | Date;
+  _id: string;
+  name: string;
+  coverImage: string;
+  coverImagePublicId: string;
+  price: number;
+  stock: number;
+  description: string;
+  author: string;
+  categories: string[];
+  averageRating: number;
+  reviewCount: number;
+  status: 'available' | 'out of stock' | string;
 }
