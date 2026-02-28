@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink,Router } from '@angular/router';
 import { CartService } from '../../services/cart/cart';
@@ -14,6 +14,7 @@ import { Footer } from '../../components/footer/footer';
   styleUrl: './cart.css'
 })
 export class Cart implements OnInit {
+  private cdr = inject(ChangeDetectorRef);
   cartService = inject(CartService);
   router = inject(Router);
   cart: CartData | null = null; // start cart with null
@@ -27,7 +28,11 @@ export class Cart implements OnInit {
     // waiting room
     this.quantityDebouncer.pipe(debounceTime(500)) // wait 500 ms
       .subscribe(({item, newQuantity})=>{
-        this.cartService.updateCartItem(item.book._id, newQuantity).subscribe({
+
+        console.log('Item object content:', item.book);
+
+        const bookId = item.book.id as string; // to ensure the id will exist and in string format
+        this.cartService.updateCartItem(bookId, newQuantity).subscribe({
 
           error: (err) => {
             console.log('Error in updating quantity', err);
@@ -49,10 +54,12 @@ export class Cart implements OnInit {
       next: (res) => {
         this.cart = res.data;
         this.loading = false;
+        this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.log('Error in loading cart', err);
+      error: () => {
+        console.log('Error in loading cart');
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -89,7 +96,9 @@ export class Cart implements OnInit {
       confirmButtonColor: '#dc3545'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.cartService.removeFromCart(item.book._id).subscribe({
+        const bookId = item.book.id as string; // to ensure the id will exist and in string format (mismatch btw angular and backend)
+
+        this.cartService.removeFromCart(bookId).subscribe({
           next: () => {
             this.loadCart();
             Swal.fire({

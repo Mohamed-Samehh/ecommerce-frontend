@@ -9,30 +9,40 @@
       WyrmHole
     </a>
     <div class="d-flex justify-content-end align-items-center gap-2">
-      <a class="btn text-primary-color" routerLink="/" routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: true}">Explore</a>
+      <a
+        class="btn text-primary-color"
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Explore</a
+      >
 
       @if (authService.isLoggedIn()) {
-      <a class="btn text-primary-color" routerLink="/order-history" routerLinkActive="active">Order History</a>
+        <a class="btn text-primary-color" routerLink="/order-history" routerLinkActive="active"
+          >Order History</a
+        >
 
-      @if (authService.isAdmin()) {
-      <a class="btn text-primary-color" routerLink="/admin" routerLinkActive="active">Admin</a>
-      }
-
-      <button class="btn text-danger fw-bold" (click)="logout()">Logout</button>
-      } @else {
-      <a class="btn text-primary-color" routerLink="/login" routerLinkActive="active">Sign in</a>
-      }
-
-      <a class="btn fs-3 text-primary-color" routerLink="/cart" routerLinkActive="active">
-        <i class="fa-solid fa-cart-shopping"></i>
-                @if (cartService.cartCount() > 0) {
-          <span
-            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-          >
-            {{ cartService.cartCount() }}
-          </span>
+        @if (authService.isAdmin()) {
+          <a class="btn text-primary-color" routerLink="/admin" routerLinkActive="active">Admin</a>
         }
+
+        <button class="btn text-danger fw-bold" (click)="logout()">Logout</button>
+      } @else {
+        <a class="btn text-primary-color" routerLink="/login" routerLinkActive="active">Sign in</a>
+      }
+      <a class="btn text-primary-color border-0 p-2" routerLink="/cart" routerLinkActive="active">
+        <span class="position-relative d-inline-block fs-3">
+          <i class="fa-solid fa-cart-shopping"></i>
+
+          @if (cartService.cartCount() > 0) {
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              style="font-size: 0.4em; padding: 0.35em 0.6em"
+            >
+              {{ cartService.cartCount() }}
+            </span>
+          }
+        </span>
       </a>
     </div>
   </div>

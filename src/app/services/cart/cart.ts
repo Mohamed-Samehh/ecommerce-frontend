@@ -16,8 +16,22 @@ export class CartService { // talk to backend api
 
   cartCount = signal<number>(0); // like glob var to store count of items in cart (use in navbar,cart page)
 
-  getCart():Observable<CartResponse> {
-    return this.http.get<CartResponse>(this.apiUrl);
+  getCart(): Observable<CartResponse> {
+    return this.http.get<CartResponse>(this.apiUrl).pipe(
+      catchError(() => {
+        console.warn('Cart fetch failed (401). Forcing empty cart.');
+        const emptyCartFallback: CartResponse = {
+          status: 'error',
+          data: {
+            _id: '',
+            user: '',
+            items: [] // tell html to stop spinning
+          }
+        };
+
+        return of(emptyCartFallback);
+      })
+    );
   }
 
   addToCart(bookId:string, quantity:number):Observable<CartResponse> {
@@ -39,13 +53,13 @@ export class CartService { // talk to backend api
     return this.http.get<CartCountResponse>(`${this.apiUrl}/count`)
       .pipe( // open pipline to make sth before data reach screen, decide to use what
         tap( // access response, but can't modify in server's res just make side task using it
-          (res) => this.cartCount.set(res.data.count) // modify glob var
+          (res) => this.cartCount.set(res.data.count) // modify glob var with count of books types not quantity (dec. req to show totalquant. in badge)
         ),
-        catchError((err) => {
-          console.warn('Cart count failed (probably not logged in). Setting count to 0.', err);
-          this.cartCount.set(0); // Gracefully update the signal to 0
+        catchError(() => {
+          console.warn('Cart count failed (probably not logged in). Setting count to 0.');
+          this.cartCount.set(0);
 
-          return of({ status: 'error', data: { count: 0 } } as CartCountResponse); // safe fake response
+          return of({ status: 'error', data: { items: [],count: 0 } } as CartCountResponse); // safe fake response
         })
       );
   }
