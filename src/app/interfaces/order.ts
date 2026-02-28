@@ -30,7 +30,7 @@ export interface Order {
   orderNumber?: string;
   items: OrderItem[];
   shippingAddress: ShippingAddress;
-  status: 'processing' | 'out for delivery' | 'delivered' | 'cancelled' | 'shipped';
+  status: 'processing' | 'shipped' | 'delivered' | 'cancelled';
   paymentStatus: 'pending' | 'success' | 'paid';
   paymentMethod: 'COD' | 'Online';
   totalAmount: number;

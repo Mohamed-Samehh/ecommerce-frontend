@@ -47,7 +47,7 @@
                         <th>Amount</th>
                         <th>Payment</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th>Manage</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,14 +70,26 @@
                                 {{ order.status | titlecase }}
                             </span>
                         </td>
-                        <td>
-                            <div class="action-dropdown">
-                                <select [ngModel]="order.status" (ngModelChange)="updateStatus(order, $event)">
-                                    <option value="processing">Processing</option>
-                                    <option value="shipped">Shipped</option>
-                                    <option value="delivered">Delivered</option>
-                                    <option value="cancelled">Cancelled</option>
-                                </select>
+                        <td class="manage-column">
+                            <div class="manage-box">
+                                <div class="manage-row">
+                                    <i class="fa-solid fa-truck-fast"></i>
+                                    <select [ngModel]="order.status" (ngModelChange)="updateStatus(order, $event)"
+                                        class="status-select">
+                                        <option value="processing">Processing</option>
+                                        <option value="shipped">Shipped</option>
+                                        <option value="delivered">Delivered</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                                <div class="manage-row mt-2">
+                                    <i class="fa-solid fa-credit-card"></i>
+                                    <select [ngModel]="order.paymentStatus"
+                                        (ngModelChange)="updatePaymentStatus(order, $event)" class="payment-select">
+                                        <option value="pending">Pending</option>
+                                        <option value="success">Success</option>
+                                    </select>
+                                </div>
                             </div>
                         </td>
                     </tr>
