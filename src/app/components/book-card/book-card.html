@@ -5,7 +5,7 @@
       <img [src]="book()?.coverImage" class="card-img-top rounded-5" alt="book image"
         style="height: 19rem; object-fit: cover;">
       <div class="position-absolute top-0 end-0 m-3 badge card-bg rounded-pill">
-        <span class="fs-6 text-color px-3">${{book()?.price}}</span>
+        <span class="fw-bold text-color px-3">${{book()?.price}}</span>
       </div>
       <div class="position-absolute bottom-0  m-3">
         @if((book()?.stock ?? 0) > 2) {

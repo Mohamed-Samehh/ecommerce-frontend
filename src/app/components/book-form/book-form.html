@@ -1,0 +1,73 @@
+
+<div class="admin-form-container">
+  <header class="d-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-back" (click)="onCancel()" type="button">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <h2 class="h4 mb-0 fw-bold">Add New Book</h2>
+    </div>
+  </header>
+
+  <div class="form-card">
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+      <div class="row g-4">
+
+        <div class="col-lg-4 border-end-custom">
+          <div class="image-upload-wrapper mb-4">
+            <div class="upload-placeholder">
+              <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+              <span>Upload Cover Image</span>
+              <input type="file" (change)="onFileChange($event)" accept="image/*">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Price</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" class="form-control" formControlName="price" placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Stock Quantity</label>
+            <input type="number" class="form-control" formControlName="stock" placeholder="e.g. 50">
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="mb-3">
+            <label class="form-label">Book Title</label>
+            <input type="text" class="form-control" formControlName="name" placeholder="Enter book title">
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Author ID</label>
+              <input type="text" class="form-control" formControlName="authorid" placeholder="Author ID">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Categories</label>
+              <input type="text" class="form-control" formControlName="categories" placeholder="categories ID, comma separated">
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" formControlName="description" rows="6"
+              placeholder="Describe the book's plot or details..."></textarea>
+          </div>
+
+          <div class="d-flex justify-content-end gap-3 pt-3 border-top">
+            <button type="button" class="btn btn-outline" (click)="onCancel()">Discard</button>
+            <button type="submit" class="btn btn-save" [disabled]="bookForm.invalid">
+              Confirm & Add Book
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,33 +1,74 @@
+/* Card Base & Hover Animation */
 .card-bg {
   background-color: var(--cards--bg-color);
-
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  /* Soft border */
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
-.text-color {
+.shadow-hover:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Image Scaling Effect */
+.card-img-top {
+  transition: transform 0.5s ease;
+}
+
+.card-bg:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* Premium Badge Styling */
+.badge.card-bg {
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  /* Semi-transparent */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 600;
   color: var(--text-color);
 }
 
+/* Typography & Spacing */
+.card-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.card-body h6 {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+}
+
+/* Button Refinement */
 .button-color {
+  border-radius: 50px;
+  /* Pill shape */
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
   color: var(--button-text-color);
   background-color: var(--button-bg-color);
-  padding: 0.5rem 1.8rem;
-  border-radius: 2rem;
-  font-weight: 700;
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .button-color:hover {
-  color: var(--button-text-color);
-  background-color: var(--highlighted-text-color);
-}
-
-.button-color:focus {
-  color: var(--button-text-color);
-  background-color: var(--highlighted-text-color);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px var(--highlighted-text-color);
 }
 
 .text-truncate-2 {
@@ -38,9 +79,7 @@
   overflow: hidden;
 }
 
-.shadow-hover:hover {
-
-  box-shadow: 0 1rem 3rem var(--highlighted-text-color);
-  transform: translateY(-5px);
-  cursor: pointer;
+.button-color:focus {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
 }
