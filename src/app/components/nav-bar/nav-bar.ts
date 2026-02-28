@@ -1,8 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CartService } from '../../services/cart/cart';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth/auth';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,9 +14,12 @@ import { CommonModule } from '@angular/common';
 export class NavBar implements OnInit {
   readonly authService = inject(AuthService);
   readonly cartService = inject(CartService);
+  private readonly platformId = inject(PLATFORM_ID);
 
   ngOnInit(): void {
-    this.cartService.loadCartCount().subscribe();
+    if (isPlatformBrowser(this.platformId)) {
+      this.cartService.loadCartCount().subscribe();
+    }
   }
 
   logout(): void {
