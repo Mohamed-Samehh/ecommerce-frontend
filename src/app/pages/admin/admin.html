@@ -1,0 +1,78 @@
+<div class="admin-wrapper">
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <i class="fas fa-book"></i>
+      <span>WyrmHole Admin</span>
+    </div>
+
+    <hr class="sidebar-divider" />
+
+    <nav class="sidebar-nav">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a routerLink="/admin/books" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-book-open"></i>
+            <span>Books</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/users" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/authors" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-user-edit"></i>
+            <span>Authors</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/categories" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-tags"></i>
+            <span>Categories</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/orders" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Orders</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/reviews" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-star"></i>
+            <span>Reviews</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/admin/profile" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-user-circle"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <hr class="sidebar-divider" />
+
+    <div class="sidebar-footer">
+      <a routerLink="/admin/profile" class="admin-profile" aria-label="Go to admin profile page">
+        <div class="admin-avatar" aria-hidden="true">{{ userInitials() }}</div>
+        <div class="admin-profile-meta">
+          <span class="admin-name">{{ fullName() }}</span>
+          <small class="admin-email">{{ currentUser()?.email || 'No email available' }}</small>
+        </div>
+      </a>
+      <button type="button" class="admin-logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Sign Out</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

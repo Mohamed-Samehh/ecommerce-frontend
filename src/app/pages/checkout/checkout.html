@@ -1,0 +1,160 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="checkout-page" [formGroup]="checkoutForm">
+    <div class="checkout-content">
+
+        <!-- ── Left column: form ── -->
+        <div class="form-sections">
+
+            <!-- Personal Information -->
+            <section class="checkout-section" formGroupName="shipping">
+                <h3><i class="fa fa-user me-2"></i>Shipping Information</h3>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label for="fullName">Full Name <span class="required">*</span></label>
+                        <input id="fullName" type="text" formControlName="fullName" placeholder="Alaa Abdallah">
+                        @if (checkoutForm.get('shipping.fullName')?.invalid &&
+                        checkoutForm.get('shipping.fullName')?.touched) {
+                        <span class="field-error">Full name is required (min 3 characters)</span>
+                        }
+                    </div>
+                    <div class="form-group full">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input id="email" type="email" formControlName="email" placeholder="alaa@example.com">
+                        @if (checkoutForm.get('shipping.email')?.invalid && checkoutForm.get('shipping.email')?.touched)
+                        {
+                        <span class="field-error">A valid email is required</span>
+                        }
+                    </div>
+                    <div class="form-group full">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input id="phone" type="tel" formControlName="phone" placeholder="+20 100 000 0000">
+                        @if (checkoutForm.get('shipping.phone')?.invalid && checkoutForm.get('shipping.phone')?.touched)
+                        {
+                        <span class="field-error">Phone number is required</span>
+                        }
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shipping Address -->
+            <section class="checkout-section" formGroupName="shipping">
+                <h3><i class="fa fa-map-marker-alt me-2"></i>Shipping Address</h3>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label for="address">Street Address <span class="required">*</span></label>
+                        <input id="address" type="text" formControlName="address" placeholder="123 Main Street">
+                        @if (checkoutForm.get('shipping.address')?.invalid &&
+                        checkoutForm.get('shipping.address')?.touched) {
+                        <span class="field-error">Address is required</span>
+                        }
+                    </div>
+                    <div class="form-group half">
+                        <label for="city">City <span class="required">*</span></label>
+                        <input id="city" type="text" formControlName="city" placeholder="Cairo">
+                        @if (checkoutForm.get('shipping.city')?.invalid && checkoutForm.get('shipping.city')?.touched) {
+                        <span class="field-error">City is required</span>
+                        }
+                    </div>
+                    <div class="form-group half">
+                        <label for="zipCode">Postal Code <span class="required">*</span></label>
+                        <input id="zipCode" type="text" formControlName="zipCode" placeholder="11511">
+                        @if (checkoutForm.get('shipping.zipCode')?.invalid &&
+                        checkoutForm.get('shipping.zipCode')?.touched) {
+                        <span class="field-error">Postal code is required</span>
+                        }
+                    </div>
+                    <div class="form-group full">
+                        <label for="country">Country <span class="required">*</span></label>
+                        <input id="country" type="text" formControlName="country" placeholder="Egypt">
+                        @if (checkoutForm.get('shipping.country')?.invalid &&
+                        checkoutForm.get('shipping.country')?.touched) {
+                        <span class="field-error">Country is required</span>
+                        }
+                    </div>
+                </div>
+            </section>
+
+            <!-- Payment Method -->
+            <section class="checkout-section" formGroupName="payment">
+                <h3><i class="fa fa-credit-card me-2"></i>Payment Method</h3>
+                <div class="payment-options">
+                    <label class="payment-option"
+                        [class.selected]="checkoutForm.get('payment.method')?.value === 'COD'">
+                        <input type="radio" formControlName="method" value="COD">
+                        <i class="fa fa-money-bill-wave"></i>
+                        <span>Cash On Delivery</span>
+                    </label>
+                    <label class="payment-option"
+                        [class.selected]="checkoutForm.get('payment.method')?.value === 'Online'">
+                        <input type="radio" formControlName="method" value="Online">
+                        <i class="fa fa-credit-card"></i>
+                        <span>Online Payment</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Submit -->
+            <button class="checkout-submit-btn" (click)="placeOrder()" [disabled]="isSubmitting || isLoadingCart()">
+                @if (isSubmitting) {
+                <span class="spinner-sm"></span> Placing Order…
+                } @else {
+                <i class="fa fa-check-circle me-2"></i>Place Order
+                }
+            </button>
+
+        </div>
+
+        <!-- ── Right column: order summary ── -->
+        <aside class="order-summary">
+            <div class="summary-card">
+                <h3>Order Summary</h3>
+
+                @if (isLoadingCart()) {
+                <div class="cart-loading">
+                    <span class="spinner-sm" style="border-color:rgba(45,26,18,.3);border-top-color:#2d1a12"></span>
+                    Loading cart…
+                </div>
+                } @else if (cartItems().length === 0) {
+                <p class="cart-empty-msg">Your cart is empty. <a routerLink="/cart">Go to Cart</a></p>
+                } @else {
+                <div class="summary-items">
+                    @for (item of cartItems(); track item._id) {
+                    <div class="summary-item">
+                        <div class="item-visual">
+                            <img [src]="item.book.coverImage" [alt]="item.book.name">
+                        </div>
+                        <div class="item-info">
+                            <p class="name">{{ item.book.name }}</p>
+                            <p class="qty">Qty: {{ item.quantity }}</p>
+                            <p class=" price">{{ item.book.price | currency }}</p>
+                        </div>
+                    </div>
+                    }
+                </div>
+                <div class="summary-totals">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span>{{ subtotal() | currency }}</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Shipping</span>
+                        <span>{{ shipping() === 0 ? 'Free' : (shipping() | currency) }}</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (8%)</span>
+                        <span>{{ tax() | currency }}</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total</span>
+                        <span>{{ total() | currency }}</span>
+                    </div>
+                </div>
+                }
+            </div>
+        </aside>
+
+    </div>
+</div>
+
+<app-footer></app-footer>

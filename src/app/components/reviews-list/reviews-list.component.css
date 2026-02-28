@@ -1,0 +1,54 @@
+.reviews-list-container {
+  margin-top: 1rem;
+}
+
+.reviews-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.text-color {
+  color: var(--text-color, #2D1A12);
+}
+
+.review-comment {
+  line-height: 1.5;
+  color: #555;
+  margin-top: 0.5rem;
+}
+
+.extra-small {
+  font-size: 0.75rem;
+}
+
+.no-reviews {
+  border: 1px dashed #ddd;
+  background-color: #fcfcfc;
+}
+
+.italic {
+  font-style: italic;
+}
+
+/* Spinner and alerts */
+.spinner-border {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.alert-warning {
+  border-radius: 12px;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}

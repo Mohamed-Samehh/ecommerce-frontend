@@ -1,0 +1,233 @@
+.confirmation-page {
+    background-color: #fafaf9;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+    color: #1a1a1a;
+}
+
+.confirmation-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.success-icon-wrapper i {
+    filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.2));
+}
+
+.order-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.order-id-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.order-id-section h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.status-badge {
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Badge colors */
+.status-badge.badge-processing {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.status-badge.badge-shipped {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.status-badge.badge-delivered {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.badge-cancelled {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.order-date {
+    color: #666;
+    font-weight: 500;
+}
+
+/* Info Cards */
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.info-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    color: #2d1a12;
+}
+
+.card-header i {
+    font-size: 1.1rem;
+    opacity: 0.7;
+}
+
+.card-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-body p {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #444;
+}
+
+.card-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* Products Table */
+.products-section {
+    background: white;
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 3rem;
+}
+
+.products-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    font-weight: 800;
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table th {
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 2px solid #f8f9fa;
+    color: #888;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.products-table td {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.item-thumb {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Actions */
+.confirmation-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.btn-primary {
+    background: #2d1a12;
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary {
+    background: white;
+    color: #2d1a12;
+    border: 2px solid #2d1a12;
+    padding: 1rem 2.5rem;
+    border-radius: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* States */
+.loading-state,
+.error-state {
+    text-align: center;
+    padding: 5rem 2rem;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #2d1a12;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 900px) {
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .confirmation-actions {
+        flex-direction: column;
+    }
+}

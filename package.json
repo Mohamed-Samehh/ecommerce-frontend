@@ -33,12 +33,12 @@
     "@angular/platform-server": "^21.1.0",
     "@angular/router": "^21.1.0",
     "@angular/ssr": "^21.1.2",
+    "@fortawesome/fontawesome-free": "^7.2.0",
     "bootstrap": "^5.3.8",
     "express": "^5.1.0",
-    "font-awesome": "^4.7.0",
     "ngx-pagination": "^6.0.3",
     "rxjs": "~7.8.0",
-    "sweetalert2": "^11.26.18",
+    "sweetalert2": "^11.26.20",
     "tslib": "^2.3.0"
   },
   "devDependencies": {

@@ -21,6 +21,7 @@ yarn-error.log
 *.sublime-workspace
 
 # Visual Studio Code
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -43,3 +44,4 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
+ecommerce-backend

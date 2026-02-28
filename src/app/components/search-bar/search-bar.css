@@ -1,0 +1,27 @@
+.text-primary-color {
+  color: var(--text-color);
+}
+
+.button-color {
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
+}
+
+.button-color:hover {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}
+.button-color:focus {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}
+.input-search:focus {
+  border: 1px solid var(--button-bg-color);
+  outline: none;
+  box-shadow: 0 0 5px var(--highlighted-text-color);
+}
+
+.drop-category:hover{
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
+}

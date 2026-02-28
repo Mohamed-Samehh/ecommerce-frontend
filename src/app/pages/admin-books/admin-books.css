@@ -1,0 +1,64 @@
+.dropdown-menu-custom {
+  background-color: var(--primary-color-bg);
+
+  border: 1px solid var(--highlighted-text-color);
+}
+
+.dropdown-menu-custom .drop-category {
+  color: var(--text-color);
+  background-color: var(--primary-bg-color);
+}
+
+.dropdown-menu-custom .drop-category:hover,
+.dropdown-menu-custom .drop-category:focus {
+  color: var(--text-color);
+  background-color: var(--highlighted-text-color:);
+}
+
+.button-color {
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
+}
+
+.button-color:hover {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}
+
+.button-color:focus {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}
+
+/* Container padding to breathe within .admin-content */
+.admin-page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Simplify the table (Admin tables shouldn't be too busy) */
+.table-card {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.table thead th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  padding: 1rem 0.5rem;
+}
+
+/* Filter styling */
+.filter-card {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 2rem;
+}
+
+/* Status badge styling */
+.badge {
+  padding: 0.5em 0.8em;
+  font-weight: 500;
+}

@@ -1,22 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --primary-color-bg: #E8D1C5;
+  --primary-color-bg: #FDF9F3;
+  /* Light Cream from design */
   --secondary-color-bg: #ffffff;
-  --text-color: #26150F;
+  --text-color: #2D1A12;
+  /* Dark Brown */
   --selection-color: #57595B;
   --highlighted-text-color: #732A10;
-  --button-bg-color: #26150F;
+  --button-bg-color: #2D1A12;
   --button-text-color: #ffffff;
-  --cards--bg-color: #F3E8DF;
+  --cards--bg-color: #F8F1EA;
+  /* Card background */
   --badge--color: #D9A86C;
 
-  --main-font: Arial, sans-serif;
+  --status-delivered-bg: #E7F5E8;
+  --status-delivered-text: #2D6A4F;
+  --status-processing-bg: #FFF8E6;
+  --status-processing-text: #996515;
+  --status-cancelled-bg: #FEEEEE;
+  --status-cancelled-text: #C0392B;
+
+  --main-font: 'Outfit', 'Inter', Arial, sans-serif;
   --footer-bg-color: #26150F;
-  --card-shadow: rgba(0, 0, 0, 0.08);
+  --card-shadow: 0 4px 12px rgba(45, 26, 18, 0.05);
   --radius-sm: 4px;
-
-  --radius-md: 8px;
-
+  --radius-md: 12px;
   --radius-lg: 16px;
   --radius-full: 999px;
   --font-sm: 0.875rem;
@@ -24,6 +32,17 @@
   --font-lg: 1.25rem;
   --font-xl: 2rem;
   --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 8px 24px rgba(45, 26, 18, 0.1);
 
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #ffff;
 }

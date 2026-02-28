@@ -1,0 +1,105 @@
+<div class="cart-page">
+  <app-nav-bar></app-nav-bar>
+
+  <div class="cart-container">
+    <div class="cart-header">
+      <h1 class="cart-title">Your Cart</h1>
+      <p class="item-count">{{ cart?.items?.length || 0 }} items</p>
+    </div>
+
+    @if (loading) {
+    <div class="loading-state">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading your cart...</p>
+    </div>
+    } @else if (!cart || !cart.items || cart.items.length === 0) {
+    <div class="empty-cart">
+      <i class="fas fa-shopping-cart empty-icon"></i>
+      <h2>Your cart is empty</h2>
+      <p>Add some books to get started!</p>
+      <button class="btn-continue" routerLink="/">
+        Continue Shopping
+      </button>
+    </div>
+    } @else {
+    <div class="cart-content">
+      <div class="cart-items-section">
+        @for (item of cart.items; track item._id) {
+        <div class="cart-item">
+          <img [src]="item.book.coverImage" [alt]="item.book.name" class="book-cover" />
+
+          <div class="item-info">
+            <h3 class="book-title">{{ item.book.name }}</h3>
+            <p class="book-author">{{ item.book.author || 'Unknown Author' }}</p>
+            @if (item.book.averageRating) {
+            <div class="book-rating">
+              @for (star of [1,2,3,4,5]; track star) {
+              <i class="fas fa-star" [class.filled]="star <= item.book.averageRating"
+                [class.empty]="star > item.book.averageRating">
+              </i>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="item-price">
+            ${{ item.book.price | number:'1.2-2' }}
+          </div>
+
+          <div class="quantity-controls">
+            <button class="qty-btn" (click)="changeQuantity(item, -1)" [disabled]="item.quantity <= 1">
+              <i class="fas fa-minus"></i>
+            </button>
+
+            <input type="number" class="qty-input" [value]="item.quantity" readonly min="1" [max]="item.book.stock" />
+
+            <button class="qty-btn" (click)="changeQuantity(item, 1)" [disabled]="item.quantity >= item.book.stock">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+
+          <button class="btn-remove" (click)="removeItem(item)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+        }
+      </div>
+
+      <div class="order-summary">
+        <h3 class="summary-title">Order Summary</h3>
+
+        <div class="summary-line">
+          <span class="label">Subtotal</span>
+          <span class="value">${{ itemTotal | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="summary-line">
+          <span class="label">Shipping</span>
+          <span class="value shipping-value">
+            ${{ shipping | number:'1.2-2' }}
+          </span>
+        </div>
+
+        @if (itemTotal <= 1000) { <p class="free-shipping-text">
+          <i class="fas fa-truck"></i>
+          Spend ${{ (1000 - itemTotal) | number:'1.2-2' }} more to get <strong>Discounted Shipping!</strong>
+          </p>
+          }
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <span class="label">Total</span>
+            <span class="value">${{ total | number:'1.2-2' }}</span>
+          </div>
+
+          <button class="btn-checkout" (click)="proceedToCheckout()">
+            Proceed to Checkout
+          </button>
+      </div>
+    </div>
+    }
+  </div>
+
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,48 @@
+<div class="review-form-wrapper">
+  <div *ngIf="isLoading" class="loading-spinner text-center py-3">
+    <div class="spinner-border spinner-border-sm text-secondary"></div>
+    <span class="ms-2 small text-muted">Checking review eligibility...</span>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <div class="review-form-container card border-0 shadow-sm p-4 rounded-4" *ngIf="isPurchased">
+      <h3 class="fw-bold text-dark mb-1">{{ hasAlreadyReviewed ? 'Update Your Review' : 'Write a Review' }}</h3>
+      <p class="explanation text-muted small mb-4">
+        {{ hasAlreadyReviewed ? 'Want to change your opinion? Update your rating and comment below.' : 'You purchased
+        this book. Share your thoughts with others!' }}
+      </p>
+
+      <div class="form-group mb-3">
+        <label class="fw-bold mb-2 d-block">Your Rating/Rating to Update</label>
+        <app-star-rating [value]="rating" (valueChange)="rating = $event"></app-star-rating>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="comment" class="fw-bold mb-2 d-block">Your Comment (Optional)</label>
+        <textarea id="comment" class="form-control rounded-3" [(ngModel)]="comment"
+          placeholder="What did you think of the book?" rows="4"></textarea>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger py-2 small mb-3">
+        {{ error }}
+      </div>
+
+      <button class="btn btn-dark w-100 rounded-pill py-2" (click)="submitReview()"
+        [disabled]="isSubmitting || rating === 0">
+        {{ isSubmitting ? 'Submitting...' : (hasAlreadyReviewed ? 'Update Review' : 'Post Review') }}
+      </button>
+
+      <div class="status-msg-container text-center mt-3" *ngIf="hasAlreadyReviewed">
+        <div class="alert alert-success d-inline-block rounded-pill px-4 py-1 small m-0">
+          <i class="fa-solid fa-circle-check me-2"></i>You've already reviewed this book.
+        </div>
+      </div>
+    </div>
+
+    <div class="not-purchased-msg text-center py-4" *ngIf="!isPurchased">
+      <p class="text-muted small italic bg-light d-inline-block p-3 rounded-4">
+        <i class="fa-solid fa-lock me-2"></i>Only verified purchasers can review this book.
+      </p>
+    </div>
+  </div>
+</div>

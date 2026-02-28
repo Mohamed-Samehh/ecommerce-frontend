@@ -1,0 +1,223 @@
+/* Main Wrapper */
+.book-detail-wrapper {
+  background-color: var(--secondary-color-bg);
+  border-radius: 2rem;
+  overflow: hidden;
+  border: 1px solid rgba(45, 26, 18, 0.05);
+}
+
+/* Left Section: Cover */
+.book-cover-section {
+  background-color: #f8f1ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cover-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-cover {
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.book-cover-section:hover .main-cover {
+  transform: scale(1.03);
+}
+
+.price-overlay {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 2;
+}
+
+.price-tag {
+  background: var(--highlighted-text-color);
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+  font-weight: 800;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 15px rgba(115, 42, 16, 0.3);
+}
+
+/* Right Section: Content */
+.book-content-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-color);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.book-author {
+  font-size: 1.1rem;
+  color: #6d5b54;
+  margin-top: 0.5rem;
+}
+
+.book-author .label {
+  color: var(--badge--color);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin-right: 0.4rem;
+}
+
+/* Rating Box */
+.rating-box {
+  background: var(--primary-color-bg);
+  padding: 0.8rem 1.2rem;
+  border-radius: 1.2rem;
+  text-align: right;
+  border: 1px solid rgba(45, 26, 18, 0.05);
+}
+
+.rating-val {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--highlighted-text-color);
+  line-height: 1;
+}
+
+.rating-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #888;
+  font-weight: 600;
+}
+
+.rating-meta i {
+  color: #ffc107;
+}
+
+/* Status Indicators */
+.status-indicators {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.status-pill.in-stock {
+  background-color: var(--status-delivered-bg);
+  color: var(--status-delivered-text);
+}
+
+.status-pill.low-stock {
+  background-color: var(--status-cancelled-bg);
+  color: var(--status-cancelled-text);
+}
+
+.stock-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Description */
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.book-desc {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-color);
+  opacity: 0.85;
+}
+
+/* Actions */
+.add-to-cart-btn {
+  background-color: var(--button-bg-color);
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 1rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.add-to-cart-btn:hover {
+  background-color: var(--highlighted-text-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(45, 26, 18, 0.15);
+}
+
+.view-history-btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  border-color: rgba(45, 26, 18, 0.2);
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.view-history-btn:hover {
+  background-color: var(--primary-color-bg);
+  border-color: var(--text-color);
+  color: var(--text-color);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .book-title {
+    font-size: 2rem;
+  }
+
+  .main-cover {
+    height: 400px;
+  }
+}
+
+@media (max-width: 767px) {
+  .book-title {
+    font-size: 1.75rem;
+  }
+
+  .rating-box {
+    padding: 0.5rem 0.8rem;
+  }
+
+  .rating-val {
+    font-size: 1.2rem;
+  }
+
+  .book-content-section {
+    padding: 2rem !important;
+  }
+}
