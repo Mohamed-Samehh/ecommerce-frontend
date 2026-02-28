@@ -9,6 +9,7 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth';
+import { notFutureDateValidator } from '../../utils/form-validators';
 
 @Component({
   selector: 'app-admin-profile',
@@ -31,7 +32,7 @@ export class AdminProfileComponent implements OnInit {
   readonly profileForm = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-    dob: ['', [Validators.required]]
+    dob: ['', [Validators.required, notFutureDateValidator]]
   });
 
   readonly userInitials = computed(() => {
@@ -56,6 +57,11 @@ export class AdminProfileComponent implements OnInit {
 
   get dobCtrl() {
     return this.profileForm.get('dob')!;
+  }
+
+  get maxDob(): string {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
   }
 
   ngOnInit(): void {

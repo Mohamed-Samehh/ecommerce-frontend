@@ -81,12 +81,14 @@
                       type="date"
                       formControlName="dob"
                       class="form-control"
+                      [max]="maxDob"
                       [class.is-invalid]="dobCtrl.invalid && dobCtrl.touched"
                       [readOnly]="!isEditMode()"
                       [class.profile-readonly]="!isEditMode()"
                     />
                     <div class="invalid-feedback">
                       @if (dobCtrl.hasError('required')) { Date of birth is required. }
+                      @else if (dobCtrl.hasError('futureDate')) { Date of birth cannot be in the future. }
                     </div>
                   </div>
 

@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth';
 import { NavBar } from '../../components/nav-bar/nav-bar';
 import { Footer } from '../../components/footer/footer';
+import { notFutureDateValidator } from '../../utils/form-validators';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +35,7 @@ export class ProfileComponent implements OnInit {
   readonly profileForm = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-    dob: ['', [Validators.required]]
+    dob: ['', [Validators.required, notFutureDateValidator]]
   });
 
   readonly userInitials = computed(() => {
@@ -57,6 +58,11 @@ export class ProfileComponent implements OnInit {
   }
   get dobCtrl() {
     return this.profileForm.get('dob')!;
+  }
+
+  get maxDob(): string {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
   }
 
   ngOnInit(): void {

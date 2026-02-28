@@ -7,6 +7,10 @@ import {
   UpdateAdminUserRequest
 } from '../../interfaces/admin-user';
 import { AdminUserService } from '../../services/admin-user/admin-user';
+import {
+  notFutureDateValidator,
+  passwordStrengthPattern
+} from '../../utils/form-validators';
 
 @Component({
   selector: 'app-admin-users',
@@ -47,8 +51,8 @@ export class AdminUsers implements OnInit {
     firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     email: ['', [Validators.required, Validators.email]],
-    dob: ['', [Validators.required]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    dob: ['', [Validators.required, notFutureDateValidator]],
+    password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(passwordStrengthPattern)]],
     isAdmin: [false]
   });
 
@@ -153,6 +157,7 @@ export class AdminUsers implements OnInit {
       password: '',
       isAdmin: false
     });
+    this.clearEmailTakenError();
   }
 
   startEdit(user: AdminUser): void {
@@ -167,9 +172,12 @@ export class AdminUsers implements OnInit {
       password: '',
       isAdmin: user.roles.includes('admin')
     });
+    this.clearEmailTakenError();
   }
 
   saveUser(): void {
+    this.clearEmailTakenError();
+
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       return;
@@ -210,7 +218,7 @@ export class AdminUsers implements OnInit {
           this.loadUsers(this.currentPage());
         },
         error: (err) => {
-          this.errorMessage.set(err?.error?.message || 'Failed to update user.');
+          this.errorMessage.set(err?.error?.message || err?.error?.errors || 'Failed to update user.');
           this.isSaving.set(false);
         }
       });
@@ -232,7 +240,18 @@ export class AdminUsers implements OnInit {
         this.loadUsers(1);
       },
       error: (err) => {
-        this.errorMessage.set(err?.error?.message || 'Failed to create user.');
+        const errorText = err?.error?.message || err?.error?.errors;
+        const isEmailTaken =
+          typeof errorText === 'string' &&
+          errorText.toLowerCase().includes('email') &&
+          (errorText.toLowerCase().includes('taken') || errorText.toLowerCase().includes('exist'));
+
+        if (isEmailTaken) {
+          this.userForm.controls.email.setErrors({ ...this.userForm.controls.email.errors, emailTaken: true });
+          this.userForm.controls.email.markAsTouched();
+        }
+
+        this.errorMessage.set(errorText || 'Failed to create user.');
         this.isSaving.set(false);
       }
     });
@@ -266,10 +285,21 @@ export class AdminUsers implements OnInit {
 
   private setPasswordValidators(isRequired: boolean): void {
     const validators = isRequired
-      ? [Validators.required, Validators.minLength(6)]
-      : [Validators.minLength(6)];
+      ? [Validators.required, Validators.minLength(8), Validators.pattern(passwordStrengthPattern)]
+      : [Validators.minLength(8), Validators.pattern(passwordStrengthPattern)];
 
     this.userForm.controls.password.setValidators(validators);
     this.userForm.controls.password.updateValueAndValidity();
+  }
+
+  private clearEmailTakenError(): void {
+    const emailControl = this.userForm.controls.email;
+    if (!emailControl.hasError('emailTaken')) {
+      return;
+    }
+
+    const otherErrors = { ...(emailControl.errors ?? {}) };
+    delete otherErrors['emailTaken'];
+    emailControl.setErrors(Object.keys(otherErrors).length ? otherErrors : null);
   }
 }

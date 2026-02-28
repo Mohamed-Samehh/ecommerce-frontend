@@ -92,6 +92,8 @@
                 <div class="invalid-feedback">
                   @if (dobCtrl.hasError('required')) {
                     Date of birth is required.
+                  } @else if (dobCtrl.hasError('futureDate')) {
+                    Date of birth cannot be in the future.
                   }
                 </div>
               </div>
@@ -116,7 +118,9 @@
                   @if (passwordCtrl.hasError('required')) {
                     Password is required.
                   } @else if (passwordCtrl.hasError('minlength')) {
-                    Min 6 characters.
+                    Min 8 characters.
+                  } @else if (passwordCtrl.hasError('pattern')) {
+                    Use at least one letter and one number.
                   }
                 </div>
               </div>
