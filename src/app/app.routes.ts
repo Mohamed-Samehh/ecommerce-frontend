@@ -12,12 +12,18 @@ import { Explore } from './pages/explore/explore';
 import { BookDetails } from './pages/book-details/book-details';
 import { AdminReviewsComponent } from './pages/admin-reviews/admin-reviews';
 import { Cart } from './pages/cart/cart';
+import { Home } from './pages/home/home';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Explore,
+    component: Home,
     title: 'Home'
+  },
+  {
+    path: 'explore',
+    component: Explore,
+    title: 'Explore'
   },
   {
     path: 'book/:id',

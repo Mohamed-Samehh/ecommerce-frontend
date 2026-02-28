@@ -1,15 +1,12 @@
 <nav class="navbar bg-white p-0">
   <div class="container-fluid">
-    <a class="navbar-brand text-primary-color">
-      <img
-        src="logo.png"
-        alt="Logo"
-        class="d-inline-block align-text-center rounded-2 fw-bold logo-image"
-      />
+    <a class="navbar-brand text-primary-color" routerLink="/" routerLinkActive="active"
+      >
+      <img src="logo.png" alt="Logo" class="d-inline-block align-text-center rounded-2 fw-bold logo-image" />
       WyrmHole
     </a>
     <div class="d-flex justify-content-end align-items-center gap-2">
-      <a class="btn text-primary-color" routerLink="/" routerLinkActive="active"
+      <a class="btn text-primary-color" routerLink="/explore" routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: true}">Explore</a>
 
       @if (authService.isLoggedIn()) {
@@ -26,12 +23,10 @@
 
       <a class="btn fs-3 text-primary-color" routerLink="/cart" routerLinkActive="active">
         <i class="fa-solid fa-cart-shopping"></i>
-                @if (cartService.cartCount() > 0) {
-          <span
-            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-          >
-            {{ cartService.cartCount() }}
-          </span>
+        @if (cartService.cartCount() > 0) {
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          {{ cartService.cartCount() }}
+        </span>
         }
       </a>
     </div>

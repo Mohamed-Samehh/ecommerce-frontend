@@ -44,7 +44,6 @@
               [class.fa-exclamation-triangle]="b.stock <= 2"></i>
             {{ b.stock > 2 ? 'In Stock' : (b.stock > 0 ? 'Low Stock' : 'Out of Stock') }}
           </span>
-          <span class="stock-count text-muted" *ngIf="b.stock > 0">{{ b.stock }} copies available</span>
         </div>
 
         <div class="description-section">
