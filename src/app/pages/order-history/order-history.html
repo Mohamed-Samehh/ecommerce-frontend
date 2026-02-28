@@ -1,69 +1,82 @@
-<app-nav-bar></app-nav-bar>
-<div class="orders-container">
-  <div class="header-section">
-    <h2>My Orders</h2>
-    <p class="subtitle">Find your favorites from your past orders</p>
-  </div>
+<div class="page-wrapper">
+  <app-nav-bar></app-nav-bar>
 
-  <div class="orders-list">
-    <div *ngFor="let order of orders; trackBy: trackByOrder" class="order-card">
-      <div class="order-header">
-        <div class="order-id-group">
-          <span class="order-label">Order</span>
-          <h3 class="order-id">#{{ order?._id?.substring(0,8) }}</h3>
-        </div>
-        <span class="order-status badge-{{order.status}}">{{ order.status | titlecase }}</span>
+  <div class="content-grow">
+    <div class="orders-container">
+      <div class="header-section">
+        <h2>My Orders</h2>
+        <p class="subtitle">Find your favorites from your past orders</p>
       </div>
 
-      <div class="order-content">
-        <div class="items-list">
-          <div *ngFor="let item of order.items" class="order-item-detail" (click)="goToBookDetails(item.bookId)">
-            <div class="product-preview">
-              <img [src]="item.imageUrl" [alt]="item.bookName" class="product-img">
+      <div class="orders-list">
+        <div *ngFor="let order of orders; trackBy: trackByOrder" class="order-card">
+          <div class="order-header">
+            <div class="order-id-group">
+              <span class="order-label">Order</span>
+              <h3 class="order-id">#{{ order?._id?.substring(0,8) }}</h3>
             </div>
-            <div class="item-info">
-              <span class="book-name">{{ item.bookName }}</span>
-              <span class="item-meta">Qty: {{ item.quantity }} × {{ item.priceAtPurchase | currency }}</span>
-              <button *ngIf="order.status === 'delivered'" class="add-review-link-btn"
-                (click)="$event.stopPropagation(); goToBookDetails(item.bookId, true)">
-                Add Review
-              </button>
-            </div>
+            <span class="order-status badge-{{order.status}}">{{ order.status | titlecase }}</span>
           </div>
-        </div>
 
-        <div class="order-summary-details">
-          <div class="detail-item">
-            <span class="label">Date</span>
-            <span class="value">{{ order.createdAt | date:'mediumDate' }}</span>
+          <div class="order-content">
+            <div class="items-list">
+              <div *ngFor="let item of order.items" class="order-item-detail" (click)="goToBookDetails(item.bookId)">
+                <div class="product-preview">
+                  <img [src]="item.imageUrl" [alt]="item.bookName" class="product-img">
+                </div>
+                <div class="item-info">
+                  <span class="book-name">{{ item.bookName }}</span>
+                  <span class="item-meta">Qty: {{ item.quantity }} × {{ item.priceAtPurchase | currency }}</span>
+                  <button *ngIf="order.status === 'delivered'" class="add-review-link-btn"
+                    (click)="$event.stopPropagation(); goToBookDetails(item.bookId, true)">
+                    Add Review
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="order-summary-details">
+              <div class="detail-item">
+                <span class="label">Date</span>
+                <span class="value">{{ order.createdAt | date:'mediumDate' }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Total Amount</span>
+                <span class="value total">{{ order.totalAmount | currency }}</span>
+              </div>
+            </div>
           </div>
-          <div class="detail-item">
-            <span class="label">Total Amount</span>
-            <span class="value total">{{ order.totalAmount | currency }}</span>
+
+          <div class="order-actions">
+            <button class="view-details-btn" (click)="goToBookDetails(order.items[0]?.bookId)">
+              View Details
+              <i class="details-icon"></i>
+            </button>
           </div>
         </div>
       </div>
 
-      <div class="order-actions">
-        <button class="view-details-btn" (click)="goToBookDetails(order.items[0]?.bookId)">
-          View Details
-          <i class="details-icon"></i>
-        </button>
+      <div *ngIf="!isLoading && !error && orders.length === 0" class="empty-state">
+        <i class="fa-solid fa-box-open empty-icon"></i>
+        <p>You haven't placed any orders yet.</p>
+        <button routerLink="/" class="browse-btn">Browse Books</button>
+      </div>
+
+      <div *ngIf="isLoading" class="loading-state">
+
+        <div class="spinner"></div>
+        <p>Loading your orders...</p>
+      </div>
+
+      <div *ngIf="error" class="error-state">
+        <p>{{ error }}</p>
+        <div class="error-actions">
+          <button (click)="fetchOrders()" class="retry-btn">Retry</button>
+          <button (click)="devLogin()" class="retry-btn dev-btn">Dev Login</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="isLoading" class="loading-state">
-    <div class="spinner"></div>
-    <p>Loading your orders...</p>
-  </div>
-
-  <div *ngIf="error" class="error-state">
-    <p>{{ error }}</p>
-    <div class="error-actions">
-      <button (click)="fetchOrders()" class="retry-btn">Retry</button>
-      <button (click)="devLogin()" class="retry-btn dev-btn">Dev Login</button>
-    </div>
-  </div>
+  <app-footer></app-footer>
 </div>
-<app-footer></app-footer>

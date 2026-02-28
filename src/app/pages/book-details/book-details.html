@@ -55,9 +55,9 @@
 
         <div class="action-section mt-auto pt-4">
           <div class="d-flex flex-wrap gap-3">
-            <button class="btn btn-primary add-to-cart-btn">
+            <button class="btn btn-primary add-to-cart-btn" (click)="addToCart(b)" [disabled]="b.stock <= 0">
               <i class="fa-solid fa-cart-plus"></i>
-              Add to cart
+              {{ b.stock > 0 ? 'Add to cart' : 'Out of Stock' }}
             </button>
           </div>
         </div>

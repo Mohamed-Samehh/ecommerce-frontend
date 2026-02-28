@@ -312,3 +312,24 @@
     color: #888;
     margin: 0.1rem 0;
 }
+
+/* Cart loading / empty states */
+.cart-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.cart-empty-msg {
+    color: #888;
+    font-size: 0.9rem;
+    padding: 1rem 0;
+}
+
+.cart-empty-msg a {
+    color: var(--highlighted-text-color);
+    font-weight: 600;
+}
