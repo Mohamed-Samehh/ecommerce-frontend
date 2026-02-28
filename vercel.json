@@ -5,8 +5,8 @@
   "outputDirectory": "dist/ecommerce-frontend/browser",
   "rewrites": [
     {
-      "source": "/:path((?!.*\\.).*)",
-      "destination": "/index.html"
+      "source": "/((?!.*\\..*).*)",
+      "destination": "/index.csr.html"
     }
   ]
 }
