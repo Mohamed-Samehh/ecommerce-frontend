@@ -10,8 +10,8 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
-    path: 'admin/orders',
-    renderMode: RenderMode.Server
+    path: 'admin/**',
+    renderMode: RenderMode.Client
   },
   {
     path: 'order-history',
