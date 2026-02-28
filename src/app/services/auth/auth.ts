@@ -2,7 +2,7 @@ import { Injectable, inject, signal, computed, PLATFORM_ID } from '@angular/core
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import { map, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   User,
@@ -40,7 +40,7 @@ export class AuthService {
   verifyRegisterOtp(data: OtpRequest) {
     return this.http
       .post<AuthResponse>(`${this.baseUrl}/register/verify-otp`, data)
-      .pipe(tap((res) => this.handleAuthSuccess(res)));
+      .pipe(switchMap((res) => this.handleAuthSuccess(res)));
   }
 
   login(data: LoginRequest) {
@@ -50,13 +50,19 @@ export class AuthService {
   verifyLoginOtp(data: OtpRequest) {
     return this.http
       .post<AuthResponse>(`${this.baseUrl}/login/verify-otp`, data)
-      .pipe(tap((res) => this.handleAuthSuccess(res)));
+      .pipe(switchMap((res) => this.handleAuthSuccess(res)));
   }
 
   getMe() {
     return this.http
       .get<User>(`${this.baseUrl}/me`)
       .pipe(tap((user) => this._currentUser.set(user)));
+  }
+
+  updateMe(data: { firstName?: string; lastName?: string; dob?: string }) {
+    return this.http
+      .put<{ message: string; data: User }>(`${this.baseUrl}/me`, data)
+      .pipe(tap((res) => this._currentUser.set(res.data)));
   }
 
   logout() {
@@ -66,14 +72,17 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  private handleAuthSuccess(res: AuthResponse): void {
+  private handleAuthSuccess(res: AuthResponse): Observable<AuthResponse> {
     if (this.isBrowser) localStorage.setItem(AuthService.TOKEN_KEY, res.accessToken);
     this._token.set(res.accessToken);
 
     if (res.user) {
-      this._currentUser.set(res.user); // Register returns the user
-    } else {
-      this.getMe().subscribe(); // Login only returns token. We will need to fetch the user
+      this._currentUser.set(res.user);
+      return of(res);
     }
+
+    return this.getMe().pipe(
+      map((user) => ({ ...res, user }))
+    );
   }
 }

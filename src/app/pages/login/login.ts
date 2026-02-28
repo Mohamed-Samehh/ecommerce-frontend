@@ -77,9 +77,10 @@ export class Login {
     const { otp } = this.otpForm.value;
 
     this.authService.verifyLoginOtp({ email: this.email(), otp: otp! }).subscribe({
-      next: () => {
+      next: (res) => {
         this.isLoading.set(false);
-        this.router.navigate(['/']);
+        const redirectPath = res.user?.roles.includes('admin') ? '/admin/books' : '/';
+        this.router.navigate([redirectPath]);
       },
       error: (err) => {
         this.errorMessage.set(err?.error?.message || 'Invalid OTP. Please try again.');

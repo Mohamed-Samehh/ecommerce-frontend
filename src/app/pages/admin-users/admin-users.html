@@ -1,0 +1,278 @@
+<div>
+  @if (errorMessage()) {
+    <div class="alert alert-danger py-2 mb-3 au-alert" role="alert">
+      {{ errorMessage() }}
+      <button type="button" class="btn-close au-alert-close" aria-label="Close" (click)="errorMessage.set(null)"></button>
+    </div>
+  }
+
+  @if (successMessage()) {
+    <div class="alert alert-success py-2 mb-3 au-alert" role="alert">
+      {{ successMessage() }}
+      <button type="button" class="btn-close au-alert-close" aria-label="Close" (click)="successMessage.set(null)"></button>
+    </div>
+  }
+
+  <div class="card border-0 rounded-3 au-card">
+    <div class="card-body p-4">
+
+      <!-- Toolbar -->
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+        <h5 class="fw-bold mb-0 me-auto">Manage Users</h5>
+
+        <form class="d-flex align-items-center gap-2 flex-wrap" (submit)="onSearchSubmit($event)">
+          <input
+            type="search"
+            class="form-control form-control-sm au-search"
+            placeholder="Search name or email…"
+            [value]="searchTerm()"
+            (input)="onSearchInput($event)"
+          />
+
+          <select
+            class="form-select form-select-sm au-select"
+            [value]="roleFilter()"
+            (change)="onRoleFilterChange($event)"
+          >
+            <option value="">All roles</option>
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
+
+          <select
+            class="form-select form-select-sm au-select"
+            [value]="pageSize()"
+            (change)="onPageSizeChange($event)"
+          >
+            <option value="10" selected>10 / page</option>
+            <option value="20">20 / page</option>
+            <option value="50">50 / page</option>
+          </select>
+
+          <button type="submit" class="btn btn-sm admin-users-btn-search">Search</button>
+          <button type="button" class="btn btn-sm admin-users-btn-reset" (click)="searchTerm.set(''); roleFilter.set(''); loadUsers(1)">Reset</button>
+        </form>
+
+        <button type="button" class="btn btn-sm au-btn-add" (click)="openAddModal()">
+          + Add User
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="table align-middle au-table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Date of Birth</th>
+              <th scope="col">Role</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (isLoading()) {
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Loading…
+                </td>
+              </tr>
+            } @else {
+              @for (user of users(); track user._id; let i = $index) {
+                <tr>
+                  <td class="text-muted">{{ (currentPage() - 1) * pageSize() + i + 1 }}</td>
+                  <td class="fw-medium">{{ user.firstName }} {{ user.lastName }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.dob | date: 'mediumDate' }}</td>
+                  <td>
+                    <span
+                      class="badge rounded-pill"
+                      [class.au-badge-admin]="user.roles.includes('admin')"
+                      [class.au-badge-user]="!user.roles.includes('admin')"
+                    >
+                      {{ user.roles.includes('admin') ? 'Admin' : 'User' }}
+                    </span>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-sm au-btn-edit me-1" (click)="startEdit(user)">Edit</button>
+                    <button type="button" class="btn btn-sm au-btn-delete" (click)="deleteUser(user)">Delete</button>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="6" class="text-center text-muted py-4">No users found.</td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer: total count + pagination -->
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-3">
+        <p class="text-muted small mb-0">Total: {{ totalUsers() }} user{{ totalUsers() !== 1 ? 's' : '' }}</p>
+
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="currentPage() === 1 || isLoading()">
+              <button class="page-link" type="button" (click)="previousPage()">&laquo;</button>
+            </li>
+            @for (page of visiblePages(); track page) {
+              <li class="page-item" [class.active]="page === currentPage()">
+                <button class="page-link" type="button" (click)="goToPage(page)">{{ page }}</button>
+              </li>
+            }
+            <li class="page-item" [class.disabled]="currentPage() === totalPages() || isLoading()">
+              <button class="page-link" type="button" (click)="nextPage()">&raquo;</button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Add / Edit Modal -->
+@if (showModal()) {
+  <div
+    class="modal d-block"
+    tabindex="-1"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+
+        <div class="modal-header border-bottom-0 pb-1">
+          <h6 class="modal-title fw-bold">{{ isEditMode() ? 'Edit User' : 'Add User' }}</h6>
+          <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+        </div>
+
+        <div class="modal-body pt-0">
+          <form [formGroup]="userForm" (ngSubmit)="saveUser()" novalidate class="row g-3">
+
+            <div class="col-6">
+              <label class="form-label small" for="mu-firstName">First name</label>
+              <input
+                id="mu-firstName"
+                type="text"
+                class="form-control form-control-sm"
+                formControlName="firstName"
+                [class.is-invalid]="firstNameCtrl.invalid && firstNameCtrl.touched"
+              />
+              <div class="invalid-feedback">
+                @if (firstNameCtrl.hasError('required')) {
+                  First name is required.
+                } @else if (firstNameCtrl.hasError('minlength')) {
+                  Min 2 characters.
+                } @else if (firstNameCtrl.hasError('maxlength')) {
+                  Max 50 characters.
+                }
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label small" for="mu-lastName">Last name</label>
+              <input
+                id="mu-lastName"
+                type="text"
+                class="form-control form-control-sm"
+                formControlName="lastName"
+                [class.is-invalid]="lastNameCtrl.invalid && lastNameCtrl.touched"
+              />
+              <div class="invalid-feedback">
+                @if (lastNameCtrl.hasError('required')) {
+                  Last name is required.
+                } @else if (lastNameCtrl.hasError('minlength')) {
+                  Min 2 characters.
+                } @else if (lastNameCtrl.hasError('maxlength')) {
+                  Max 50 characters.
+                }
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small" for="mu-email">Email</label>
+              <input
+                id="mu-email"
+                type="email"
+                class="form-control form-control-sm"
+                formControlName="email"
+                [class.is-invalid]="emailCtrl.invalid && emailCtrl.touched"
+              />
+              <div class="invalid-feedback">
+                @if (emailCtrl.hasError('required')) {
+                  Email is required.
+                } @else if (emailCtrl.hasError('email')) {
+                  Please enter a valid email address.
+                } @else if (emailCtrl.hasError('emailTaken')) {
+                  This email is already taken.
+                }
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label small" for="mu-dob">Date of birth</label>
+              <input
+                id="mu-dob"
+                type="date"
+                class="form-control form-control-sm"
+                formControlName="dob"
+                [max]="maxDob"
+                [class.is-invalid]="dobCtrl.invalid && dobCtrl.touched"
+              />
+              <div class="invalid-feedback">
+                @if (dobCtrl.hasError('required')) {
+                  Date of birth is required.
+                } @else if (dobCtrl.hasError('futureDate')) {
+                  Date of birth cannot be in the future.
+                }
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label small" for="mu-password">
+                Password {{ isEditMode() ? '(optional)' : '' }}
+              </label>
+              <input
+                id="mu-password"
+                type="password"
+                class="form-control form-control-sm"
+                formControlName="password"
+                [class.is-invalid]="passwordCtrl.invalid && passwordCtrl.touched"
+              />
+              <div class="invalid-feedback">
+                @if (passwordCtrl.hasError('required') && passwordCtrl.touched) {
+                  Password is required.
+                } @else if (passwordCtrl.hasError('minlength')) {
+                  Min 8 characters.
+                } @else if (passwordCtrl.hasError('pattern')) {
+                  Use at least one letter and one number.
+                }
+              </div>
+            </div>
+
+            <div class="col-12 form-check ms-1">
+              <input id="mu-isAdmin" type="checkbox" class="form-check-input" formControlName="isAdmin" />
+              <label for="mu-isAdmin" class="form-check-label small">Grant admin role</label>
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+              <button type="submit" class="btn btn-sm au-btn-add" [disabled]="isSaving()">
+                {{ isSaving() ? 'Saving…' : (isEditMode() ? 'Update User' : 'Create User') }}
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="closeModal()" [disabled]="isSaving()">
+                Cancel
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop show"></div>
+}
