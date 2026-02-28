@@ -124,9 +124,13 @@ export class OrderHistory implements OnInit {
 
   devLogin(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const devToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWY1Y2Q2MTk0MDg0N2JmNTMwNDA3NSIsImVtYWlsIjoiYWxhYWFiZGFsbGFoMzMzNkBnbWFpbC5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTc3MjA1MTY3MSwiZXhwIjoxNzczMzQ3NjcxfQ.052DCthUveRKWn2aTuXYaaEYM31-BCCWmFjofDDfwws';
+      const devToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWY1Y2Q2MTk0MDg0N2JmNTMwNDA3NSIsImVtYWlsIjoiYWxhYWFiZGFsbGFoMzMzNkBnbWFpbC5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTc3MjA1MTY3MSwiZXhwIjoxNzczMzQ3NjcxfQ.052DCthUveRKWn2aTuXYaaEYM31-BCCWmFjofDDWws';
       localStorage.setItem('token', devToken);
       this.fetchOrders();
     }
+  }
+
+  trackByOrder(index: number, order: Order): string | undefined {
+    return order._id;
   }
 }

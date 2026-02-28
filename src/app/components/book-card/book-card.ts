@@ -1,12 +1,12 @@
 import { Component, input, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Book } from '../../interfaces/book';
-import { StaticStarRating } from '../static-star-rating/static-star-rating';
+import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { CartService } from '../../services/cart/cart';
 
 @Component({
   selector: 'app-book-card',
-  imports: [StaticStarRating, RouterModule],
+  imports: [StarRatingComponent, RouterModule],
   templateUrl: './book-card.html',
   styleUrl: './book-card.css'
 })

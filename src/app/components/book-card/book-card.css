@@ -10,6 +10,14 @@
 .button-color {
   color: var(--button-text-color);
   background-color: var(--button-bg-color);
+  padding: 0.5rem 1.8rem;
+  border-radius: 2rem;
+  font-weight: 700;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
 }
 
 .button-color:hover {

@@ -15,6 +15,9 @@ import { Author } from '../../interfaces/author';
 import { Category } from '../../interfaces/categories';
 import { Order, OrderItem } from '../../interfaces/order';
 import { Review } from '../../interfaces/review';
+import { CartService } from '../../services/cart/cart';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 type AuthorLike = Author | string | null | undefined;
 type CategoryLike = Category | string;
@@ -41,6 +44,8 @@ export class BookDetails implements OnInit {
   private readonly orderService = inject(OrderService);
   private readonly reviewService = inject(ReviewService);
   private readonly authService = inject(AuthService);
+  private readonly cartService = inject(CartService);
+  private readonly router = inject(Router);
 
   readonly isLoading = signal<boolean>(true);
   readonly error = signal<string | null>(null);
@@ -112,7 +117,7 @@ export class BookDetails implements OnInit {
             try {
               const payload = JSON.parse(atob(token.split('.')[1]));
               currentUserId = payload.id || payload._id;
-            } catch  {
+            } catch {
               // Failed to parse auth token silently
 
             }
@@ -177,5 +182,39 @@ export class BookDetails implements OnInit {
   categoryNames(categories: CategoryLike[] | undefined | null): string[] {
     if (!categories) return [];
     return categories.map((c) => (typeof c === 'string' ? c : (c.name || 'Category'))).filter(Boolean);
+  }
+
+  addToCart(book: Book): void {
+    if (!this.authService.isLoggedIn()) {
+      Swal.fire({
+        title: 'Sign In Required',
+        text: 'Please log in to add items to your cart.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Sign In',
+        confirmButtonColor: '#2d1a12',
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/login']);
+        }
+      });
+      return;
+    }
+
+    const bookId = book.id || book._id;
+    this.cartService.addToCart(bookId!, 1).subscribe({
+      next: () => {
+        // Silent success - cart count updates via CartService tap
+      },
+      error: (err) => {
+        Swal.fire({
+          title: 'Error',
+          text: err?.error?.message || 'Could not add item to cart. Please try again.',
+          icon: 'error',
+          confirmButtonColor: '#2d1a12',
+        });
+      }
+    });
   }
 }
