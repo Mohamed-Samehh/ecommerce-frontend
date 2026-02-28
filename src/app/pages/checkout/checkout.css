@@ -228,3 +228,87 @@
         position: static;
     }
 }
+
+/* Validation */
+.field-error {
+    font-size: 0.78rem;
+    color: #dc3545;
+    margin-top: 0.15rem;
+}
+
+.required {
+    color: #dc3545;
+    margin-left: 2px;
+}
+
+.form-group input.ng-invalid.ng-touched {
+    border-color: #dc3545;
+}
+
+/* Payment options (card style) */
+.payment-options {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.5rem;
+    border: 2px solid rgba(45, 26, 18, 0.15);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+    flex: 1;
+    min-width: 150px;
+}
+
+.payment-option input[type="radio"] {
+    accent-color: var(--button-bg-color);
+}
+
+.payment-option.selected,
+.payment-option:has(input:checked) {
+    border-color: var(--button-bg-color);
+    background: rgba(45, 26, 18, 0.05);
+}
+
+.payment-option i {
+    color: var(--button-bg-color);
+    font-size: 1.1rem;
+}
+
+/* Submit spinner */
+.checkout-submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.spinner-sm {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin-sm 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+@keyframes spin-sm {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Item quantity */
+.item-info .qty {
+    font-size: 0.82rem;
+    color: #888;
+    margin: 0.1rem 0;
+}

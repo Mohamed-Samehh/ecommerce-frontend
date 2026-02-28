@@ -1,54 +1,66 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, FormArray } from '@angular/forms';
+import { timeout, finalize } from 'rxjs/operators';
 import { Router, RouterModule } from '@angular/router';
 import { OrderService } from '../../services/order/order-service';
-import { Book } from '../../interfaces/book';
+import { CartService } from '../../services/cart/cart';
+import { CartItem } from '../../interfaces/cart';
 import { Order } from '../../interfaces/order';
-
-interface CheckoutItem {
-    id: string;
-    name: string;
-    price: number;
-    quantity: number;
-    image: string;
-    book?: Book; // Link to full book data
-}
+import { NavBar } from '../../components/nav-bar/nav-bar';
+import { Footer } from '../../components/footer/footer';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, NavBar, Footer, CurrencyPipe],
   templateUrl: './checkout.html',
-  styleUrl: './checkout.css'
+  styleUrls: ['./checkout.css']
 })
 export class CheckoutComponent implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private orderService = inject(OrderService);
+  private cartService = inject(CartService);
 
   checkoutForm!: FormGroup;
-  currentStep = 1;
   isSubmitting = false;
+  isLoadingCart = signal(true);
 
-  // Mock Data for UI/UX demonstration (Will be replaced by CartService later)
-  cartItems: CheckoutItem[] = [
-    {
-      id: '67bd349479ca4041d0800b41', // Using real ID format for testing if available
-      name: 'I, Robot',
-      price: 15.99,
-      quantity: 1,
-      image: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1388358434i/18383.jpg'
-    }
-  ];
-
-  subtotal = 15.99;
-  shipping = 5.00;
-  tax = 1.28;
-  total = 22.27;
+  cartItems = signal<CartItem[]>([]);
+  subtotal = signal(0);
+  shipping = signal(0);
+  tax = signal(0);
+  total = signal(0);
 
   ngOnInit(): void {
     this.initForm();
+    this.loadCart();
+  }
+
+  private loadCart(): void {
+    this.cartService.getCart().subscribe({
+      next: (res) => {
+        const items = res.data?.items ?? [];
+        this.cartItems.set(items);
+        this.computeTotals(items);
+        this.isLoadingCart.set(false);
+      },
+      error: () => {
+        this.isLoadingCart.set(false);
+      }
+    });
+  }
+
+  private computeTotals(items: CartItem[]): void {
+    const sub = items.reduce((acc, item) => acc + (item.book.price * item.quantity), 0);
+    const sh = sub >= 100 ? 0 : 10;
+    const tx = parseFloat((sub * 0.08).toFixed(2));
+    this.subtotal.set(sub);
+    this.shipping.set(sh);
+    this.tax.set(tx);
+    this.total.set(parseFloat((sub + sh + tx).toFixed(2)));
   }
 
   initForm(): void {
@@ -63,60 +75,122 @@ export class CheckoutComponent implements OnInit {
         zipCode: ['', [Validators.required]]
       }),
       payment: this.fb.group({
-        method: ['COD'],
-        cardName: [''],
-        cardNumber: [''],
-        expiry: [''],
-        cvv: ['']
+        method: ['COD']
       })
     });
   }
 
   placeOrder(): void {
-    const shipping = this.checkoutForm.get('shipping')?.value;
-    const payment = this.checkoutForm.get('payment')?.value;
+    if (this.isSubmitting) return;
+
+    if (this.checkoutForm.invalid) {
+      this.markFormGroupTouched(this.checkoutForm);
+      Swal.fire({
+        title: 'Missing Information',
+        text: 'Please fill in all required fields before placing your order.',
+        icon: 'warning',
+        confirmButtonColor: '#2d1a12'
+      });
+      return;
+    }
+
+    if (this.cartItems().length === 0) {
+      Swal.fire({
+        title: 'Empty Cart',
+        text: 'Your cart is empty. Add some books before checking out.',
+        icon: 'info',
+        confirmButtonColor: '#2d1a12'
+      });
+      return;
+    }
+
+    const shippingVal = this.checkoutForm.get('shipping')?.value;
+    const paymentVal = this.checkoutForm.get('payment')?.value;
 
     const orderData: Partial<Order> = {
-      items: this.cartItems.map(item => ({
-        bookId: item.id,
-        bookName: item.name,
-        imageUrl: item.image,
-        quantity: item.quantity,
-        priceAtPurchase: item.price,
-        subtotal: item.price * item.quantity
+      items: this.cartItems().map(item => ({
+        bookId: item.book.id || item.book._id,
+        quantity: item.quantity
       })),
       shippingAddress: {
-        country: shipping.country,
-        city: shipping.city,
-        street: shipping.address,
-        postalCode: shipping.zipCode
+        country: shippingVal.country,
+        city: shippingVal.city,
+        street: shippingVal.address,
+        postalCode: shippingVal.zipCode
       },
-      paymentMethod: (payment.method === 'COD' ? 'COD' : 'Online') as 'COD' | 'Online',
-      totalAmount: this.total
+      paymentMethod: (paymentVal.method === 'COD' ? 'COD' : 'Online') as 'COD' | 'Online'
     };
 
-    this.isSubmitting = true;
-    this.orderService.createOrder(orderData).subscribe({
-      next: (response) => {
-        this.isSubmitting = false;
-        console.log('Order Successfully Placed:', response);
-        const orderId = response.data?._id;
-        this.router.navigate(['/order-confirmation', orderId]);
-      },
-      error: (err) => {
-        this.isSubmitting = false;
-        console.error('Order Placement Failed:', err);
-        alert('Failed to place order: ' + (err.error?.message || 'Unknown error'));
+    Swal.fire({
+      title: 'Confirm Order',
+      html: `Are you sure you want to place this order?<br><strong>Total: ${this.total().toFixed(2)}</strong>`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Place Order',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#2d1a12'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.submitOrder(orderData, paymentVal);
       }
     });
   }
 
-  private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if ((control as any).controls) {
-        this.markFormGroupTouched(control as FormGroup);
-      }
-    });
+  private submitOrder(orderData: Partial<Order>, paymentVal: { method: 'COD' | 'Online' }): void {
+    this.isSubmitting = true;
+    this.orderService.createOrder(orderData)
+      .pipe(
+        timeout(10000),
+        finalize(() => { this.isSubmitting = false; })
+      )
+      .subscribe({
+        next: (response: import('../../interfaces/api-response').ApiResponse<Order>) => {
+          this.cartService.loadCartCount().subscribe();
+          const orderId = response.data?._id;
+
+          if (orderId) {
+            if (paymentVal.method === 'Online') {
+              Swal.fire({
+                title: 'Processing Payment',
+                text: 'Please wait while we secure your transaction...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                },
+                timer: 2000,
+                timerProgressBar: true,
+                confirmButtonColor: '#2d1a12'
+              }).then(() => {
+                this.router.navigate(['/order-confirmation', orderId]);
+              });
+            } else {
+              this.router.navigate(['/order-confirmation', orderId]);
+            }
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        error: (err) => {
+          const backendErrors = err?.error?.errors;
+          const msg = Array.isArray(backendErrors)
+            ? backendErrors.join('<br>')
+            : (err?.error?.message || err?.message || 'Could not place order. Please try again.');
+
+          Swal.fire({
+            title: 'Order Failed',
+            html: msg,
+            icon: 'error',
+            confirmButtonColor: '#d33'
+          });
+        }
+      });
+  }
+
+  private markFormGroupTouched(control: AbstractControl): void {
+    control.markAsTouched();
+
+    if (control instanceof FormGroup || control instanceof FormArray) {
+      Object.values(control.controls).forEach(child => this.markFormGroupTouched(child));
+    }
   }
 }

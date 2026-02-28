@@ -80,10 +80,18 @@
   background-color: rgba(255, 255, 255, 0.05);
 }
 
-.admin-avatar {
+.admin-avatar-letter {
   width: 32px;
   height: 32px;
   border-radius: 50%;
+  background-color: var(--badge--color, #c9a87c);
+  color: #2d1a12;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .admin-content {
@@ -101,7 +109,7 @@
     position: relative;
     height: auto;
   }
-  
+
   .admin-content {
     margin-left: 0;
   }

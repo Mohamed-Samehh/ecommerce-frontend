@@ -1,68 +1,71 @@
 import { Routes } from '@angular/router';
-import { Register } from './pages/register/register';
-import { Login } from './pages/login/login';
-import { NotFound } from './pages/not-found/not-found';
-import { Admin } from './pages/admin/admin';
-import { CategoryAdmin } from './components/category-admin/category-admin';
-import { OrderHistory } from './pages/order-history/order-history';
-import { CheckoutComponent } from './pages/checkout/checkout';
-import { OrderConfirmationComponent } from './pages/order-confirmation/order-confirmation';
-import { AdminOrdersComponent } from './pages/admin-orders/admin-orders';
-import { Explore } from './pages/explore/explore';
-import { BookDetails } from './pages/book-details/book-details';
-import { AdminReviewsComponent } from './pages/admin-reviews/admin-reviews';
-import { Cart } from './pages/cart/cart';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Explore,
+    loadComponent: () => import('./pages/explore/explore').then(m => m.Explore),
     title: 'Home'
   },
   {
     path: 'book/:id',
-    component: BookDetails,
+    loadComponent: () => import('./pages/book-details/book-details').then(m => m.BookDetails),
     title: 'Book Details'
   },
   {
     path: 'login',
-    component: Login,
+    loadComponent: () => import('./pages/login/login').then(m => m.Login),
     title: 'Sign In'
   },
   {
     path: 'register',
-    component: Register,
+    loadComponent: () => import('./pages/register/register').then(m => m.Register),
     title: 'Create Account'
   },
   {
     path: 'checkout',
-    component: CheckoutComponent,
+    loadComponent: () => import('./pages/checkout/checkout').then(m => m.CheckoutComponent),
     title: 'Checkout'
   },
   {
     path: 'order-confirmation/:id',
-    component: OrderConfirmationComponent,
+    loadComponent: () => import('./pages/order-confirmation/order-confirmation').then(m => m.OrderConfirmationComponent),
     title: 'Order Confirmation'
   },
   {
     path: 'order-history',
-    component: OrderHistory,
+    loadComponent: () => import('./pages/order-history/order-history').then(m => m.OrderHistory),
     title: 'Order History'
   },
   {
     path: 'cart',
-    component: Cart,
+    loadComponent: () => import('./pages/cart/cart').then(m => m.Cart),
     title: 'Cart'
   },
   {
     path: 'admin',
-    component: Admin,
+    loadComponent: () => import('./pages/admin/admin').then(m => m.Admin),
     children: [
-      { path: 'categories', component: CategoryAdmin },
-      { path: 'orders', component: AdminOrdersComponent },
-      { path: 'reviews', component: AdminReviewsComponent },
+      {
+        path: 'categories',
+        loadComponent: () => import('./components/category-admin/category-admin').then(m => m.CategoryAdmin)
+      },
+      {
+        path: 'orders',
+        loadComponent: () => import('./pages/admin-orders/admin-orders').then(m => m.AdminOrdersComponent)
+      },
+      {
+        path: 'reviews',
+        loadComponent: () => import('./pages/admin-reviews/admin-reviews').then(m => m.AdminReviewsComponent)
+      },
+      {
+        path: 'authors',
+        loadComponent: () => import('./pages/admin-authors/admin-authors').then(m => m.AdminAuthors)
+      },
       { path: '', redirectTo: 'orders', pathMatch: 'full' }
     ]
   },
-  { path: '**', component: NotFound } // must be at end: match any wrong path and redirect to 404 page
+  {
+    path: '**',
+    loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound)
+  }
 ];

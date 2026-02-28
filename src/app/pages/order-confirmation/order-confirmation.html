@@ -1,11 +1,36 @@
+<app-nav-bar></app-nav-bar>
+
 <div class="confirmation-page">
     <div class="confirmation-content">
+        @if (isLoading()) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading your order details...</p>
+        </div>
+        } @else if (error()) {
+        <div class="error-state">
+            <i class="fa-solid fa-circle-exclamation fs-1 text-danger mb-3"></i>
+            <h3>Oops!</h3>
+            <p>{{ error() }}</p>
+            <button class="btn-primary mt-3" routerLink="/order-history">View Order History</button>
+        </div>
+        } @else if (order(); as orderData) {
+        <div class="success-header text-center mb-5">
+            <div class="success-icon-wrapper mb-3">
+                <i class="fa-solid fa-circle-check text-success display-1"></i>
+            </div>
+            <h1 class="display-5 fw-bold">Order completed successfully!</h1>
+            <p class="fs-5 text-muted">Thank you for your purchase. We've received your order.</p>
+        </div>
+
         <header class="order-header">
             <div class="order-id-section">
-                <h2>Order ID: #{{ orderId }}</h2>
-                <span class="status-badge approved">Approved</span>
+                <h2>Order ID: #{{ orderData._id?.substring(0,8) }}</h2>
+                <span class="status-badge" [ngClass]="'badge-' + orderData.status">
+                    {{ orderData.status | titlecase }}
+                </span>
             </div>
-            <p class="order-date">{{ orderDate | date:'fullDate' }}</p>
+            <p class="order-date">{{ orderData.createdAt | date:'fullDate' }}</p>
         </header>
 
         <div class="info-cards">
@@ -13,14 +38,13 @@
             <div class="info-card">
                 <div class="card-header">
                     <i class="fa fa-user"></i>
-                    <h3>Recipient Information</h3>
+                    <h3>Shipping Details</h3>
                 </div>
                 <div class="card-body">
-                    <p><strong>Name:</strong> Alaa Abdallah</p>
-                    <p><strong>E-mail:</strong> alaa@example.com</p>
-                    <p><strong>Phone:</strong> +20 123 456 789</p>
-                    <p><strong>City:</strong> Cairo</p>
-                    <p><strong>Address:</strong> 123 Smart Village, Giza</p>
+                    <p><strong>Address:</strong> {{ orderData.shippingAddress.street }}</p>
+                    <p><strong>City:</strong> {{ orderData.shippingAddress.city }}</p>
+                    <p><strong>Country:</strong> {{ orderData.shippingAddress.country }}</p>
+                    <p><strong>Postal Code:</strong> {{ orderData.shippingAddress.postalCode }}</p>
                 </div>
             </div>
 
@@ -28,57 +52,90 @@
             <div class="info-card">
                 <div class="card-header">
                     <i class="fa fa-credit-card"></i>
-                    <h3>Payment Information</h3>
+                    <h3>Payment</h3>
                 </div>
                 <div class="card-body">
-                    <p><strong>Payment Method:</strong> Credit Card</p>
-                    <p><strong>Transaction ID:</strong> TXN_998877</p>
-                    <p><strong>Card Number:</strong> **** **** **** 4242</p>
+                    <p><strong>Method:</strong> {{ orderData.paymentMethod }}</p>
+                    <p><strong>Status:</strong>
+                        <span
+                            [ngClass]="orderData.paymentStatus === 'success' || orderData.paymentStatus === 'paid' ? 'text-success' : 'text-warning'">
+                            {{ orderData.paymentStatus | titlecase }}
+                        </span>
+                    </p>
+                    <p><strong>Total Amount:</strong> {{ orderData.totalAmount | currency }}</p>
                 </div>
             </div>
 
-            <!-- Order Status -->
+            <!-- Delivery Status -->
             <div class="info-card">
                 <div class="card-header">
                     <i class="fa fa-truck"></i>
-                    <h3>Order Status</h3>
+                    <h3>Delivery Info</h3>
                 </div>
                 <div class="card-body">
-                    <p><strong>Status:</strong> Processing</p>
-                    <p><strong>Date Added:</strong> {{ orderDate | date:'shortDate' }}</p>
-                    <p><strong>Last Update:</strong> {{ orderDate | date:'shortDate' }}</p>
+                    <p><strong>Order Status:</strong> {{ orderData.status | titlecase }}</p>
+                    <p><strong>Last Update:</strong> {{ orderData.updatedAt | date:'shortDate' }}</p>
+                    <p class="mt-2 text-muted small">We'll notify you when your order ships.</p>
                 </div>
             </div>
         </div>
 
         <!-- Products Table -->
         <div class="products-section">
-            <h3>Products</h3>
-            <table class="products-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Unit Price</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>I, Robot - Isaac Asimov</td>
-                        <td>$15.99</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>Azincourt - Bernard Cornwell</td>
-                        <td>$12.50</td>
-                        <td>2</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h3>Items in your order</h3>
+            <div class="table-responsive">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Book</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th class="text-end">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of orderData.items; track item.bookId) {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    @let book = asBook(item.bookId);
+                                    @if (book) {
+                                    <img [src]="book.coverImage" class="item-thumb" alt="">
+                                    <span>{{ book.name }}</span>
+                                    } @else {
+                                    <span>{{ item.bookName || 'Unknown Book' }}</span>
+                                    }
+                                </div>
+                            </td>
+                            <td>{{ item.priceAtPurchase | currency }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td class="text-end fw-bold">{{ item.subtotal | currency }}</td>
+                        </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end py-3 pt-4 fs-5">Total Amount:</td>
+                            <td class="text-end py-3 pt-4 fs-4 fw-bold text-primary-color">{{ orderData.totalAmount |
+                                currency }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
 
-        <div class="confirmation-actions">
-            <button class="btn-primary" routerLink="/order-history">Back to My Orders</button>
+        <div class="confirmation-actions gap-3">
+            <button class="btn-primary" (click)="goToExplore()">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>
+                Explore More Books
+            </button>
+            <button class="btn-secondary" routerLink="/order-history">
+                <i class="fa-solid fa-clock-rotate-left me-2"></i>
+                My Orders
+            </button>
         </div>
+        }
     </div>
 </div>
+
+<app-footer></app-footer>

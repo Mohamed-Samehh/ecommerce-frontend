@@ -1,126 +1,157 @@
-<div class="checkout-page">
+<app-nav-bar></app-nav-bar>
+
+<div class="checkout-page" [formGroup]="checkoutForm">
     <div class="checkout-content">
+
+        <!-- ── Left column: form ── -->
         <div class="form-sections">
+
             <!-- Personal Information -->
-            <section class="checkout-section">
-                <h3>Personal Information</h3>
+            <section class="checkout-section" formGroupName="shipping">
+                <h3><i class="fa fa-user me-2"></i>Shipping Information</h3>
                 <div class="form-grid">
-                    <div class="form-group half">
-                        <label>First Name</label>
-                        <input type="text" placeholder="First Name">
-                    </div>
-                    <div class="form-group half">
-                        <label>Last Name</label>
-                        <input type="text" placeholder="Last Name">
-                    </div>
+                    <!-- Full Name -->
                     <div class="form-group full">
-                        <label>Email Address</label>
-                        <input type="email" placeholder="Email Address">
+                        <label for="fullName">Full Name <span class="required">*</span></label>
+                        <input id="fullName" type="text" formControlName="fullName" placeholder="John Doe">
+                        @if (checkoutForm.get('shipping.fullName')?.invalid &&
+                        checkoutForm.get('shipping.fullName')?.touched) {
+                        <span class="field-error">Full name is required (min 3 characters)</span>
+                        }
                     </div>
+                    <!-- Email -->
                     <div class="form-group full">
-                        <label>Phone Number</label>
-                        <input type="tel" placeholder="Phone Number">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input id="email" type="email" formControlName="email" placeholder="john@example.com">
+                        @if (checkoutForm.get('shipping.email')?.invalid && checkoutForm.get('shipping.email')?.touched)
+                        {
+                        <span class="field-error">A valid email is required</span>
+                        }
+                    </div>
+                    <!-- Phone -->
+                    <div class="form-group full">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input id="phone" type="tel" formControlName="phone" placeholder="+20 100 000 0000">
+                        @if (checkoutForm.get('shipping.phone')?.invalid && checkoutForm.get('shipping.phone')?.touched)
+                        {
+                        <span class="field-error">Phone number is required</span>
+                        }
                     </div>
                 </div>
             </section>
 
             <!-- Shipping Address -->
-            <section class="checkout-section">
-                <h3>Shipping Address</h3>
+            <section class="checkout-section" formGroupName="shipping">
+                <h3><i class="fa fa-map-marker-alt me-2"></i>Shipping Address</h3>
                 <div class="form-grid">
+                    <!-- Street Address -->
                     <div class="form-group full">
-                        <label>Address</label>
-                        <input type="text" placeholder="Address">
+                        <label for="address">Street Address <span class="required">*</span></label>
+                        <input id="address" type="text" formControlName="address" placeholder="123 Main Street">
+                        @if (checkoutForm.get('shipping.address')?.invalid &&
+                        checkoutForm.get('shipping.address')?.touched) {
+                        <span class="field-error">Address is required</span>
+                        }
                     </div>
+                    <!-- City -->
                     <div class="form-group half">
-                        <label>City</label>
-                        <input type="text" placeholder="City">
+                        <label for="city">City <span class="required">*</span></label>
+                        <input id="city" type="text" formControlName="city" placeholder="Cairo">
+                        @if (checkoutForm.get('shipping.city')?.invalid && checkoutForm.get('shipping.city')?.touched) {
+                        <span class="field-error">City is required</span>
+                        }
                     </div>
+                    <!-- Postal Code -->
                     <div class="form-group half">
-                        <label>Postal Code</label>
-                        <input type="text" placeholder="Postal Code">
+                        <label for="zipCode">Postal Code <span class="required">*</span></label>
+                        <input id="zipCode" type="text" formControlName="zipCode" placeholder="11511">
+                        @if (checkoutForm.get('shipping.zipCode')?.invalid &&
+                        checkoutForm.get('shipping.zipCode')?.touched) {
+                        <span class="field-error">Postal code is required</span>
+                        }
                     </div>
+                    <!-- Country -->
                     <div class="form-group full">
-                        <label>Country</label>
-                        <input type="text" placeholder="Country">
+                        <label for="country">Country <span class="required">*</span></label>
+                        <input id="country" type="text" formControlName="country" placeholder="Egypt">
+                        @if (checkoutForm.get('shipping.country')?.invalid &&
+                        checkoutForm.get('shipping.country')?.touched) {
+                        <span class="field-error">Country is required</span>
+                        }
                     </div>
                 </div>
             </section>
 
-            <!-- Voucher -->
-            <section class="checkout-section">
-                <h3>Voucher</h3>
-                <div class="form-grid">
-                    <div class="form-group full">
-                        <label>Enter Voucher Code</label>
-                        <div class="input-with-button">
-                            <input type="text" placeholder="Voucher Code">
-                            <button class="apply-btn">Apply</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Payment Methods -->
-            <section class="checkout-section">
-                <h3>Payment Methods</h3>
+            <!-- Payment Method -->
+            <section class="checkout-section" formGroupName="payment">
+                <h3><i class="fa fa-credit-card me-2"></i>Payment Method</h3>
                 <div class="payment-options">
-                    <label class="payment-option">
-                        <input type="radio" name="payment" value="cod">
-                        <span class="radio-label">Cash On Delivery / Credit or Debit</span>
+                    <label class="payment-option"
+                        [class.selected]="checkoutForm.get('payment.method')?.value === 'COD'">
+                        <input type="radio" formControlName="method" value="COD">
+                        <i class="fa fa-money-bill-wave"></i>
+                        <span>Cash On Delivery</span>
                     </label>
-                    <div class="card-details">
-                        <div class="form-group full">
-                            <label>Cardholder Name</label>
-                            <input type="text" placeholder="Cardholder Name">
-                        </div>
-                        <div class="form-group full">
-                            <label>Card Number</label>
-                            <input type="text" placeholder="Card Number">
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-group half">
-                                <label>Exp. Date</label>
-                                <input type="text" placeholder="MM/YY">
-                            </div>
-                            <div class="form-group half">
-                                <label>CVV</label>
-                                <input type="text" placeholder="CVV">
-                            </div>
-                        </div>
-                    </div>
+                    <label class="payment-option"
+                        [class.selected]="checkoutForm.get('payment.method')?.value === 'Online'">
+                        <input type="radio" formControlName="method" value="Online">
+                        <i class="fa fa-credit-card"></i>
+                        <span>Online Payment</span>
+                    </label>
                 </div>
             </section>
 
-            <button class="checkout-submit-btn" (click)="placeOrder()">Checkout</button>
+            <!-- Submit -->
+            <button class="checkout-submit-btn" (click)="placeOrder()" [disabled]="isSubmitting">
+                @if (isSubmitting) {
+                <span class="spinner-sm"></span> Placing Order…
+                } @else {
+                <i class="fa fa-check-circle me-2"></i>Place Order
+                }
+            </button>
+
         </div>
 
-        <!-- Order Summary Sidebar -->
+        <!-- ── Right column: order summary ── -->
         <aside class="order-summary">
             <div class="summary-card">
-                <h3>Item</h3>
+                <h3>Order Summary</h3>
                 <div class="summary-items">
-                    <div class="summary-item" *ngFor="let item of cartItems">
+                    @for (item of cartItems; track item.id) {
+                    <div class="summary-item">
                         <div class="item-visual">
                             <img [src]="item.image" [alt]="item.name">
                         </div>
                         <div class="item-info">
                             <p class="name">{{ item.name }}</p>
+                            <p class="qty">Qty: {{ item.quantity }}</p>
                             <p class="price">{{ item.price | currency }}</p>
                         </div>
                     </div>
+                    }
                 </div>
                 <div class="summary-totals">
                     <div class="total-row">
                         <span>Subtotal</span>
-                        <span>$40.99</span>
+                        <span>{{ subtotal | currency }}</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Shipping</span>
+                        <span>{{ shipping | currency }}</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax</span>
+                        <span>{{ tax | currency }}</span>
                     </div>
                     <div class="total-row grand-total">
                         <span>Total</span>
-                        <span>$49.27</span>
+                        <span>{{ total | currency }}</span>
                     </div>
                 </div>
             </div>
         </aside>
+
     </div>
 </div>
+
+<app-footer></app-footer>

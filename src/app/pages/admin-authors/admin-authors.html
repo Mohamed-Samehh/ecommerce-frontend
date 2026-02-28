@@ -1,1 +1,86 @@
-<p>admin-authors works!</p>
+<div class="admin-authors-container">
+    <!-- Header -->
+    <div class="admin-header">
+        <div class="header-content">
+            <h1><i class="fas fa-user-edit me-2"></i>Authors Management</h1>
+            <p>Create, edit, and delete authors from your catalog</p>
+        </div>
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-val">{{ authors.length }}</span>
+                <span class="stat-label">Total Authors</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fa fa-search"></i>
+                <input type="text" [(ngModel)]="searchTerm" (input)="applyFilters()"
+                    placeholder="Search by name or bio..." />
+            </div>
+            <button class="btn-primary" (click)="openAddModal()">
+                <i class="fa fa-plus"></i>
+                Add Author
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        @if (isLoading) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading authors...</p>
+        </div>
+        } @else if (filteredAuthors.length === 0) {
+        <div class="empty-state">
+            <i class="fas fa-user-slash fa-3x mb-3 text-muted"></i>
+            <p>No authors found. Add your first author!</p>
+        </div>
+        } @else {
+        <!-- Table -->
+        <div class="table-container">
+            <table class="authors-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Author</th>
+                        <th>Biography</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (author of filteredAuthors; track author._id; let i = $index) {
+                    <tr>
+                        <td class="index-cell">{{ i + 1 }}</td>
+                        <td>
+                            <div class="author-info">
+                                <div class="avatar-initial">
+                                    {{ author.name.charAt(0).toUpperCase() }}
+                                </div>
+                                <span class="author-name">{{ author.name }}</span>
+                            </div>
+                        </td>
+                        <td class="bio-cell">
+                            <span class="bio-text">{{ author.bio }}</span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon btn-edit" title="Edit Author" (click)="openEditModal(author)">
+                                    <i class="fa fa-pen"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" title="Delete Author"
+                                    (click)="confirmDelete(author)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+    </div>
+</div>

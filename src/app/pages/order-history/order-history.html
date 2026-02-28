@@ -6,7 +6,7 @@
   </div>
 
   <div class="orders-list">
-    <div *ngFor="let order of orders" class="order-card">
+    <div *ngFor="let order of orders; trackBy: trackByOrder" class="order-card">
       <div class="order-header">
         <div class="order-id-group">
           <span class="order-label">Order</span>
