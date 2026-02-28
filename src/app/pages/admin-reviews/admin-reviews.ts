@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReviewService } from '../../services/review/review-service';
@@ -15,6 +16,7 @@ import { StarRatingComponent } from '../../components/star-rating/star-rating.co
 })
 export class AdminReviewsComponent implements OnInit {
     private reviewService = inject(ReviewService);
+    private platformId = inject(PLATFORM_ID);
 
     reviews = signal<Review[]>([]);
     filteredReviews = signal<Review[]>([]);
@@ -23,7 +25,9 @@ export class AdminReviewsComponent implements OnInit {
     isLoading = signal<boolean>(false);
 
     ngOnInit(): void {
-        this.loadReviews();
+        if (isPlatformBrowser(this.platformId)) {
+            this.loadReviews();
+        }
     }
 
     loadReviews(): void {

@@ -1,6 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
 import { OrderService } from '../../services/order/order-service';
 import { Order, PopulatedUser } from '../../interfaces/order';
 
@@ -13,6 +15,8 @@ import { Order, PopulatedUser } from '../../interfaces/order';
 })
 export class AdminOrdersComponent implements OnInit {
     private orderService = inject(OrderService);
+    private cdr = inject(ChangeDetectorRef);
+    private platformId = inject(PLATFORM_ID);
 
     orders: Order[] = [];
     filteredOrders: Order[] = [];
@@ -21,7 +25,9 @@ export class AdminOrdersComponent implements OnInit {
     isLoading = false;
 
     ngOnInit(): void {
-        this.loadOrders();
+        if (isPlatformBrowser(this.platformId)) {
+            this.loadOrders();
+        }
     }
 
     loadOrders(): void {
@@ -33,6 +39,8 @@ export class AdminOrdersComponent implements OnInit {
                 this.orders = Array.isArray(ordersData) ? ordersData : (ordersData as { data: Order[] }).data || [];
                 this.filteredOrders = [...this.orders];
                 this.isLoading = false;
+                // Move change detection to next tick to avoid NG0100
+                setTimeout(() => this.cdr.detectChanges());
             },
             error: (err) => {
                 console.error('Failed to load admin orders:', err);
@@ -72,6 +80,24 @@ export class AdminOrdersComponent implements OnInit {
                 console.error('Failed to update status:', err);
                 order.status = previousStatus; // Rollback
                 alert('Update failed: ' + (err.error?.message || 'Unauthorized or Invalid Transition'));
+            }
+        });
+    }
+
+    updatePaymentStatus(order: Order, newPaymentStatus: Order['paymentStatus']): void {
+        const previousPaymentStatus = order.paymentStatus;
+        order.paymentStatus = newPaymentStatus; // Optimistic update
+
+        if (!order._id) return;
+
+        this.orderService.updatePaymentStatus(order._id, newPaymentStatus).subscribe({
+            next: (res) => {
+                console.log('Payment status updated successfully');
+            },
+            error: (err) => {
+                console.error('Failed to update payment status:', err);
+                order.paymentStatus = previousPaymentStatus; // Rollback
+                alert('Update failed: ' + (err.error?.message || 'Unauthorized or Invalid Payment Transition'));
             }
         });
     }

@@ -193,14 +193,54 @@
     color: var(--status-cancelled-text);
 }
 
-/* Actions */
-.action-dropdown select {
-    border: 1px solid rgba(45, 26, 18, 0.1);
-    border-radius: var(--radius-sm);
-    padding: 0.4rem 0.6rem;
-    font-size: 0.8rem;
+/* Management Column */
+.manage-column {
+    min-width: 200px;
+}
+
+.manage-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.manage-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     background-color: var(--primary-color-bg);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(45, 26, 18, 0.08);
+    transition: all 0.2s ease;
+}
+
+.manage-row:hover {
+    border-color: var(--badge--color);
+    box-shadow: 0 2px 8px rgba(45, 26, 18, 0.03);
+}
+
+.manage-row i {
+    font-size: 0.9rem;
+    color: var(--highlighted-text-color);
+    width: 16px;
+    text-align: center;
+}
+
+.manage-row select {
+    border: none;
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-color);
+    width: 100%;
     cursor: pointer;
+    outline: none;
+    padding-right: 1rem;
+}
+
+.manage-row select:focus {
+    color: var(--highlighted-text-color);
 }
 
 .empty-state {
