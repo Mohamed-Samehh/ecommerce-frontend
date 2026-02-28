@@ -16,4 +16,5 @@ export interface Book {
   averageRating: number;
   reviewCount: number;
   status: 'available' | 'out of stock' | string;
+  isDeleted:boolean;
 }

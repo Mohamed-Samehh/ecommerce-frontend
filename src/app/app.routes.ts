@@ -13,6 +13,8 @@ import { BookDetails } from './pages/book-details/book-details';
 import { AdminReviewsComponent } from './pages/admin-reviews/admin-reviews';
 import { Cart } from './pages/cart/cart';
 import { Home } from './pages/home/home';
+import { AdminBooks } from './pages/admin-books/admin-books';
+import { BookForm } from './components/book-form/book-form';
 
 export const routes: Routes = [
   {
@@ -67,7 +69,9 @@ export const routes: Routes = [
       { path: 'categories', component: CategoryAdmin },
       { path: 'orders', component: AdminOrdersComponent },
       { path: 'reviews', component: AdminReviewsComponent },
+      { path: 'books', component: AdminBooks },
       { path: '', redirectTo: 'orders', pathMatch: 'full' }
+
     ]
   },
   { path: '**', component: NotFound } // must be at end: match any wrong path and redirect to 404 page
