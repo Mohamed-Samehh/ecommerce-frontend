@@ -1,20 +1,15 @@
 <div class="auth-page d-flex flex-column">
   <app-nav-bar></app-nav-bar>
 
-  <div class="flex-grow-1 row g-0">
-    <!-- Left: form panel -->
-    <div class="col-md-6 auth-left d-flex align-items-center justify-content-center p-4 p-xl-5">
-      <div class="auth-form-wrapper">
-
-        <!-- Brand -->
-        <div class="d-flex align-items-center gap-2 mb-4">
-          <img src="logo.png" alt="" class="auth-logo"/>
-          <span class="auth-brand-name">Wyrmhole Books</span>
-        </div>
+  <div class="flex-grow-1 row g-0 mb-3">
+    <div class="col-12 auth-left d-flex align-items-center justify-content-center p-4 p-xl-5">
+      <div class="auth-form-wrapper card border-0 shadow-sm rounded-4 p-4 p-md-5" style="background-color: var(--cards--bg-color);">
+        <div class="row g-4 align-items-center">
+          <div class="col-12 col-lg-7 auth-form-panel mx-auto">
 
         @if (step() === 'details') {
           <h1 class="h3 fw-bold mb-1">Register</h1>
-          <p class="text-muted small mb-4">Create your account today 👋</p>
+          <p class="text-muted small mb-4">Join us and start your journey today!</p>
 
           <form [formGroup]="registerForm" (ngSubmit)="submitDetails()" novalidate>
             <!-- First Name + Last Name -->
@@ -97,6 +92,8 @@
                 <div class="invalid-feedback">
                   @if (dobCtrl.hasError('required')) {
                     Date of birth is required.
+                  } @else if (dobCtrl.hasError('futureDate')) {
+                    Date of birth cannot be in the future.
                   }
                 </div>
               </div>
@@ -121,7 +118,9 @@
                   @if (passwordCtrl.hasError('required')) {
                     Password is required.
                   } @else if (passwordCtrl.hasError('minlength')) {
-                    Min 6 characters.
+                    Min 8 characters.
+                  } @else if (passwordCtrl.hasError('pattern')) {
+                    Use at least one letter and one number.
                   }
                 </div>
               </div>
@@ -224,13 +223,13 @@
             <i class="fa fa-arrow-left me-1"></i> Back to registration
           </button>
         }
+          </div>
 
+          <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+            <img src="sign.png" alt="" class="auth-image" />
+          </div>
+        </div>
       </div>
-    </div>
-
-    <!-- Right: image -->
-    <div class="col-md-6 auth-right d-none d-md-flex align-items-center justify-content-center">
-      <img src="sign.png" alt="" class="auth-image" />
     </div>
   </div>
 </div>

@@ -1,13 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --primary-color-bg: #FDF9F3; /* Light Cream from design */
+  --primary-color-bg: #FDF9F3;
+  /* Light Cream from design */
   --secondary-color-bg: #ffffff;
-  --text-color: #2D1A12; /* Dark Brown */
+  --text-color: #2D1A12;
+  /* Dark Brown */
   --selection-color: #57595B;
   --highlighted-text-color: #732A10;
   --button-bg-color: #2D1A12;
   --button-text-color: #ffffff;
-  --cards--bg-color: #F8F1EA; /* Card background */
+  --cards--bg-color: #F8F1EA;
+  /* Card background */
   --badge--color: #D9A86C;
 
   --status-delivered-bg: #E7F5E8;

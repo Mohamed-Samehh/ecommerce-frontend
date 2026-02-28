@@ -1,78 +1,113 @@
 import { Routes } from '@angular/router';
-import { Register } from './pages/register/register';
-import { Login } from './pages/login/login';
-import { NotFound } from './pages/not-found/not-found';
-import { Admin } from './pages/admin/admin';
-import { CategoryAdmin } from './components/category-admin/category-admin';
-import { OrderHistory } from './pages/order-history/order-history';
-import { CheckoutComponent } from './pages/checkout/checkout';
-import { OrderConfirmationComponent } from './pages/order-confirmation/order-confirmation';
-import { AdminOrdersComponent } from './pages/admin-orders/admin-orders';
-import { Explore } from './pages/explore/explore';
-import { BookDetails } from './pages/book-details/book-details';
-import { AdminReviewsComponent } from './pages/admin-reviews/admin-reviews';
-import { Cart } from './pages/cart/cart';
-import { Home } from './pages/home/home';
-import { AdminBooks } from './pages/admin-books/admin-books';
-import { BookForm } from './components/book-form/book-form';
+import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
+import { guestGuard } from './guards/guest.guard';
+import { userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Home,
-    title: 'Home'
+    redirectTo: 'explore',
+    pathMatch: 'full'
   },
   {
     path: 'explore',
-    component: Explore,
+    loadComponent: () => import('./pages/explore/explore').then(m => m.Explore),
     title: 'Explore'
   },
   {
     path: 'book/:id',
-    component: BookDetails,
+    loadComponent: () => import('./pages/book-details/book-details').then(m => m.BookDetails),
     title: 'Book Details'
   },
   {
     path: 'login',
-    component: Login,
+    loadComponent: () => import('./pages/login/login').then(m => m.Login),
+    canActivate: [guestGuard],
     title: 'Sign In'
   },
   {
     path: 'register',
-    component: Register,
+    loadComponent: () => import('./pages/register/register').then(m => m.Register),
+    canActivate: [guestGuard],
     title: 'Create Account'
   },
   {
     path: 'checkout',
-    component: CheckoutComponent,
+    loadComponent: () => import('./pages/checkout/checkout').then(m => m.CheckoutComponent),
+    canActivate: [authGuard, userGuard],
     title: 'Checkout'
   },
   {
     path: 'order-confirmation/:id',
-    component: OrderConfirmationComponent,
+    loadComponent: () => import('./pages/order-confirmation/order-confirmation').then(m => m.OrderConfirmationComponent),
+    canActivate: [authGuard, userGuard],
     title: 'Order Confirmation'
   },
   {
     path: 'order-history',
-    component: OrderHistory,
+    loadComponent: () => import('./pages/order-history/order-history').then(m => m.OrderHistory),
+    canActivate: [authGuard, userGuard],
     title: 'Order History'
   },
   {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile').then(m => m.ProfileComponent),
+    canActivate: [authGuard, userGuard],
+    title: 'My Profile'
+  },
+  {
     path: 'cart',
-    component: Cart,
+    loadComponent: () => import('./pages/cart/cart').then(m => m.Cart),
+    canActivate: [authGuard, userGuard],
     title: 'Cart'
   },
   {
     path: 'admin',
-    component: Admin,
+    loadComponent: () => import('./pages/admin/admin').then(m => m.Admin),
+    canActivate: [adminGuard],
+    title: 'Admin Dashboard',
     children: [
-      { path: 'categories', component: CategoryAdmin },
-      { path: 'orders', component: AdminOrdersComponent },
-      { path: 'reviews', component: AdminReviewsComponent },
-      { path: 'books', component: AdminBooks },
-      { path: '', redirectTo: 'orders', pathMatch: 'full' }
-
+      { path: '', pathMatch: 'full', redirectTo: 'books' },
+      {
+        path: 'users',
+        loadComponent: () => import('./pages/admin-users/admin-users').then(m => m.AdminUsers),
+        title: 'Manage Users'
+      },
+      {
+        path: 'orders',
+        loadComponent: () => import('./pages/admin-orders/admin-orders').then(m => m.AdminOrdersComponent),
+        title: 'Manage Orders'
+      },
+      {
+        path: 'books',
+        loadComponent: () => import('./pages/admin-books/admin-books').then(m => m.AdminBooks),
+        title: 'Manage Books'
+      },
+      {
+        path: 'authors',
+        loadComponent: () => import('./pages/admin-authors/admin-authors').then(m => m.AdminAuthors),
+        title: 'Manage Authors'
+      },
+      {
+        path: 'categories',
+        loadComponent: () => import('./components/category-admin/category-admin').then(m => m.CategoryAdmin),
+        title: 'Manage Categories'
+      },
+      {
+        path: 'reviews',
+        loadComponent: () => import('./pages/admin-reviews/admin-reviews').then(m => m.AdminReviewsComponent),
+        title: 'Manage Reviews'
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./pages/admin-profile/admin-profile').then(m => m.AdminProfileComponent),
+        title: 'Admin Profile'
+      }
     ]
   },
-  { path: '**', component: NotFound } // must be at end: match any wrong path and redirect to 404 page
+  {
+    path: '**',
+    loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound)
+  }
 ];
