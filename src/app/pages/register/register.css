@@ -74,6 +74,10 @@
   text-decoration: none;
 }
 
+.auth-page .text-muted {
+  color: #9d928a !important;
+}
+
 .auth-link:hover {
   text-decoration: underline;
 }
