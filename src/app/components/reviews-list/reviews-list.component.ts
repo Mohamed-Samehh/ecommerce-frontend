@@ -17,7 +17,6 @@ export class ReviewsListComponent implements OnInit, OnChanges {
   @Input() set bookId(value: string | undefined) {
     this._bookId = value;
     if (value) {
-      console.log('Book ID detected via Setter:', value);
       this.loadReviews();
     }
   }
@@ -34,14 +33,12 @@ export class ReviewsListComponent implements OnInit, OnChanges {
   currentUserId: string | null = null;
 
   ngOnInit(): void {
-    console.log('ReviewsListComponent Initialized. Current bookId:', this.bookId);
     // English comment: Initialize current user info for delete permissions
     this.setCurrentUserId();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['bookId']) {
-      console.log('bookId changed via ngOnChanges:', changes['bookId'].currentValue);
       // If the setter didn't trigger loadReviews (which it should), this is our backup
       if (changes['bookId'].currentValue && !this.isLoading && this.reviews.length === 0) {
         this.loadReviews();
@@ -51,18 +48,14 @@ export class ReviewsListComponent implements OnInit, OnChanges {
 
   loadReviews(): void {
     if (!this.bookId) {
-      console.warn('loadReviews called without bookId');
       return;
     }
 
-    console.log('Fetching reviews for Book ID:', this.bookId);
     this.isLoading = true;
     this.error = null;
 
     this.reviewService.getBookReviews(this.bookId).subscribe({
       next: (response) => {
-        console.log('Raw API Response (Full):', response);
-        console.log('Reviews Data:', response.data);
         this.reviews = response.data || [];
         this.isLoading = false;
       },

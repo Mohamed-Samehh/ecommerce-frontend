@@ -10,33 +10,56 @@
   </div>
 
   @if (book(); as b) {
-  <div class="card card-bg border-0 rounded-5 shadow-sm p-3 p-md-4">
-    <div class="row g-4 align-items-start">
-      <div class="col-12 col-md-5">
-        <div class="cover-wrapper rounded-5 overflow-hidden">
-          <img [src]="b.coverImage" [alt]="b.name" class="w-100 cover-img" />
-        </div>
-
-        <div class="d-flex gap-2 mt-3 flex-wrap">
-          <span class="badge card-bg rounded-pill px-3 py-2 text-color">${{ b.price }}</span>
-          <span class="badge" [class.bg-success]="b.stock > 2" [class.bg-danger]="b.stock <= 2">
-            {{ b.stock > 2 ? 'In Stock' : 'Low Stock' }}
-          </span>
-          <span class="badge bg-secondary" *ngIf="b.averageRating != null">
-            ⭐ {{ b.averageRating }} ({{ b.reviewCount || 0 }})
-          </span>
+  <div class="book-detail-wrapper shadow-lg">
+    <div class="row g-0">
+      <!-- Left: Cover Image -->
+      <div class="col-12 col-md-5 book-cover-section">
+        <div class="cover-container">
+          <img [src]="b.coverImage" [alt]="b.name" class="img-fluid main-cover" />
+          <div class="price-overlay">
+            <span class="price-tag">${{ b.price }}</span>
+          </div>
         </div>
       </div>
 
-      <div class="col-12 col-md-7">
-        <h2 class="text-color fw-bold mb-2">{{ b.name }}</h2>
-        <div class="meta mb-3">
-          <div class="text-muted"><span class="fw-semibold text-color">Author:</span> {{ authorName(b.author) }}</div>
-          <p class="text-color desc mt-3">{{ b.description || 'No description available.' }}</p>
+      <!-- Right: Content -->
+      <div class="col-12 col-md-7 book-content-section p-4 p-lg-5">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <h1 class="book-title">{{ b.name }}</h1>
+            <p class="book-author"><span class="label">By</span> {{ authorName(b.author) }}</p>
+          </div>
+          <div class="rating-box" *ngIf="b.averageRating != null">
+            <span class="rating-val">{{ b.averageRating }}</span>
+            <div class="rating-meta">
+              <i class="fa-solid fa-star"></i>
+              <span>({{ b.reviewCount || 0 }} reviews)</span>
+            </div>
+          </div>
         </div>
-        <div class="d-flex gap-3 mt-4">
-          <button class="btn button-color px-4"><i class="fa-solid fa-cart-plus me-2"></i>Add to cart</button>
-          <a class="btn btn-outline-dark px-4" routerLink="/order-history">View my orders</a>
+
+        <div class="status-indicators mb-4">
+          <span class="status-pill" [class.in-stock]="b.stock > 2" [class.low-stock]="b.stock <= 2">
+            <i class="fa-solid" [class.fa-check-circle]="b.stock > 2"
+              [class.fa-exclamation-triangle]="b.stock <= 2"></i>
+            {{ b.stock > 2 ? 'In Stock' : (b.stock > 0 ? 'Low Stock' : 'Out of Stock') }}
+          </span>
+          <span class="stock-count text-muted" *ngIf="b.stock > 0">{{ b.stock }} copies available</span>
+        </div>
+
+        <div class="description-section">
+          <h5 class="section-title">Description</h5>
+          <p class="book-desc">{{ b.description || 'Experience this masterpiece that critics and readers alike are
+            raving about.' }}</p>
+        </div>
+
+        <div class="action-section mt-auto pt-4">
+          <div class="d-flex flex-wrap gap-3">
+            <button class="btn btn-primary add-to-cart-btn">
+              <i class="fa-solid fa-cart-plus"></i>
+              Add to cart
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -49,7 +72,9 @@
       @if (isCheckingEligibility()) {
       <div class="text-muted small py-2">Checking if you can review...</div>
       } @else if (canReview()) {
-      <app-review-form [bookId]="b.id || b._id" (reviewAdded)="onReviewAdded()"></app-review-form>
+      <app-review-form [bookId]="b.id || b._id" [hasAlreadyReviewed]="hasAlreadyReviewed()"
+        [initialRating]="userReviewRating()" [initialComment]="userReviewComment()"
+        (reviewAdded)="onReviewAdded()"></app-review-form>
       } @else {
       <div class="alert alert-light border rounded-4 py-3 shadow-sm">
         <p class="mb-0 text-muted small">
