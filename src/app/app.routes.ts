@@ -18,6 +18,9 @@ import { adminGuard } from './guards/admin.guard';
 import { guestGuard } from './guards/guest.guard';
 import { userGuard } from './guards/user.guard';
 import { Explore } from './pages/explore/explore';
+import { BookDetails } from './pages/book-details/book-details';
+import { AdminReviewsComponent } from './pages/admin-reviews/admin-reviews';
+import { Cart } from './pages/cart/cart';
 
 export const routes: Routes = [
   {
@@ -28,8 +31,12 @@ export const routes: Routes = [
   {
     path: 'explore',
     component: Explore,
-    canActivate: [authGuard, userGuard],
     title: 'Explore'
+  },
+  {
+    path: 'book/:id',
+    component: BookDetails,
+    title: 'Book Details'
   },
   {
     path: 'login',
@@ -68,17 +75,24 @@ export const routes: Routes = [
     title: 'My Profile'
   },
   {
+    path: 'cart',
+    component: Cart,
+    canActivate: [authGuard, userGuard],
+    title: 'Cart'
+  },
+  {
     path: 'admin',
     component: Admin,
     canActivate: [adminGuard],
     title: 'Admin Dashboard',
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'users' },
+      { path: '', pathMatch: 'full', redirectTo: 'books' },
       { path: 'users', component: AdminUsers, title: 'Manage Users' },
       { path: 'orders', component: AdminOrdersComponent, title: 'Manage Orders' },
       { path: 'books', component: AdminBooks, title: 'Manage Books' },
       { path: 'authors', component: AdminAuthors, title: 'Manage Authors' },
       { path: 'categories', component: CategoryAdmin, title: 'Manage Categories' },
+      { path: 'reviews', component: AdminReviewsComponent, title: 'Manage Reviews' },
       { path: 'profile', component: AdminProfileComponent, title: 'Admin Profile' }
     ]
   },

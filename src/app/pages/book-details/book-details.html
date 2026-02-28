@@ -1,0 +1,96 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container my-4">
+  <div *ngIf="isLoading()" class="d-flex justify-content-center py-5">
+    <div class="spinner-border text-color" role="status"></div>
+  </div>
+
+  <div *ngIf="error()" class="alert alert-danger">
+    {{ error() }}
+  </div>
+
+  @if (book(); as b) {
+  <div class="book-detail-wrapper shadow-lg">
+    <div class="row g-0">
+      <!-- Left: Cover Image -->
+      <div class="col-12 col-md-5 book-cover-section">
+        <div class="cover-container">
+          <img [src]="b.coverImage" [alt]="b.name" class="img-fluid main-cover" />
+          <div class="price-overlay">
+            <span class="price-tag">${{ b.price }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Content -->
+      <div class="col-12 col-md-7 book-content-section p-4 p-lg-5">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <h1 class="book-title">{{ b.name }}</h1>
+            <p class="book-author"><span class="label">By</span> {{ authorName(b.author) }}</p>
+          </div>
+          <div class="rating-box" *ngIf="b.averageRating != null">
+            <span class="rating-val">{{ b.averageRating }}</span>
+            <div class="rating-meta">
+              <i class="fa-solid fa-star"></i>
+              <span>({{ b.reviewCount || 0 }} reviews)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-indicators mb-4">
+          <span class="status-pill" [class.in-stock]="b.stock > 2" [class.low-stock]="b.stock <= 2">
+            <i class="fa-solid" [class.fa-check-circle]="b.stock > 2"
+              [class.fa-exclamation-triangle]="b.stock <= 2"></i>
+            {{ b.stock > 2 ? 'In Stock' : (b.stock > 0 ? 'Low Stock' : 'Out of Stock') }}
+          </span>
+          <span class="stock-count text-muted" *ngIf="b.stock > 0">{{ b.stock }} copies available</span>
+        </div>
+
+        <div class="description-section">
+          <h5 class="section-title">Description</h5>
+          <p class="book-desc">{{ b.description || 'Experience this masterpiece that critics and readers alike are
+            raving about.' }}</p>
+        </div>
+
+        <div class="action-section mt-auto pt-4">
+          <div class="d-flex flex-wrap gap-3">
+            <button class="btn btn-primary add-to-cart-btn">
+              <i class="fa-solid fa-cart-plus"></i>
+              Add to cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="reviews-section" class="mt-5">
+    <h3 class="text-color fw-bold mb-4">Customer Reviews</h3>
+
+    <div class="mb-4">
+      @if (isCheckingEligibility()) {
+      <div class="text-muted small py-2">Checking if you can review...</div>
+      } @else if (canReview()) {
+      <app-review-form [bookId]="b.id || b._id" [hasAlreadyReviewed]="hasAlreadyReviewed()"
+        [initialRating]="userReviewRating()" [initialComment]="userReviewComment()"
+        (reviewAdded)="onReviewAdded()"></app-review-form>
+      } @else {
+      <div class="alert alert-light border rounded-4 py-3 shadow-sm">
+        <p class="mb-0 text-muted small">
+          <i class="fa-solid fa-circle-info me-2 text-primary"></i>
+          Only customers who purchased and received this book can leave a review.
+        </p>
+      </div>
+      }
+    </div>
+
+    <div class="mt-5 pt-3 border-top">
+      <h4 class="h6 fw-bold text-color mb-4">All Community Feedback</h4>
+      <app-reviews-list #reviewsList [bookId]="b.id || b._id"></app-reviews-list>
+    </div>
+  </div>
+  }
+</div>
+
+<app-footer></app-footer>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavBar } from './nav-bar';
+import { StaticStarRating } from './static-star-rating';
 
-describe('NavBar', () => {
-  let component: NavBar;
-  let fixture: ComponentFixture<NavBar>;
+describe('StaticStarRating', () => {
+  let component: StaticStarRating;
+  let fixture: ComponentFixture<StaticStarRating>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavBar]
+      imports: [StaticStarRating]
     })
-      .compileComponents();
+    .compileComponents();
 
-    fixture = TestBed.createComponent(NavBar);
+    fixture = TestBed.createComponent(StaticStarRating);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavBar } from './nav-bar';
+import { MinMaxSlider } from './min-max-slider';
 
-describe('NavBar', () => {
-  let component: NavBar;
-  let fixture: ComponentFixture<NavBar>;
+describe('MinMaxSlider', () => {
+  let component: MinMaxSlider;
+  let fixture: ComponentFixture<MinMaxSlider>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavBar]
+      imports: [MinMaxSlider]
     })
-      .compileComponents();
+    .compileComponents();
 
-    fixture = TestBed.createComponent(NavBar);
+    fixture = TestBed.createComponent(MinMaxSlider);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

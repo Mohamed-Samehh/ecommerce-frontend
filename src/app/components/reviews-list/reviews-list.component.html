@@ -1,33 +1,39 @@
-<div class="reviews-section" id="reviews-section">
-    <h2>Reviews ({{ reviews.length }})</h2>
+<div class="reviews-list-container">
+  <div *ngIf="error" class="alert alert-warning small py-2 mb-3">
+    {{ error }}
+  </div>
 
-    <div *ngIf="isLoading" class="loading">Loading reviews...</div>
-    <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="isLoading" class="text-center py-4">
+    <div class="spinner-border spinner-border-sm text-secondary"></div>
+    <p class="small text-muted mt-2">Fetching community reviews...</p>
+  </div>
 
-    <div *ngIf="!isLoading && reviews.length === 0" class="no-reviews">
-        No reviews yet. Be the first to review this book!
-    </div>
-
-    <div class="reviews-container" *ngIf="!isLoading && reviews.length > 0">
-        <div *ngFor="let review of reviews" class="review-card">
-            <div class="review-header">
-                <div class="user-info">
-                    <span class="avatar">{{ getUserName(review).charAt(0) }}</span>
-                    <div class="meta">
-                        <span class="user-name">{{ getUserName(review) }}</span>
-                        <span class="date">{{ review.createdAt | date:'mediumDate' }}</span>
-                    </div>
-                </div>
-                <app-star-rating [rating]="review.rating" [readonly]="true"></app-star-rating>
-            </div>
-
-            <p class="comment" *ngIf="review.comment">
-                {{ review.comment }}
-            </p>
-
-            <div class="review-actions" *ngIf="canDelete(review)">
-                <button class="delete-btn" (click)="deleteReview(review._id!)">Delete</button>
-            </div>
+  <div *ngIf="!isLoading">
+    <div *ngIf="reviews.length > 0; else noReviews" class="reviews-wrapper">
+      <div *ngFor="let review of reviews" class="review-item border-bottom py-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <h6 class="mb-0 fw-bold text-color small">{{ getUserName(review) }}</h6>
+            <app-star-rating [value]="review.rating" [readonly]="true"></app-star-rating>
+          </div>
+          
+          <button *ngIf="canDelete(review)" 
+                  (click)="deleteReview(review._id!)" 
+                  class="btn btn-sm text-danger border-0 p-1">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
         </div>
+        
+        <p class="review-comment text-color small mb-1">{{ review.comment }}</p>
+        <small class="text-muted extra-small">{{ review.createdAt | date:'mediumDate' }}</small>
+      </div>
     </div>
+
+    <ng-template #noReviews>
+      <div class="no-reviews text-center py-5 bg-light rounded-4">
+        <i class="fa-regular fa-comment-dots fa-2x text-muted mb-2"></i>
+        <p class="text-muted small italic mb-0">No reviews yet. Be the first to share your thoughts!</p>
+      </div>
+    </ng-template>
+  </div>
 </div>

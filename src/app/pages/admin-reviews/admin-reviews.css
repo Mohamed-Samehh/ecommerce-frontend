@@ -107,12 +107,12 @@
     overflow: hidden;
 }
 
-.orders-table {
+.admin-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.orders-table th {
+.admin-table th {
     background-color: var(--cards--bg-color);
     padding: 1.25rem 1.5rem;
     text-align: left;
@@ -123,129 +123,62 @@
     border-bottom: 1px solid rgba(45, 26, 18, 0.05);
 }
 
-.orders-table td {
+.admin-table td {
     padding: 1.25rem 1.5rem;
     border-bottom: 1px solid var(--primary-color-bg);
     vertical-align: middle;
 }
 
-.order-id {
-    font-weight: 700;
-    color: var(--highlighted-text-color);
-}
-
-.customer-info {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-weight: 600;
-}
-
-.avatar-small {
-    width: 32px;
-    height: 32px;
-    background-color: var(--primary-color-bg);
-    color: var(--highlighted-text-color);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    font-weight: 800;
-}
-
-.amount {
-    font-weight: 700;
-    color: var(--text-color);
-}
-
-/* Badges */
-.badge {
-    padding: 0.35rem 0.75rem;
-    border-radius: var(--radius-full);
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.badge.processing {
-    background-color: var(--status-processing-bg);
-    color: var(--status-processing-text);
-}
-
-.badge.shipped {
-    background-color: #E3F2FD;
-    color: #1565C0;
-}
-
-.badge.delivered {
-    background-color: var(--status-delivered-bg);
-    color: var(--status-delivered-text);
-}
-
-.badge.pay-paid {
-    background-color: #E8F5E9;
-    color: #2E7D32;
-}
-
-.badge.pay-pending {
-    background-color: var(--status-cancelled-bg);
-    color: var(--status-cancelled-text);
-}
-
-/* Management Column */
-.manage-column {
-    min-width: 200px;
-}
-
-.manage-box {
+.user-cell .user-info {
     display: flex;
     flex-direction: column;
+}
+
+.book-name {
+    font-weight: 600;
+    color: var(--highlighted-text-color);
+}
+
+.comment-cell {
+    max-width: 300px;
+}
+
+.review-comment {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6d5b54;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.btn-delete {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
     gap: 0.5rem;
 }
 
-.manage-row {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background-color: var(--primary-color-bg);
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(45, 26, 18, 0.08);
-    transition: all 0.2s ease;
-}
-
-.manage-row:hover {
-    border-color: var(--badge--color);
-    box-shadow: 0 2px 8px rgba(45, 26, 18, 0.03);
-}
-
-.manage-row i {
-    font-size: 0.9rem;
-    color: var(--highlighted-text-color);
-    width: 16px;
-    text-align: center;
-}
-
-.manage-row select {
-    border: none;
-    background: transparent;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-color);
-    width: 100%;
-    cursor: pointer;
-    outline: none;
-    padding-right: 1rem;
-}
-
-.manage-row select:focus {
-    color: var(--highlighted-text-color);
+.btn-delete:hover {
+    background-color: #fecaca;
+    color: #b91c1c;
 }
 
 .empty-state {
     text-align: center;
     padding: 4rem 0;
     color: #999;
-    background-color: var(--secondary-color-bg);
+}
+
+.loading-overlay {
+    padding: 4rem 0;
+    text-align: center;
+    color: var(--highlighted-text-color);
 }

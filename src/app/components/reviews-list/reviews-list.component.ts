@@ -1,87 +1,109 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReviewService } from '../../services/review/review-service';
 import { Review, ReviewUser } from '../../interfaces/review';
-import { Book } from '../../interfaces/book';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 
 @Component({
-    selector: 'app-reviews-list',
-    standalone: true,
-    imports: [CommonModule, StarRatingComponent],
-    templateUrl: './reviews-list.component.html',
-    styleUrl: './reviews-list.component.css'
+  selector: 'app-reviews-list',
+  standalone: true,
+  imports: [CommonModule, StarRatingComponent],
+  templateUrl: './reviews-list.component.html',
+  styleUrl: './reviews-list.component.css'
 })
-export class ReviewsListComponent implements OnInit {
-    @Input() bookId!: string;
+export class ReviewsListComponent implements OnInit, OnChanges {
+  private _bookId: string | undefined;
 
-    private reviewService = inject(ReviewService);
+  @Input() set bookId(value: string | undefined) {
+    this._bookId = value;
+    if (value) {
+      this.loadReviews();
+    }
+  }
 
-    reviews: Review[] = [];
-    isLoading = true;
-    error: string | null = null;
-    currentUserId: string | null = null;
-    userRoles: string[] = [];
+  get bookId(): string | undefined {
+    return this._bookId;
+  }
 
-    ngOnInit(): void {
+  private readonly reviewService = inject(ReviewService);
+
+  reviews: Review[] = [];
+  isLoading = false;
+  error: string | null = null;
+  currentUserId: string | null = null;
+
+  ngOnInit(): void {
+    // English comment: Initialize current user info for delete permissions
+    this.setCurrentUserId();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['bookId']) {
+      // If the setter didn't trigger loadReviews (which it should), this is our backup
+      if (changes['bookId'].currentValue && !this.isLoading && this.reviews.length === 0) {
         this.loadReviews();
-        this.setCurrentUserId();
+      }
+    }
+  }
+
+  loadReviews(): void {
+    if (!this.bookId) {
+      return;
     }
 
-    setCurrentUserId(): void {
-        const token = localStorage.getItem('token');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                this.currentUserId = payload.id;
-                this.userRoles = payload.roles || [];
-            } catch (e) {
-                console.error('Error decoding token', e);
-            }
+    this.isLoading = true;
+    this.error = null;
+
+    this.reviewService.getBookReviews(this.bookId).subscribe({
+      next: (response) => {
+        this.reviews = response.data || [];
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load reviews:', err);
+        this.error = err?.error?.message || 'Failed to load reviews';
+        this.isLoading = false;
+        this.reviews = [];
+      }
+    });
+  }
+
+  private setCurrentUserId(): void {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          this.currentUserId = payload.id || payload._id;
+        } catch {
+          this.currentUserId = null;
         }
+      }
     }
+  }
 
-    loadReviews(): void {
-        this.isLoading = true;
-        this.reviewService.getBookReviews(this.bookId).subscribe({
-            next: (response: any) => {
-                // Backend returns { status: 'success', data: [...] }
-                this.reviews = response.data || [];
-                this.isLoading = false;
-            },
-            error: (err) => {
-                console.error('Failed to load reviews', err);
-                this.error = 'Could not load reviews.';
-                this.isLoading = false;
-            }
-        });
+  getUserName(review: Review): string {
+    if (review.userId && typeof review.userId === 'object') {
+      const user = review.userId as ReviewUser;
+      return `${user.firstName} ${user.lastName}`;
     }
+    return 'Anonymous User';
+  }
 
-    canDelete(review: Review): boolean {
-        if (!this.currentUserId) return false;
-        if (this.userRoles.includes('admin')) return true;
-        const userId = typeof review.userId === 'string' ? review.userId : (review.userId as ReviewUser)._id;
-        return userId === this.currentUserId;
-    }
+  canDelete(review: Review): boolean {
+    if (!this.currentUserId) return false;
+    const reviewOwnerId = typeof review.userId === 'object'
+      ? (review.userId as ReviewUser)._id
+      : review.userId;
+    return reviewOwnerId === this.currentUserId;
+  }
 
-    deleteReview(reviewId: string): void {
-        if (confirm('Are you sure you want to delete this review?')) {
-            this.reviewService.deleteReview(reviewId).subscribe({
-                next: () => {
-                    this.reviews = this.reviews.filter(r => r._id !== reviewId);
-                },
-                error: (err) => {
-                    console.error('Failed to delete review', err);
-                    alert('Failed to delete review.');
-                }
-            });
-        }
+  deleteReview(id: string): void {
+    if (confirm('Are you sure you want to delete this review?')) {
+      this.reviewService.deleteReview(id).subscribe({
+        next: () => this.loadReviews(),
+        error: (err) => console.error('Delete failed:', err)
+      });
     }
-
-    getUserName(review: Review): string {
-        if (typeof review.userId === 'object') {
-            return `${(review.userId as ReviewUser).firstName} ${(review.userId as ReviewUser).lastName}`;
-        }
-        return 'User';
-    }
+  }
 }
