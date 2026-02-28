@@ -10,17 +10,12 @@
         [routerLinkActiveOptions]="{exact: true}">Explore</a>
 
       @if (authService.isLoggedIn()) {
-        <a class="btn text-primary-color" routerLink="/profile" routerLinkActive="active">
-          <i class="fa-solid fa-user me-1"></i>Profile
-        </a>
-
         <a class="btn text-primary-color" routerLink="/order-history" routerLinkActive="active"
-          >Order History</a
-        >
-
-        @if (authService.isAdmin()) {
-          <a class="btn text-primary-color" routerLink="/admin" routerLinkActive="active">Admin</a>
-        }
+        >Order History</a>
+        
+        <a class="btn text-primary-color" routerLink="/profile" routerLinkActive="active">
+          Profile
+        </a>
 
         <button class="btn text-danger fw-bold" (click)="logout()">Logout</button>
       } @else {
