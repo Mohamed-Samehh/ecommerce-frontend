@@ -12,6 +12,7 @@ import { AdminBooks } from './pages/admin-books/admin-books';
 import { AdminAuthors } from './pages/admin-authors/admin-authors';
 import { AdminUsers } from './pages/admin-users/admin-users';
 import { ProfileComponent } from './pages/profile/profile';
+import { AdminProfileComponent } from './pages/admin-profile/admin-profile';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 import { guestGuard } from './guards/guest.guard';
@@ -77,7 +78,8 @@ export const routes: Routes = [
       { path: 'orders', component: AdminOrdersComponent, title: 'Manage Orders' },
       { path: 'books', component: AdminBooks, title: 'Manage Books' },
       { path: 'authors', component: AdminAuthors, title: 'Manage Authors' },
-      { path: 'categories', component: CategoryAdmin, title: 'Manage Categories' }
+      { path: 'categories', component: CategoryAdmin, title: 'Manage Categories' },
+      { path: 'profile', component: AdminProfileComponent, title: 'Admin Profile' }
     ]
   },
   { path: '**', component: NotFound } // must be at end: match any wrong path and redirect to 404 page
