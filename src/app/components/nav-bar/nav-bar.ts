@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 
 export class NavBar implements OnInit {
-    public authService = inject(AuthService);
+  public authService = inject(AuthService);
 
   cartService = inject(CartService);
 

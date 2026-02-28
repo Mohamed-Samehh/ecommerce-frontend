@@ -64,11 +64,16 @@ export class CategoryAdmin implements OnInit {
 
     if (name) {
       this.categoryService.createCategory(name).subscribe({
-        next: (response) => {
-          this.categories.push(response.data);
-          this.filteredCategories = this.categories;
-          Swal.fire('Success!', 'Category added successfully', 'success');
-        },
+        next: () => {
+          this.loadCategories(); // load after adding (appear in UI)
+
+          Swal.fire({
+            title: 'Success!',
+            text: 'Category added successfully',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+          });        },
         error: (err) => {
           Swal.fire('Error!', err.error.message, 'error');
         }
@@ -93,8 +98,8 @@ export class CategoryAdmin implements OnInit {
 
     if (name && name !== category.name) {
       this.categoryService.updateCategory(category._id, name).subscribe({
-        next: (response) => {
-          category.name = response.data.name;
+        next: () => {
+          this.loadCategories();
           Swal.fire('Updated!', 'Category updated successfully', 'success');
         },
         error: (err) => {
@@ -118,8 +123,7 @@ export class CategoryAdmin implements OnInit {
     if (result.isConfirmed) {
       this.categoryService.removeCategory(category._id).subscribe({
         next: () => {
-          this.categories = this.categories.filter(c => c._id !== category._id);
-          this.filteredCategories = this.filteredCategories.filter(c => c._id !== category._id);
+          this.loadCategories();
           Swal.fire('Deleted!', 'Category has been deleted', 'success');
         },
         error: (err) => {
