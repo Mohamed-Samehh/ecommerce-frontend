@@ -1,0 +1,29 @@
+.dropdown-menu-custom {
+  background-color: var(--primary-color-bg);
+
+  border: 1px solid var(--highlighted-text-color);
+}
+
+.dropdown-menu-custom .drop-category {
+  color: var(--text-color);
+  background-color: var(--primary-bg-color);
+}
+
+.dropdown-menu-custom .drop-category:hover,
+.dropdown-menu-custom .drop-category:focus {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}
+.button-color {
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
+}
+
+.button-color:hover {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}
+.button-color:focus {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}

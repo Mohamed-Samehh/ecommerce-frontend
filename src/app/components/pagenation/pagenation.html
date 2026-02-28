@@ -1,11 +1,13 @@
 <nav aria-label="...">
-  <ul class="pagination">
-    <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active">
-      <a class="page-link" href="#" aria-current="page">2</a>
+  <ul class="pagination gap-1">
+    <li class="page-item"><a href="#" class="page-link button-color" (click)="prevPage()"><i
+          class="fa-solid fa-arrow-left"></i></a></li>
+    @for (pages of hollowArray(); track $index) {
+    <li class="page-item"><button class="page-link button-color-page" [class.active]="($index+1)===currentPage()"
+        [disabled]="($index+1) === currentPage()" (click)="pageChange($index+1)">{{$index+1}}</button>
     </li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    }
+    <li class="page-item"><a class="page-link button-color" href="#" (click)="nextPage()"><i
+          class="fa-solid fa-arrow-right"></i></a></li>
   </ul>
 </nav>

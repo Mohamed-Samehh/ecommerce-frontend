@@ -1,6 +1,6 @@
 @if(book()){
-<a class="text-decoration-none" [routerLink]="['/book', book()?._id]">
-<div class="card card-bg rounded-5 shadow-hover" style="width: 20rem; height: 35rem; overflow: hidden;">
+<a class="text-decoration-none" >
+  <div class=" card card-bg rounded-5 shadow-hover" style="width: 20rem; height: 35rem; overflow: hidden;">
   <div class="position-relative m-4">
     <img [src]="book()?.coverImage" class="card-img-top rounded-5" alt="book image"
       style="height: 20rem; object-fit: cover;">
@@ -25,12 +25,13 @@
       <app-static-star-rating [numberOfStars]="book()?.averageRating ?? 0"></app-static-star-rating>
 
     </div>
-    <p class="card-text text-truncate-2" >{{ book()?.description }}
+    <p class="card-text text-truncate-2">{{ book()?.description }}
     </p>
     <div class=" d-flex justify-content-center">
-      <span class="btn button-color px-5 disabled"><i class="fa-solid fa-cart-plus"></i> Add to cart</span>
+      <button class="btn button-color px-5 " (click)="addToCart($event)"><i class="fa-solid fa-cart-plus"></i> Add to
+        cart</button>
     </div>
   </div>
-</div>
+  </div>
 </a>
 }

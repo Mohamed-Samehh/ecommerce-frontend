@@ -1,0 +1,63 @@
+.card-bg {
+  background-color: var(--cards--bg-color);
+
+}
+
+.text-color {
+  color: var(--text-color);
+}
+
+.button-color {
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
+}
+
+.button-color:hover {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}
+
+.button-color:focus {
+  color: var(--button-text-color);
+  background-color: var(--highlighted-text-color);
+}
+/* 3. The Active/Selected page state */
+.button-color.active {
+  background-color: var(--button-bg-color) !important;
+  color: var(--button-text-color) !important;
+  border-color: var(--button-bg-color);
+}
+
+.button-color:focus {
+  box-shadow: 0 0 0 0.25rem var(--secondary-color-bg);
+  border-color: var(--button-bg-color);
+  outline: none;
+}
+
+.button-color-page {
+  background-color: var(--cards--bg-color);
+  color: var(--text-color);
+  border: none;
+}
+
+.button-color-page:hover {
+  background-color: var(--badge--color);
+  color: var(--button-text-color);
+}
+
+.button-color-page.active {
+  background-color: var(--button-bg-color) !important;
+  color: var(--button-text-color) !important;
+  border-color: var(--button-bg-color);
+}
+
+.button-color-page:focus {
+  box-shadow: 0 0 0 0.25rem var(--secondary-color-bg);
+  border-color: var(--button-bg-color);
+  outline: none;
+}
+
+.button-color-page:active {
+  background-color: var(--button-bg-color) !important;
+  color: var(--button-text-color) !important;
+}

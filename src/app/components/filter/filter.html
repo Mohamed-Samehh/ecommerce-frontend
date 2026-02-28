@@ -1,1 +1,19 @@
-<p>filter works!</p>
+<div class="filter-container">
+  <h2 class="filter-title">Filter</h2>
+
+  <div class="checkboxes-group">
+    @for (category of categories(); track category) {
+    <label class="checkbox-wrapper">
+      <input type="checkbox" [checked]="isSelected(category._id)" (change)="toggleCategory(category._id)"
+        class="checkbox-input" />
+      <span class="checkbox-label">{{ category.name }}</span>
+    </label>
+    }
+  </div>
+
+  @if (selectedCategories().length > 0) {
+  <button (click)="clearAll()" class="clear-button">
+    Clear All
+  </button>
+  }
+</div>

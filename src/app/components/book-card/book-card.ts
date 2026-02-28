@@ -14,4 +14,12 @@ import { StaticStarRating } from '../static-star-rating/static-star-rating';
 export class BookCard {
   book = input<Book>();
 
+  addToCart(event:Event){
+    event.stopPropagation();
+    event.preventDefault();
+    if(this.book() && typeof this.book()?.id === 'string'){
+      // this.cartService.addToCart({id:this.book()!.id ,count: 1})
+    }
+    console.log('Added to cart:', this.book()?.id);
+  }
 }
