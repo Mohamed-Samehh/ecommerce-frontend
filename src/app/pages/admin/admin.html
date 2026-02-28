@@ -45,16 +45,29 @@
             <span>Reviews</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a routerLink="/admin/profile" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-user-circle"></i>
+            <span>Profile</span>
+          </a>
+        </li>
       </ul>
     </nav>
 
     <hr class="sidebar-divider" />
 
     <div class="sidebar-footer">
-      <div class="admin-profile">
-        <div class="admin-avatar-letter">A</div>
-        <span>Admin User</span>
-      </div>
+      <a routerLink="/admin/profile" class="admin-profile" aria-label="Go to admin profile page">
+        <div class="admin-avatar" aria-hidden="true">{{ userInitials() }}</div>
+        <div class="admin-profile-meta">
+          <span class="admin-name">{{ fullName() }}</span>
+          <small class="admin-email">{{ currentUser()?.email || 'No email available' }}</small>
+        </div>
+      </a>
+      <button type="button" class="admin-logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Sign Out</span>
+      </button>
     </div>
 
   </aside>

@@ -15,6 +15,10 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth';
 import { NavBar } from '../../components/nav-bar/nav-bar';
+import {
+  notFutureDateValidator,
+  passwordStrengthPattern
+} from '../../utils/form-validators';
 
 export const passwordMatchValidator: ValidatorFn = (
   group: AbstractControl
@@ -51,8 +55,8 @@ export class Register {
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
-      dob: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      dob: ['', [Validators.required, notFutureDateValidator]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(passwordStrengthPattern)]],
       confirmPassword: ['', [Validators.required]]
     },
     { validators: passwordMatchValidator }

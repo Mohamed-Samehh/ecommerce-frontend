@@ -1,0 +1,147 @@
+@if (isLoading()) {
+  <div class="d-flex justify-content-center align-items-center admin-profile-loading">
+    <div class="spinner-border" role="status" style="color:var(--highlighted-text-color)">
+      <span class="visually-hidden">Loading…</span>
+    </div>
+  </div>
+} @else {
+  <div class="admin-profile-page">
+    <div class="row g-4 align-items-start">
+      <div class="col-12 col-xl-8">
+        <div class="admin-profile-card rounded-4 p-4 p-md-5 shadow-sm">
+          <h2 class="fw-bold mb-4" style="color:var(--text-color)">Admin Profile</h2>
+
+          @if (successMessage()) {
+            <div class="alert alert-success d-flex align-items-center gap-2 py-2 mb-4" role="alert">
+              <i class="fa-solid fa-circle-check"></i>
+              {{ successMessage() }}
+            </div>
+          }
+          @if (errorMessage()) {
+            <div class="alert alert-danger d-flex align-items-center gap-2 py-2 mb-4" role="alert">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <form [formGroup]="profileForm" novalidate>
+            <div class="row g-3">
+              <div class="col-12 col-sm-6">
+                <label for="firstName" class="form-label fw-semibold small admin-profile-label">First Name</label>
+                <input
+                  id="firstName"
+                  type="text"
+                  formControlName="firstName"
+                  class="form-control"
+                  [class.is-invalid]="firstNameCtrl.invalid && firstNameCtrl.touched"
+                  [readOnly]="!isEditMode()"
+                  [class.profile-readonly]="!isEditMode()"
+                />
+                <div class="invalid-feedback">
+                  @if (firstNameCtrl.hasError('required')) { First name is required. }
+                  @else if (firstNameCtrl.hasError('minlength')) { Minimum 2 characters. }
+                  @else if (firstNameCtrl.hasError('maxlength')) { Maximum 50 characters. }
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6">
+                <label for="lastName" class="form-label fw-semibold small admin-profile-label">Last Name</label>
+                <input
+                  id="lastName"
+                  type="text"
+                  formControlName="lastName"
+                  class="form-control"
+                  [class.is-invalid]="lastNameCtrl.invalid && lastNameCtrl.touched"
+                  [readOnly]="!isEditMode()"
+                  [class.profile-readonly]="!isEditMode()"
+                />
+                <div class="invalid-feedback">
+                  @if (lastNameCtrl.hasError('required')) { Last name is required. }
+                  @else if (lastNameCtrl.hasError('minlength')) { Minimum 2 characters. }
+                  @else if (lastNameCtrl.hasError('maxlength')) { Maximum 50 characters. }
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label for="dob" class="form-label fw-semibold small admin-profile-label">Date of Birth</label>
+                <input
+                  id="dob"
+                  type="date"
+                  formControlName="dob"
+                  class="form-control"
+                  [max]="maxDob"
+                  [class.is-invalid]="dobCtrl.invalid && dobCtrl.touched"
+                  [readOnly]="!isEditMode()"
+                  [class.profile-readonly]="!isEditMode()"
+                />
+                <div class="invalid-feedback">
+                  @if (dobCtrl.hasError('required')) { Date of birth is required. }
+                  @else if (dobCtrl.hasError('futureDate')) { Date of birth cannot be in the future. }
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label for="email" class="form-label fw-semibold small admin-profile-label">Email Address</label>
+                <input
+                  id="email"
+                  type="email"
+                  [value]="currentUser()?.email || ''"
+                  readonly
+                  class="form-control profile-readonly"
+                />
+                <div class="form-text">Email address cannot be changed.</div>
+              </div>
+            </div>
+          </form>
+
+          <div class="d-flex gap-2 flex-wrap mt-4">
+            @if (!isEditMode()) {
+              <button class="btn btn-profile-primary" (click)="enterEditMode()">
+                <i class="fa-solid fa-pen-to-square me-1"></i>Edit Profile
+              </button>
+            } @else {
+              <button class="btn btn-profile-primary" (click)="saveProfile()" [disabled]="isSaving()">
+                @if (isSaving()) {
+                  <span class="spinner-border spinner-border-sm me-1" role="status"></span>Saving…
+                } @else {
+                  <i class="fa-solid fa-check me-1"></i>Save Changes
+                }
+              </button>
+              <button class="btn btn-outline-profile-cancel" (click)="cancelEdit()" [disabled]="isSaving()">
+                Cancel
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-4">
+        <div class="admin-profile-card rounded-4 p-4 shadow-sm text-center">
+          <div class="admin-profile-avatar mb-3">{{ userInitials() }}</div>
+          <h5 class="fw-bold mb-1" style="color:var(--text-color)">{{ fullName() }}</h5>
+          <p class="small text-muted mb-0">{{ currentUser()?.email }}</p>
+
+          <hr class="my-3" />
+
+          <div class="d-flex flex-column gap-1 text-start">
+            <a routerLink="/admin/users" class="btn btn-light btn-sm text-start fw-semibold">
+              <i class="fa-solid fa-users me-2" style="color:var(--highlighted-text-color)"></i>Manage Users
+            </a>
+            <a routerLink="/admin/orders" class="btn btn-light btn-sm text-start fw-semibold">
+              <i class="fa-solid fa-cart-shopping me-2" style="color:var(--highlighted-text-color)"></i>Manage Orders
+            </a>
+            <a routerLink="/admin/books" class="btn btn-light btn-sm text-start fw-semibold">
+              <i class="fa-solid fa-book-open me-2" style="color:var(--highlighted-text-color)"></i>Manage Books
+            </a>
+          </div>
+
+          <hr class="my-3" />
+
+          <button class="btn btn-outline-danger btn-sm w-100" (click)="logout()">
+            <i class="fa-solid fa-arrow-right-from-bracket me-1"></i>Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

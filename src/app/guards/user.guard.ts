@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth/auth';
 import Swal from 'sweetalert2';
 
-export const adminGuard: CanActivateFn = async () => {
+export const userGuard: CanActivateFn = async () => {
   // During SSR there is no DOM APIs for alerts — let the browser re-run the guard.
   if (!isPlatformBrowser(inject(PLATFORM_ID))) {
     return true;
@@ -21,14 +21,26 @@ export const adminGuard: CanActivateFn = async () => {
       icon: 'warning',
       iconColor,
       title: 'Login required',
-      text: 'Please log in to access admin pages.',
+      text: 'Please log in to continue.',
       confirmButtonText: 'Go to login'
     });
 
     return router.createUrlTree(['/login']);
   }
 
-  if (authService.isAdmin()) {
+  if (authService.currentUser()) {
+    if (authService.isAdmin()) {
+      await Swal.fire({
+        icon: 'info',
+        iconColor,
+        title: 'Admin access detected',
+        text: 'Redirecting you to admin users page.',
+        confirmButtonText: 'Continue'
+      });
+
+      return router.createUrlTree(['/admin/books']);
+    }
+
     return true;
   }
 
@@ -36,18 +48,18 @@ export const adminGuard: CanActivateFn = async () => {
     await firstValueFrom(authService.getMe());
 
     if (authService.isAdmin()) {
-      return true;
+      await Swal.fire({
+        icon: 'info',
+        iconColor,
+        title: 'Admin access detected',
+        text: 'Redirecting you to admin users page.',
+        confirmButtonText: 'Continue'
+      });
+
+      return router.createUrlTree(['/admin/books']);
     }
 
-    await Swal.fire({
-      icon: 'error',
-      iconColor,
-      title: 'Access denied',
-      text: 'You do not have admin permissions.',
-      confirmButtonText: 'Go to home'
-    });
-
-    return router.createUrlTree(['/']);
+    return true;
   } catch {
     await Swal.fire({
       icon: 'error',
