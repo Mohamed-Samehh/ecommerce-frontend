@@ -7,10 +7,11 @@ import { CategoryAdmin } from "../components/category-admin/category-admin";
 import { RouterModule } from "@angular/router";
 import { Explore } from '../pages/explore/explore';
 import { BookCard } from '../components/book-card/book-card';
+import { Cart } from '../pages/cart/cart';
 
 @Component({
   selector: 'app-test-wrapper',
-  imports: [SearchBar, Admin, NavBar, Footer, CategoryAdmin, RouterModule,Explore,BookCard],
+  imports: [Cart, SearchBar, Admin, NavBar, Footer, CategoryAdmin, RouterModule,Explore,BookCard],
   templateUrl: './test-wrapper.html',
   styleUrl: './test-wrapper.css'
 })
