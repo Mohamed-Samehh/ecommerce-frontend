@@ -24,22 +24,22 @@ export class AdminOrdersComponent implements OnInit {
     this.loadOrders();
   }
 
-    loadOrders(): void {
-        this.isLoading = true;
-        this.orderService.getAllOrders().subscribe({
-            next: (response) => {
-                const ordersData = response.data;
-                // Handle various API response formats safely
-                this.orders = Array.isArray(ordersData) ? ordersData : (ordersData as { data: Order[] }).data || [];
-                this.filteredOrders = [...this.orders];
-                this.isLoading = false;
-            },
-            error: (err) => {
-                console.error('Failed to load admin orders:', err);
-                this.isLoading = false;
-            }
-        });
-    }
+  loadOrders(): void {
+    this.isLoading = true;
+    this.orderService.getAllOrders().subscribe({
+      next: (response) => {
+        const ordersData = response.data;
+        // Handle various API response formats safely
+        this.orders = Array.isArray(ordersData) ? ordersData : (ordersData as { data: Order[] }).data || [];
+        this.filteredOrders = [...this.orders];
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load admin orders:', err);
+        this.isLoading = false;
+      }
+    });
+  }
 
   applyFilters(): void {
     this.filteredOrders = this.orders.filter(order => {
@@ -58,15 +58,9 @@ export class AdminOrdersComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
-  updateStatus(order: Order, newStatus: any): void {
+  updateStatus(order: Order, newStatus: Order['status']): void {
     const previousStatus = order.status;
     order.status = newStatus; // Optimistic update
-=======
-    updateStatus(order: Order, newStatus: Order['status']): void {
-        const previousStatus = order.status;
-        order.status = newStatus; // Optimistic update
->>>>>>> 7ad3030f42ee6f7377494fa359a7cbe0598009ee
 
     if (!order._id) return;
 
