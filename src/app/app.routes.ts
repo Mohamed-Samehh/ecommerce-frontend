@@ -10,7 +10,7 @@ import { OrderConfirmationComponent } from './pages/order-confirmation/order-con
 import { AdminOrdersComponent } from './pages/admin-orders/admin-orders';
 import { ProfileComponent } from './pages/profile/profile';
 import { authGuard } from './guards/auth.guard';
-import { Home } from './pages/home/home';
+import { guestGuard } from './guards/guest.guard';
 import { Explore } from './pages/explore/explore';
 
 export const routes: Routes = [
@@ -27,11 +27,13 @@ export const routes: Routes = [
   {
     path: 'login',
     component: Login,
+    canActivate: [guestGuard],
     title: 'Sign In'
   },
   {
     path: 'register',
     component: Register,
+    canActivate: [guestGuard],
     title: 'Create Account'
   },
   {
