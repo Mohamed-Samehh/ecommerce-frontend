@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://ecommerce-backend-iota-sage.vercel.app/'
+  apiUrl: 'https://ecommerce-backend-kappa-red.vercel.app/'
 };

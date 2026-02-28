@@ -5,7 +5,7 @@
   "outputDirectory": "dist/ecommerce-frontend/browser",
   "rewrites": [
     {
-      "source": "/((?!.*\\..*).*)",
+      "source": "/:path((?!.*\\.).*)",
       "destination": "/index.html"
     }
   ]
