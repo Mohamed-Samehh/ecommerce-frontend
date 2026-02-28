@@ -11,8 +11,9 @@ import { Book } from '../../interfaces/book';
 export class BookService {
   apiUrl = `${environment.apiUrl}/books`;
   private http = inject(HttpClient);
-  getAllBooks(query?:string):Observable<ApiResponse<Book[]>>{
-    return this.http.get<ApiResponse<Book[]>>(`${this.apiUrl}?${query ?? ''}`);
+  getAllBooks(query?:string,page = 1,limit=10):Observable<ApiResponse<Book[]>>{
+    console.log('Fetching books with query:', query, 'page:', page, 'limit:', limit);
+    return this.http.get<ApiResponse<Book[]>>(`${this.apiUrl}?page=${page}&limit=${limit}&${query ?? ''}`);
   }
   getBookById(id:string):Observable<ApiResponse<Book>>{
     return this.http.get<ApiResponse<Book>>(`${this.apiUrl}/${id}`);
