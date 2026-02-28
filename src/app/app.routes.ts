@@ -11,6 +11,7 @@ import { AdminOrdersComponent } from './pages/admin-orders/admin-orders';
 import { Explore } from './pages/explore/explore';
 import { BookDetails } from './pages/book-details/book-details';
 import { AdminReviewsComponent } from './pages/admin-reviews/admin-reviews';
+import { Cart } from './pages/cart/cart';
 
 export const routes: Routes = [
   {
@@ -47,6 +48,11 @@ export const routes: Routes = [
     path: 'order-history',
     component: OrderHistory,
     title: 'Order History'
+  },
+  {
+    path: 'cart',
+    component: Cart,
+    title: 'Cart'
   },
   {
     path: 'admin',
