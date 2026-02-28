@@ -1,25 +1,33 @@
-import { Component, input } from '@angular/core';
+import { Component, input, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Book } from '../../interfaces/book';
 import { StaticStarRating } from '../static-star-rating/static-star-rating';
+import { CartService } from '../../services/cart/cart';
 
 @Component({
   selector: 'app-book-card',
-
-  imports: [StaticStarRating,RouterModule],
-
+  imports: [StaticStarRating, RouterModule],
   templateUrl: './book-card.html',
   styleUrl: './book-card.css'
 })
 export class BookCard {
   book = input<Book>();
+  private cartService = inject(CartService);
 
-  addToCart(event:Event){
+  addToCart(event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    if(this.book() && typeof this.book()?.id === 'string'){
-      // this.cartService.addToCart({id:this.book()!.id ,count: 1})
+    const bookId = this.book()?._id;
+
+    if (bookId) {
+      this.cartService.addToCart(bookId, 1).subscribe({
+        next: () => {
+          console.log(`Book ${bookId} added to cart successfully.`);
+        },
+        error: (err) => {
+          console.error('Error adding to cart:', err);
+        }
+      });
     }
-    console.log('Added to cart:', this.book()?.id);
   }
 }

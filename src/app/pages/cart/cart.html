@@ -12,12 +12,12 @@
         <i class="fas fa-spinner fa-spin"></i>
         <p>Loading your cart...</p>
       </div>
-    } @else if (!cart || cart.items.length === 0) {
+    } @else if (!cart || !cart.items || cart.items.length === 0) {
       <div class="empty-cart">
         <i class="fas fa-shopping-cart empty-icon"></i>
         <h2>Your cart is empty</h2>
         <p>Add some books to get started!</p>
-        <button class="btn-continue" routerLink="/explore">
+        <button class="btn-continue" routerLink="/">
           Continue Shopping
         </button>
       </div>
