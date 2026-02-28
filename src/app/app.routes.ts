@@ -8,8 +8,22 @@ import { OrderHistory } from './pages/order-history/order-history';
 import { CheckoutComponent } from './pages/checkout/checkout';
 import { OrderConfirmationComponent } from './pages/order-confirmation/order-confirmation';
 import { AdminOrdersComponent } from './pages/admin-orders/admin-orders';
+import { ProfileComponent } from './pages/profile/profile';
+import { authGuard } from './guards/auth.guard';
+import { Home } from './pages/home/home';
+import { Explore } from './pages/explore/explore';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'explore',
+    pathMatch: 'full'
+  },
+  {
+    path: 'explore',
+    component: Explore,
+    title: 'Explore'
+  },
   {
     path: 'login',
     component: Login,
@@ -39,6 +53,12 @@ export const routes: Routes = [
     path: 'order-history',
     component: OrderHistory,
     title: 'Order History'
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [authGuard],
+    title: 'My Profile'
   },
   {
     path: 'admin',

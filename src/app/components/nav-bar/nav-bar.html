@@ -1,15 +1,24 @@
 <nav class="navbar bg-white p-0">
   <div class="container-fluid ">
-    <a class="navbar-brand text-primary-color">
+    <a class="navbar-brand text-primary-color" routerLink="/">
       <img src="logo.png" alt="Logo" class="d-inline-block align-text-center rounded-2 fw-bold logo-image">
       Wyrmhole books
     </a>
     <div class="d-flex justify-content-end align-items-center">
 
-      <a class="btn text-primary-color" routerLink="/login" routerLinkActive="active">Explore</a>
-      <a class="btn text-primary-color" routerLink="/login" routerLinkActive="active">Sign in</a>
-      <a class="btn  fs-3 text-primary-color " routerLink="/cart" routerLinkActive="active"> <i
-          class="fa-solid fa-cart-shopping"></i></a>
+      <a class="btn text-primary-color" routerLink="/explore" routerLinkActive="active">Explore</a>
+
+      @if (authService.isLoggedIn()) {
+        <a class="btn text-primary-color" routerLink="/profile" routerLinkActive="active">
+          <i class="fa-solid fa-user me-1"></i>Profile
+        </a>
+      } @else {
+        <a class="btn text-primary-color" routerLink="/login" routerLinkActive="active">Sign in</a>
+      }
+
+      <a class="btn fs-3 text-primary-color" routerLink="/cart" routerLinkActive="active">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </a>
     </div>
   </div>
 </nav>

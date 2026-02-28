@@ -1,20 +1,20 @@
 <div class="auth-page d-flex flex-column">
   <app-nav-bar></app-nav-bar>
 
-  <div class="flex-grow-1 row g-0">
-    <!-- Left: form panel -->
-    <div class="col-md-6 auth-left d-flex align-items-center justify-content-center p-4 p-xl-5">
-      <div class="auth-form-wrapper">
+  <div class="flex-grow-1 row g-0 mb-3">
+    <div class="col-12 auth-left d-flex align-items-center justify-content-center p-4 p-xl-5">
+      <div class="auth-form-wrapper card border-0 shadow-sm rounded-4 p-4 p-md-5" style="background-color: var(--cards--bg-color);">
+        <div class="row g-4 align-items-center">
+          <div class="col-12 col-lg-7 auth-form-panel mx-auto">
 
         <!-- Brand -->
         <div class="d-flex align-items-center gap-2 mb-4">
-          <img src="logo.png" alt="" class="auth-logo"/>
-          <span class="auth-brand-name">Wyrmhole Books</span>
+          <span class="auth-brand-name">Create your account today 📚</span>
         </div>
 
         @if (step() === 'details') {
           <h1 class="h3 fw-bold mb-1">Register</h1>
-          <p class="text-muted small mb-4">Create your account today 👋</p>
+          <p class="text-muted small mb-4">Join us and start your journey today!</p>
 
           <form [formGroup]="registerForm" (ngSubmit)="submitDetails()" novalidate>
             <!-- First Name + Last Name -->
@@ -224,13 +224,13 @@
             <i class="fa fa-arrow-left me-1"></i> Back to registration
           </button>
         }
+          </div>
 
+          <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+            <img src="sign.png" alt="" class="auth-image" />
+          </div>
+        </div>
       </div>
-    </div>
-
-    <!-- Right: image -->
-    <div class="col-md-6 auth-right d-none d-md-flex align-items-center justify-content-center">
-      <img src="sign.png" alt="" class="auth-image" />
     </div>
   </div>
 </div>

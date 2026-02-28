@@ -59,6 +59,12 @@ export class AuthService {
       .pipe(tap((user) => this._currentUser.set(user)));
   }
 
+  updateMe(data: { firstName?: string; lastName?: string; dob?: string }) {
+    return this.http
+      .put<{ message: string; data: User }>(`${this.baseUrl}/me`, data)
+      .pipe(tap((res) => this._currentUser.set(res.data)));
+  }
+
   logout() {
     if (this.isBrowser) localStorage.removeItem(AuthService.TOKEN_KEY);
     this._token.set(null);
