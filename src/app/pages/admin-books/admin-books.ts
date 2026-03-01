@@ -170,10 +170,6 @@ export class AdminBooks implements OnInit {
       }
     });
   }
-  editBook(id:string){
-    console.log('Editing book with id:', id);
-
-  }
   addBook(formData: FormData){
     this.formMode.set(null);
     this.bookServiceApi.createBook(formData).subscribe({
@@ -186,6 +182,26 @@ export class AdminBooks implements OnInit {
       error: (err) => {
         Swal.fire('Error!', err.message, 'error');
         console.error('Error adding book:', err);
+      }
+    });
+  }
+  updateBook(formData: FormData){
+    const bookId = this.selectedBookId();
+    if (!bookId) {
+      Swal.fire('Error!', 'No book selected for update', 'error');
+      return;
+    }
+    this.formMode.set(null);
+    this.bookServiceApi.replaceBook(bookId, formData).subscribe({
+      next: (data) => {
+        const updatedBook = data.data;
+        this.books.update(arr => arr.map(book => book._id === bookId ? updatedBook : book));
+        console.log('Book updated successfully:', updatedBook);
+        Swal.fire('Success!', 'Book updated successfully', 'success');
+      }
+      ,error: (err) => {
+        Swal.fire('Error!', err.message, 'error');
+        console.error('Error updating book:', err);
       }
     });
   }
