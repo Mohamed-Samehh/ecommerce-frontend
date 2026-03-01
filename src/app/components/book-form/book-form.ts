@@ -18,7 +18,7 @@ export class BookForm {
     authorid: ['', Validators.required],
     description: ['']
   });
-  formData = output<FormData>();
+  formData = output<FormData|null>();
 
   onSubmit() {
     if (this.bookForm.valid) {
@@ -49,7 +49,7 @@ export class BookForm {
   }
   onCancel() {
     console.log('Form cancelled');
-    // Here you would typically navigate back to the previous page or reset the form
+    this.formData.emit(null);
   }
   onFileChange(event: Event) {
     this.selectedFile = (event.target as HTMLInputElement).files?.[0] ?? null;
