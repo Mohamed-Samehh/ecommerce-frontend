@@ -1,236 +1,241 @@
-.cart-page {
+.wyrm-cart-page {
   background-color: var(--primary-color-bg);
   min-height: 100vh;
 }
 
-.cart-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem;
+/* --- Hero Section --- */
+.wyrm-hero-section {
+  background: linear-gradient(135deg, var(--footer-bg-color) 0%, var(--highlighted-text-color) 100%);
+  height: 320px; /* Slightly shorter than explore page */
+  position: relative;
+  border-bottom: 4px solid var(--badge--color);
 }
 
-.cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 2rem;
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
 }
 
-.cart-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin: 0;
-}
-
-.item-count {
-  font-size: 1rem;
-  color: var(--selection-color);
-  margin: 0;
-}
-
-.loading-state,
-.empty-cart {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: var(--secondary-color-bg);
-  border-radius: var(--radius-lg);
-  margin: 2rem 0;
-}
-
-.loading-state i {
-  font-size: 3rem;
+.golden-eyebrow {
   color: var(--badge--color);
-  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.wyrm-title {
+  color: #ffffff;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.wyrm-subtitle {
+  color: var(--primary-color-bg);
+  font-size: 1.1rem;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+/* --- Main Container --- */
+.wyrm-cart-container {
+  margin-top: -60px; /* Pulls content up into the dark header */
+  position: relative;
+  z-index: 10;
+  margin-bottom: 5rem;
+}
+
+.wyrm-section-title {
+  font-family: 'Georgia', serif;
+  color: var(--text-color);
+  font-size: 1.5rem;
+}
+
+/* --- Empty State --- */
+.wyrm-empty-state {
+  background: var(--cards--bg-color);
+  border-radius: var(--radius-lg);
+  border: 1px dashed rgba(217, 168, 108, 0.4);
+  box-shadow: 0 15px 30px rgba(45, 26, 18, 0.05);
+  padding: 4rem 2rem;
 }
 
 .empty-icon {
   font-size: 4rem;
   color: var(--selection-color);
-  margin-bottom: 1rem;
+  opacity: 0.5;
 }
 
-.empty-cart h2 {
-  font-size: 1.5rem;
+.empty-title {
+  font-family: 'Georgia', serif;
   color: var(--text-color);
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
 }
 
-.empty-cart p {
+.empty-subtitle {
   color: var(--selection-color);
-  margin-bottom: 2rem;
+  font-family: var(--main-font);
 }
 
-.btn-continue {
-  background-color: var(--button-bg-color);
-  color: var(--button-text-color);
-  padding: 12px 32px;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-size: var(--font-md);
+.wyrm-btn-outline {
+  border: 1px solid var(--badge--color);
+  color: var(--badge--color);
+  padding: 10px 24px;
+  border-radius: var(--radius-full);
   font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+  transition: all 0.3s;
 }
 
-.btn-continue:hover {
-  opacity: 0.9;
+.wyrm-btn-outline:hover {
+  background: var(--badge--color);
+  color: var(--footer-bg-color);
 }
 
-.cart-content {
-  display: grid;
-  grid-template-columns: 1fr 380px; 
-  gap: 2rem;
-  align-items: start;
-}
-
-.cart-items-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.cart-item {
-  background: var(--secondary-color-bg);
+/* --- Cart Items --- */
+.wyrm-cart-item {
+  background: var(--cards--bg-color);
   border-radius: var(--radius-md);
-  padding: 1.5rem;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-rows: auto auto;
-  column-gap: 1.5rem;
-  row-gap: 1rem;
+  box-shadow: 0 10px 25px rgba(45, 26, 18, 0.05);
+  border: 1px solid rgba(217, 168, 108, 0.2) !important;
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.book-cover {
-  grid-row: 1 / -1;
-  width: 70px;
-  height: 100px;
+.wyrm-cart-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--badge--color) !important;
+}
+
+.wyrm-cart-cover {
+  width: 100%;
+  aspect-ratio: 2/3;
   object-fit: cover;
   border-radius: var(--radius-sm);
+  border: 1px solid rgba(45, 26, 18, 0.1);
 }
 
-.item-info {
-  grid-row: 1 / -1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding-top: 0.25rem;
-}
-
-.book-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-color);
-  margin: 0 0 0.25rem 0;
-}
-
-.book-author {
-  font-size: 0.875rem;
-  color: var(--selection-color);
-  margin: 0 0 0.5rem 0;
-}
-
-.book-rating {
-  display: flex;
-  gap: 2px;
-}
-
-.book-rating i {
+.wyrm-cart-author {
+  font-family: var(--main-font);
+  color: var(--badge--color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
   font-size: 0.75rem;
-}
-
-.book-rating i.filled { color: var(--badge--color); }
-.book-rating i.empty { color: #ddd; }
-
-.item-price {
-  font-size: 1.125rem;
   font-weight: 700;
+}
+
+.wyrm-cart-book-title {
+  font-family: 'Georgia', serif;
+  font-size: 1.3rem;
   color: var(--text-color);
-  grid-column: 3;
-  grid-row: 1;
-  text-align: right;
-  padding-top: 0.25rem;
+  line-height: 1.2;
 }
 
-.item-actions {
-  grid-column: 3;
-  grid-row: 2;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  justify-content: flex-end;
+.filled-star { color: var(--badge--color); }
+.empty-star { color: rgba(45, 26, 18, 0.2); }
+
+.wyrm-cart-price {
+  font-family: 'Georgia', serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--highlighted-text-color);
 }
 
-.quantity-controls {
-  display: flex;
+/* --- Quantity Controls --- */
+.wyrm-qty-wrapper {
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  background: var(--primary-color-bg);
+  border: 1px solid rgba(217, 168, 108, 0.4);
+  border-radius: var(--radius-full);
+  padding: 4px;
 }
 
 .qty-btn {
-  width: 24px;
-  height: 24px;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
-  border: 1px solid var(--selection-color);
-  border-radius: 50%;
-  color: var(--text-color);
-  cursor: pointer;
-  font-size: 0.7rem;
-  transition: background-color 0.2s;
+  font-size: 0.8rem;
+  transition: all 0.2s;
 }
 
 .qty-btn:hover:not(:disabled) {
-  background-color: var(--cards--bg-color);
+  background: var(--cards--bg-color);
+  color: var(--highlighted-text-color);
 }
 
 .qty-btn:disabled {
-  color: #ccc;
-  border-color: #ccc;
+  color: rgba(45, 26, 18, 0.2);
   cursor: not-allowed;
 }
 
 .qty-input {
-  width: 44px;
-  height: 26px;
-  border: 1px solid var(--text-color);
-  border-radius: var(--radius-full);
+  width: 40px;
   text-align: center;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-color);
+  border: none;
   background: transparent;
+  font-family: 'Georgia', serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-color);
 }
 
 .qty-input:focus { outline: none; }
 
+/* Remove Item Button */
 .btn-remove {
-  background: none;
-  border: none;
   color: var(--selection-color);
-  font-size: 1.25rem;
-  cursor: pointer;
-  padding: 0;
-  transition: opacity 0.2s;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s;
 }
 
-.btn-remove:hover { opacity: 0.7; }
+.btn-remove:hover {
+  color: #C0392B;
+  background: rgba(192, 57, 43, 0.1);
+  transform: rotate(90deg);
+}
 
-.order-summary {
-  background: var(--secondary-color-bg);
-  border-radius: var(--radius-md);
-  padding: 2rem;
-  position: sticky;
-  top: 2rem;
+.wyrm-btn-text {
+  background: transparent;
+  border: none;
+  font-family: var(--main-font);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  transition: opacity 0.3s;
+}
+
+.wyrm-btn-text:hover { opacity: 0.7; }
+
+/* --- The Reckoning (Order Summary) --- */
+.wyrm-summary-card {
+  background: var(--cards--bg-color);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 15px 40px rgba(45, 26, 18, 0.08);
+  border: 1px solid rgba(217, 168, 108, 0.3) !important;
 }
 
 .summary-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin: 0 0 1.5rem 0;
+  font-family: 'Georgia', serif;
+  color: var(--highlighted-text-color);
+  font-size: 1.4rem;
+  margin-bottom: 0;
 }
 
 .summary-line {
@@ -242,79 +247,133 @@
 
 .summary-line .label {
   color: var(--selection-color);
-  font-size: 0.95rem;
+  font-family: var(--main-font);
 }
 
 .summary-line .value {
   color: var(--text-color);
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: bold;
+  font-family: 'Georgia', serif;
+  font-size: 1.1rem;
 }
 
-.free-shipping-text {
-  color: var(--selection-color);
-  font-size: 0.75rem;
-  margin: -0.5rem 0 1.5rem 0; 
-}
-
-.free-shipping-text strong {
+.wyrm-shipping-alert {
+  background: rgba(217, 168, 108, 0.1);
+  border: 1px solid rgba(217, 168, 108, 0.3);
   color: var(--text-color);
+  font-size: 0.85rem;
+  font-family: var(--main-font);
 }
 
-.summary-divider {
+.wyrm-divider {
   height: 1px;
-  background-color: var(--text-color); 
-  margin: 1.5rem 0;
-}
-
-.summary-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+  background: linear-gradient(90deg, transparent, rgba(217, 168, 108, 0.6), transparent);
 }
 
 .summary-total .label {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-color);
-}
-
-.summary-total .value {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-color);
-}
-
-.btn-checkout {
-  width: 100%;
-  background-color: var(--button-bg-color);
-  color: var(--button-text-color);
-  padding: 14px;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s;
+  color: var(--text-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.btn-checkout:hover {
-  opacity: 0.9;
+.wyrm-total-price {
+  font-size: 1.8rem !important;
+  color: var(--highlighted-text-color) !important;
 }
 
-@media (max-width: 992px) {
-  .cart-content { grid-template-columns: 1fr; }
-  .order-summary { position: static; }
+.wyrm-checkout-btn {
+  background: linear-gradient(135deg, var(--button-bg-color) 0%, var(--highlighted-text-color) 100%);
+  color: #fff;
+  padding: 16px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.95rem;
+  border: none;
+  box-shadow: 0 10px 20px rgba(45, 26, 18, 0.2);
+  transition: all 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .cart-container { padding: 1.5rem 1rem; }
-  .cart-item {
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto auto;
+.wyrm-checkout-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(115, 42, 16, 0.4);
+  color: var(--badge--color);
+}
+
+/* --- RESPONSIVE FIXES --- */
+
+@media (max-width: 991px) {
+  .wyrm-cart-container {
+    margin-top: -40px;
+    padding: 0 15px;
   }
-  .item-info { grid-column: 2; }
-  .item-price { grid-column: 2; grid-row: 2; text-align: left; }
-  .item-actions { grid-column: 1 / -1; grid-row: 3; justify-content: flex-start; }
+}
+
+@media (max-width: 767px) {
+  .wyrm-cart-item {
+    padding: 1rem !important;
+  }
+
+  /* Make the row inside the item stack better */
+  .wyrm-cart-item .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* Image takes up less space or a fixed width on mobile */
+  .wyrm-cart-cover {
+    max-width: 80px;
+    margin-bottom: 10px;
+  }
+
+  /* Force the title/author info to take the remaining width */
+  .wyrm-cart-book-title {
+    font-size: 1.1rem;
+  }
+
+  /* Position price and quantity side-by-side at the bottom */
+  .wyrm-qty-wrapper {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .wyrm-cart-price {
+    font-size: 1.2rem;
+    width: 100%;
+    text-align: right;
+    margin-top: 10px;
+  }
+
+  /* Adjust the remove button position on mobile */
+  .btn-remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(192, 57, 43, 0.1) !important;
+  }
+  
+  .wyrm-summary-card {
+    position: static !important; /* Don't stick on mobile */
+    margin-top: 2rem;
+  }
+}
+
+/* Extra small screens fix */
+@media (max-width: 480px) {
+  .wyrm-title {
+    font-size: 1.8rem;
+  }
+  
+  .wyrm-cart-book-title {
+    font-size: 1rem;
+  }
+
+  .wyrm-qty-wrapper {
+    scale: 0.9; /* Shrink controls slightly to fit */
+    margin-left: -10px;
+  }
 }

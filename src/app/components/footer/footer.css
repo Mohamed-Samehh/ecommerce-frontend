@@ -1,38 +1,121 @@
-
-footer {
+.wyrm-footer {
   background-color: var(--footer-bg-color);
-  color: var(--button-text-color);
-  padding: 60px 0 20px;
-  margin-top: 80px;
-  text-align: center;
+  color: var(--primary-color-bg);
+  padding: 80px 0 30px;
+  margin-top: 100px;
+  border-top: 2px solid var(--badge--color); /* Golden horizontal line */
+  position: relative;
+  overflow: hidden;
 }
 
-footer a {
-  cursor: pointer;
+/* --- Branding --- */
+.footer-logo {
+  height: 40px;
+  width: auto;
+  filter: drop-shadow(0 0 5px rgba(217, 168, 108, 0.3));
 }
 
+.wyrm-brand-text {
+  font-family: 'Georgia', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--badge--color);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.footer-motto {
+  font-family: var(--main-font);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: #b7a89a;
+  max-width: 300px;
+}
+
+/* --- Social Icons --- */
+.social-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--badge--color);
+  border-radius: 50%;
+  text-decoration: none;
+  border: 1px solid rgba(217, 168, 108, 0.2);
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background: var(--badge--color);
+  color: var(--footer-bg-color);
+  box-shadow: 0 0 15px rgba(217, 168, 108, 0.5);
+  transform: translateY(-3px);
+}
+
+/* --- Links & Titles --- */
 .footer-title {
-  font-weight: bold;
-  font-size: var(--font-lg);
-  color: var(--button-text-color);
-  margin-bottom: 15px;
-  display: block;
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
-.footer-column .nav-link {
-  color: #b8b8b8;
-  padding: 5px 0;
-  transition: color 0.3s;
+.wyrm-footer-link {
+  color: #b7a89a !important;
+  padding: 8px 0 !important;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  font-family: var(--main-font);
 }
 
-.footer-column .nav-link:hover {
-  color: var(--button-text-color);
+.wyrm-footer-link:hover {
+  color: var(--badge--color) !important;
+  padding-left: 8px !important;
 }
 
-.footer-column .nav-link i {
-  margin-right: 8px;
+.footer-info {
+  color: #b7a89a !important;
+  font-size: 0.9rem;
+  padding: 0 !important;
 }
 
-.border-secondary {
-  border-color: rgba(255, 255, 255, 0.1) !important;
+.golden-icon {
+  color: var(--badge--color);
+}
+
+/* --- Bottom Section --- */
+.wyrm-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(217, 168, 108, 0.4), transparent);
+}
+
+.copyright-text {
+  font-size: 0.8rem;
+  color: #8a7d74;
+  letter-spacing: 1px;
+}
+
+/* --- Responsive Polish --- */
+@media (max-width: 768px) {
+  .wyrm-footer {
+    padding: 60px 0 20px;
+    text-align: center;
+  }
+  .footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer-motto {
+    max-width: 100%;
+  }
+  .wyrm-footer-link:hover {
+    padding-left: 0 !important;
+    transform: scale(1.05);
+  }
 }

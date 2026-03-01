@@ -1,110 +1,161 @@
-.auth-page {
+/* --- The Immersive Backdrop --- */
+.wyrm-auth-page {
   min-height: 100vh;
-  height: 100vh;
-  overflow: auto;
+  background: var(--footer-bg-color); /* Seamless match with Navbar */
 }
 
-.auth-left {
-  background-color: #ffffff;
-  justify-content: center !important;
-  align-items: flex-start !important;
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-  padding-right: 1rem !important;
+.wyrm-auth-backdrop {
+  background: linear-gradient(135deg, var(--footer-bg-color) 0%, var(--highlighted-text-color) 100%);
+  position: relative;
 }
 
-.auth-right {
-  background-color: #ffffff;
-  justify-content: flex-start !important;
-  padding-left: 4rem !important;
-}
-
-.auth-form-wrapper {
+/* --- The Magical Card --- */
+.wyrm-auth-card {
   width: 100%;
   max-width: 980px;
+  background-color: var(--cards--bg-color); /* Illuminated Cream */
+  border: 1px solid rgba(217, 168, 108, 0.4) !important; /* Golden edge */
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .auth-form-panel {
-  max-width: 400px !important;
+  max-width: 440px !important;
 }
 
-.auth-logo {
-  width: 3rem;
-  height: 3rem;
-  object-fit: contain;
-  border-radius: 6px;
-}
-
-.auth-brand-name {
-  font-size: 1rem;
+/* --- Typography --- */
+.golden-eyebrow {
+  color: var(--badge--color);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
   font-weight: 700;
-  color: var(--highlighted-text-color);
 }
 
-.stars {
-  color: #f59e0b;
-  font-size: 0.9rem;
-  letter-spacing: 2px;
-}
-
-.auth-input {
-  border-color: #e7ddd3;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  background-color: #f1e8df;
+.wyrm-auth-title {
+  font-family: 'Georgia', 'Times New Roman', serif;
   color: var(--text-color);
-}
-
-.auth-input:focus {
-  border-color: #d9c8b8;
-  box-shadow: 0 0 0 3px rgba(115, 42, 16, 0.08);
-}
-
-.auth-input::placeholder {
-  color: #b7a89a;
-}
-
-.btn-auth-primary {
-  background-color: var(--button-bg-color);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem;
   font-weight: 600;
+  font-size: 2.2rem;
+  letter-spacing: -0.5px;
 }
 
-.btn-auth-primary:hover:not(:disabled) {
-  background-color: var(--highlighted-text-color);
-  color: #fff;
+.wyrm-auth-subtitle {
+  color: var(--selection-color);
+  font-family: var(--main-font);
+  font-size: 0.95rem;
+  opacity: 0.8;
 }
 
-.btn-auth-primary:disabled {
-  opacity: 0.65;
+/* --- Inputs --- */
+.wyrm-auth-input {
+  background-color: transparent !important;
+  border: 1px solid rgba(45, 26, 18, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 1.2rem;
+  color: var(--text-color) !important;
+  font-family: var(--main-font);
+  transition: all 0.3s ease;
 }
 
-.auth-link {
-  color: var(--highlighted-text-color);
-  font-weight: 600;
-  text-decoration: none;
+.wyrm-auth-input:focus {
+  background-color: #ffffff !important;
+  border-color: var(--badge--color);
+  box-shadow: 0 0 0 4px rgba(217, 168, 108, 0.15);
+  outline: none;
 }
 
-.auth-page .text-muted {
-  color: #9d928a !important;
-}
-
-.auth-link:hover {
-  text-decoration: underline;
-}
-
-.auth-image {
-  max-width: 340px;
-  width: 100%;
-  object-fit: contain;
-  border-radius: 16px;
+.wyrm-auth-input::placeholder {
+  color: rgba(45, 26, 18, 0.4);
 }
 
 .otp-input {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  letter-spacing: 0.8rem;
+  font-weight: 700;
+  font-family: 'Courier New', Courier, monospace; /* Runic feel */
+}
+
+/* --- Buttons & Links --- */
+.wyrm-auth-btn {
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 14px 24px;
+  font-family: var(--main-font);
   font-weight: 600;
-  letter-spacing: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.wyrm-auth-btn:hover:not(:disabled) {
+  background-color: var(--highlighted-text-color);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(115, 42, 16, 0.3);
+  transform: translateY(-2px);
+}
+
+.wyrm-auth-btn:disabled {
+  opacity: 0.7;
+  transform: none;
+  box-shadow: none;
+}
+
+.wyrm-auth-footer {
+  color: var(--selection-color);
+  font-family: var(--main-font);
+}
+
+.wyrm-auth-link {
+  color: var(--highlighted-text-color);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s;
+}
+
+.wyrm-auth-link:hover {
+  color: var(--badge--color);
+  border-bottom: 1px solid var(--badge--color);
+}
+
+.wyrm-back-btn {
+  color: var(--selection-color);
+  text-decoration: none;
+  font-family: var(--main-font);
+  transition: color 0.3s;
+}
+
+.wyrm-back-btn:hover {
+  color: var(--highlighted-text-color);
+}
+
+/* --- Error Alerts --- */
+.wyrm-alert {
+  background-color: #FEEEEE;
+  color: #C0392B;
+  border: 1px solid rgba(192, 57, 43, 0.3);
+  border-radius: var(--radius-sm);
+  font-family: var(--main-font);
+}
+
+/* --- Image & Animations --- */
+.wyrm-image-container {
+  padding: 2rem;
+  animation: floatBook 6s ease-in-out infinite; /* Floating animation! */
+}
+
+.wyrm-auth-image {
+  max-width: 340px;
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 30px rgba(45, 26, 18, 0.2));
+}
+
+@keyframes floatBook {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
 }

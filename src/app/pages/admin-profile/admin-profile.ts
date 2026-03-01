@@ -32,7 +32,9 @@ export class AdminProfileComponent implements OnInit {
   readonly profileForm = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-    dob: ['', [Validators.required, notFutureDateValidator]]
+    dob: ['', [Validators.required, notFutureDateValidator]],
+    password: ['', [Validators.minLength(8), Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d).+$/)]],
+    confirmPassword: ['']
   });
 
   readonly userInitials = computed(() => {
@@ -57,6 +59,14 @@ export class AdminProfileComponent implements OnInit {
 
   get dobCtrl() {
     return this.profileForm.get('dob')!;
+  }
+
+  get passwordCtrl() {
+    return this.profileForm.get('password')!;
+  }
+
+  get confirmPasswordCtrl() {
+    return this.profileForm.get('confirmPassword')!;
   }
 
   get maxDob(): string {
@@ -104,8 +114,23 @@ export class AdminProfileComponent implements OnInit {
     this.successMessage.set(null);
     this.errorMessage.set(null);
 
-    const { firstName, lastName, dob } = this.profileForm.value;
-    this.authService.updateMe({ firstName: firstName!, lastName: lastName!, dob: dob! }).subscribe({
+    const { firstName, lastName, dob, password, confirmPassword } = this.profileForm.value;
+
+    if ((password || confirmPassword) && password !== confirmPassword) {
+      this.confirmPasswordCtrl.markAsTouched();
+      this.errorMessage.set('Password confirmation does not match.');
+      this.isSaving.set(false);
+      return;
+    }
+
+    const payload: { firstName: string; lastName: string; dob: string; password?: string } = {
+      firstName: firstName!,
+      lastName: lastName!,
+      dob: dob!
+    };
+    if (password) payload.password = password;
+
+    this.authService.updateMe(payload).subscribe({
       next: () => {
         this.successMessage.set('Profile updated successfully!');
         this.isSaving.set(false);
@@ -131,7 +156,9 @@ export class AdminProfileComponent implements OnInit {
     this.profileForm.patchValue({
       firstName: user.firstName,
       lastName: user.lastName,
-      dob: user.dob ? user.dob.split('T')[0] : ''
+      dob: user.dob ? user.dob.split('T')[0] : '',
+      password: '',
+      confirmPassword: ''
     });
   }
 }
