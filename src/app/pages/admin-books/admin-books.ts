@@ -170,8 +170,11 @@ export class AdminBooks implements OnInit {
       }
     });
   }
-  addBook(formData: FormData){
+  addBook(formData: FormData|null){
     this.formMode.set(null);
+    if (!formData) {
+      return;
+    }
     this.bookServiceApi.createBook(formData).subscribe({
       next: (data) => {
         const newBook = data.data;
@@ -185,10 +188,13 @@ export class AdminBooks implements OnInit {
       }
     });
   }
-  updateBook(formData: FormData){
+  updateBook(formData: FormData|null){
     const bookId = this.selectedBookId();
     if (!bookId) {
       Swal.fire('Error!', 'No book selected for update', 'error');
+      return;
+    }
+    if (!formData) {
       return;
     }
     this.formMode.set(null);
