@@ -29,13 +29,13 @@ export class Cart implements OnInit {
     this.quantityDebouncer.pipe(debounceTime(500)) // wait 500 ms
       .subscribe(({item, newQuantity})=>{
 
-        console.log('Item object content:', item.book);
+        // console.log('Item object content:', item.book);
 
         const bookId = item.book.id as string; // to ensure the id will exist and in string format
         this.cartService.updateCartItem(bookId, newQuantity).subscribe({
 
-          error: (err) => {
-            console.log('Error in updating quantity', err);
+          error: () => {
+            // console.log('Error in updating quantity', err);
             Swal.fire({
               title: 'Error!',
               text: 'Couldn\'t update quantity',
@@ -57,7 +57,7 @@ export class Cart implements OnInit {
         this.cdr.detectChanges();
       },
       error: () => {
-        console.log('Error in loading cart');
+        // console.log('Error in loading cart');
         this.loading = false;
         this.cdr.detectChanges();
       }
@@ -130,5 +130,6 @@ export class Cart implements OnInit {
       });
       return;
     }
-    this.router.navigate(['/checkout']);  }
+    this.router.navigate(['/checkout']);
+  }
 }

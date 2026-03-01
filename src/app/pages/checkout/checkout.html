@@ -1,155 +1,132 @@
 <app-nav-bar></app-nav-bar>
 
-<div class="checkout-page" [formGroup]="checkoutForm">
-    <div class="checkout-content">
+<div class="wyrm-hero-section mini-hero d-flex align-items-center justify-content-center text-center">
+  <div class="container-xl position-relative z-2">
+    <span class="golden-eyebrow"><i class="fa-solid fa-feather-pointed me-2"></i> Finalize Acquisition</span>
+    <h1 class="wyrm-title mt-2 mb-0">The Merchant's Ledger</h1>
+  </div>
+  <div class="hero-overlay"></div>
+</div>
 
-        <!-- ── Left column: form ── -->
-        <div class="form-sections">
+<div class="container-xl wyrm-checkout-container" [formGroup]="checkoutForm">
+    <div class="row g-4 g-lg-5">
 
-            <!-- Personal Information -->
-            <section class="checkout-section" formGroupName="shipping">
-                <h3><i class="fa fa-user me-2"></i>Shipping Information</h3>
-                <div class="form-grid">
-                    <div class="form-group full">
-                        <label for="fullName">Full Name <span class="required">*</span></label>
-                        <input id="fullName" type="text" formControlName="fullName" placeholder="Alaa Abdallah">
-                        @if (checkoutForm.get('shipping.fullName')?.invalid &&
-                        checkoutForm.get('shipping.fullName')?.touched) {
-                        <span class="field-error">Full name is required (min 3 characters)</span>
-                        }
-                    </div>
-                    <div class="form-group full">
-                        <label for="email">Email Address <span class="required">*</span></label>
-                        <input id="email" type="email" formControlName="email" placeholder="alaa@example.com">
-                        @if (checkoutForm.get('shipping.email')?.invalid && checkoutForm.get('shipping.email')?.touched)
-                        {
-                        <span class="field-error">A valid email is required</span>
-                        }
-                    </div>
-                    <div class="form-group full">
-                        <label for="phone">Phone Number <span class="required">*</span></label>
-                        <input id="phone" type="tel" formControlName="phone" placeholder="+20 100 000 0000">
-                        @if (checkoutForm.get('shipping.phone')?.invalid && checkoutForm.get('shipping.phone')?.touched)
-                        {
-                        <span class="field-error">Phone number is required</span>
-                        }
-                    </div>
-                </div>
-            </section>
+        <div class="col-lg-8 order-2 order-lg-1">
+            <div class="form-sections d-flex flex-column gap-4">
 
-            <!-- Shipping Address -->
-            <section class="checkout-section" formGroupName="shipping">
-                <h3><i class="fa fa-map-marker-alt me-2"></i>Shipping Address</h3>
-                <div class="form-grid">
-                    <div class="form-group full">
-                        <label for="address">Street Address <span class="required">*</span></label>
-                        <input id="address" type="text" formControlName="address" placeholder="123 Main Street">
-                        @if (checkoutForm.get('shipping.address')?.invalid &&
-                        checkoutForm.get('shipping.address')?.touched) {
-                        <span class="field-error">Address is required</span>
-                        }
+                <section class="wyrm-checkout-section card border-0 p-4 p-md-5" formGroupName="shipping">
+                    <h3 class="section-title mb-4"><i class="fa-solid fa-map-location-dot me-3"></i>Destination Details</h3>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="wyrm-label" for="fullName">Full Name <span class="required">*</span></label>
+                            <input id="fullName" type="text" formControlName="fullName" class="form-control wyrm-input" placeholder="Alaa Abdallah">
+                            @if (checkoutForm.get('shipping.fullName')?.invalid && checkoutForm.get('shipping.fullName')?.touched) {
+                                <span class="field-error"><i class="fa-solid fa-circle-exclamation me-1"></i>Full name is required</span>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <label class="wyrm-label" for="email">Email Address <span class="required">*</span></label>
+                            <input id="email" type="email" formControlName="email" class="form-control wyrm-input" placeholder="alaa@example.com">
+                            @if (checkoutForm.get('shipping.email')?.invalid && checkoutForm.get('shipping.email')?.touched) {
+                                <span class="field-error"><i class="fa-solid fa-circle-exclamation me-1"></i>A valid email is required</span>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <label class="wyrm-label" for="phone">Phone Number <span class="required">*</span></label>
+                            <input id="phone" type="tel" formControlName="phone" class="form-control wyrm-input" placeholder="+20 100 000 0000">
+                            @if (checkoutForm.get('shipping.phone')?.invalid && checkoutForm.get('shipping.phone')?.touched) {
+                                <span class="field-error"><i class="fa-solid fa-circle-exclamation me-1"></i>Phone number is required</span>
+                            }
+                        </div>
                     </div>
-                    <div class="form-group half">
-                        <label for="city">City <span class="required">*</span></label>
-                        <input id="city" type="text" formControlName="city" placeholder="Cairo">
-                        @if (checkoutForm.get('shipping.city')?.invalid && checkoutForm.get('shipping.city')?.touched) {
-                        <span class="field-error">City is required</span>
-                        }
-                    </div>
-                    <div class="form-group half">
-                        <label for="zipCode">Postal Code <span class="required">*</span></label>
-                        <input id="zipCode" type="text" formControlName="zipCode" placeholder="11511">
-                        @if (checkoutForm.get('shipping.zipCode')?.invalid &&
-                        checkoutForm.get('shipping.zipCode')?.touched) {
-                        <span class="field-error">Postal code is required</span>
-                        }
-                    </div>
-                    <div class="form-group full">
-                        <label for="country">Country <span class="required">*</span></label>
-                        <input id="country" type="text" formControlName="country" placeholder="Egypt">
-                        @if (checkoutForm.get('shipping.country')?.invalid &&
-                        checkoutForm.get('shipping.country')?.touched) {
-                        <span class="field-error">Country is required</span>
-                        }
-                    </div>
-                </div>
-            </section>
 
-            <!-- Payment Method -->
-            <section class="checkout-section" formGroupName="payment">
-                <h3><i class="fa fa-credit-card me-2"></i>Payment Method</h3>
-                <div class="payment-options">
-                    <label class="payment-option"
-                        [class.selected]="checkoutForm.get('payment.method')?.value === 'COD'">
-                        <input type="radio" formControlName="method" value="COD">
-                        <i class="fa fa-money-bill-wave"></i>
-                        <span>Cash On Delivery</span>
-                    </label>
-                    <label class="payment-option"
-                        [class.selected]="checkoutForm.get('payment.method')?.value === 'Online'">
-                        <input type="radio" formControlName="method" value="Online">
-                        <i class="fa fa-credit-card"></i>
-                        <span>Online Payment</span>
-                    </label>
-                </div>
-            </section>
+                    <div class="wyrm-divider my-4"></div>
 
-            <!-- Submit -->
-            <button class="checkout-submit-btn" (click)="placeOrder()" [disabled]="isSubmitting || isLoadingCart()">
-                @if (isSubmitting) {
-                <span class="spinner-sm"></span> Placing Order…
-                } @else {
-                <i class="fa fa-check-circle me-2"></i>Place Order
-                }
-            </button>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="wyrm-label" for="address">Street Address <span class="required">*</span></label>
+                            <input id="address" type="text" formControlName="address" class="form-control wyrm-input" placeholder="123 Main Street">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="wyrm-label" for="city">City <span class="required">*</span></label>
+                            <input id="city" type="text" formControlName="city" class="form-control wyrm-input" placeholder="Cairo">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="wyrm-label" for="zipCode">Postal Code <span class="required">*</span></label>
+                            <input id="zipCode" type="text" formControlName="zipCode" class="form-control wyrm-input" placeholder="11511">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="wyrm-label" for="country">Country <span class="required">*</span></label>
+                            <input id="country" type="text" formControlName="country" class="form-control wyrm-input" placeholder="Egypt">
+                        </div>
+                    </div>
+                </section>
 
+                <section class="wyrm-checkout-section card border-0 p-4 p-md-5" formGroupName="payment">
+                    <h3 class="section-title mb-4"><i class="fa-solid fa-coins me-3"></i>Method of Tribute</h3>
+                    <div class="payment-options d-flex flex-column flex-sm-row gap-3">
+                        <label class="wyrm-payment-card flex-fill" [class.selected]="checkoutForm.get('payment.method')?.value === 'COD'">
+                            <input type="radio" formControlName="method" value="COD" class="d-none">
+                            <i class="fa-solid fa-hand-holding-dollar mb-2"></i>
+                            <span>Cash on Delivery</span>
+                        </label>
+                        <label class="wyrm-payment-card flex-fill" [class.selected]="checkoutForm.get('payment.method')?.value === 'Online'">
+                            <input type="radio" formControlName="method" value="Online" class="d-none">
+                            <i class="fa-solid fa-wand-sparkles mb-2"></i>
+                            <span>Online Sorcery</span>
+                        </label>
+                    </div>
+                </section>
+
+                <button class="btn wyrm-checkout-submit w-100 py-3" (click)="placeOrder()" [disabled]="isSubmitting || isLoadingCart()">
+                    @if (isSubmitting) {
+                        <span class="spinner-border spinner-border-sm me-2"></span> Sealing Order...
+                    } @else {
+                        <i class="fa-solid fa-file-signature me-2"></i> Seal the Agreement
+                    }
+                </button>
+            </div>
         </div>
 
-        <!-- ── Right column: order summary ── -->
-        <aside class="order-summary">
-            <div class="summary-card">
-                <h3>Order Summary</h3>
+        <aside class="col-lg-4 order-1 order-lg-2 mb-4 mb-lg-0">
+            <div class="wyrm-summary-card card border-0 p-4 sticky-top" style="top: 100px;">
+                <h3 class="summary-title mb-4"><i class="fa-solid fa-scroll me-2"></i> The Manifest</h3>
 
                 @if (isLoadingCart()) {
-                <div class="cart-loading">
-                    <span class="spinner-sm" style="border-color:rgba(45,26,18,.3);border-top-color:#2d1a12"></span>
-                    Loading cart…
-                </div>
+                    <div class="text-center py-4"><i class="fa-solid fa-spinner fa-spin text-muted"></i></div>
                 } @else if (cartItems().length === 0) {
-                <p class="cart-empty-msg">Your cart is empty. <a routerLink="/cart">Go to Cart</a></p>
+                    <p class="text-muted text-center py-3">Your satchel is empty.</p>
                 } @else {
-                <div class="summary-items">
-                    @for (item of cartItems(); track item._id) {
-                    <div class="summary-item">
-                        <div class="item-visual">
-                            <img [src]="item.book.coverImage" [alt]="item.book.name">
+                    <div class="summary-items mb-4">
+                        @for (item of cartItems(); track item._id) {
+                        <div class="summary-item d-flex gap-3 mb-3 pb-3 border-bottom-dashed">
+                            <img [src]="item.book.coverImage" class="summary-book-img shadow-sm" [alt]="item.book.name">
+                            <div class="item-details">
+                                <p class="name mb-0 fw-bold">{{ item.book.name }}</p>
+                                <p class="qty-price mb-0 small text-muted">Qty: {{ item.quantity }} × {{ item.book.price | currency }}</p>
+                            </div>
                         </div>
-                        <div class="item-info">
-                            <p class="name">{{ item.book.name }}</p>
-                            <p class="qty">Qty: {{ item.quantity }}</p>
-                            <p class=" price">{{ item.book.price | currency }}</p>
+                        }
+                    </div>
+                    
+                    <div class="summary-totals">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Subtotal</span>
+                            <span class="fw-bold">{{ subtotal() | currency }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Shipping</span>
+                            <span class="text-success">{{ shipping() === 0 ? 'Free Transit' : (shipping() | currency) }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                            <span class="text-muted">Tax (8%)</span>
+                            <span>{{ tax() | currency }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between grand-total-row">
+                            <span class="total-label">Total Tribute</span>
+                            <span class="total-value">{{ total() | currency }}</span>
                         </div>
                     </div>
-                    }
-                </div>
-                <div class="summary-totals">
-                    <div class="total-row">
-                        <span>Subtotal</span>
-                        <span>{{ subtotal() | currency }}</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Shipping</span>
-                        <span>{{ shipping() === 0 ? 'Free' : (shipping() | currency) }}</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Tax (8%)</span>
-                        <span>{{ tax() | currency }}</span>
-                    </div>
-                    <div class="total-row grand-total">
-                        <span>Total</span>
-                        <span>{{ total() | currency }}</span>
-                    </div>
-                </div>
                 }
             </div>
         </aside>

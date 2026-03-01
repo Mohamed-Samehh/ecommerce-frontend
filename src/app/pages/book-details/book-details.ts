@@ -55,6 +55,7 @@ export class BookDetails implements OnInit {
   readonly userReviewRating = signal<number>(0);
   readonly userReviewComment = signal<string>('');
   readonly isCheckingEligibility = signal<boolean>(false);
+  readonly isAdding = signal<boolean>(false);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -185,6 +186,8 @@ export class BookDetails implements OnInit {
   }
 
   addToCart(book: Book): void {
+    if (this.isAdding()) return;
+
     if (!this.authService.isLoggedIn()) {
       Swal.fire({
         title: 'Sign In Required',
@@ -193,7 +196,7 @@ export class BookDetails implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Sign In',
         confirmButtonColor: '#2d1a12',
-        cancelButtonColor: '#d33',
+        cancelButtonColor: '#d33'
       }).then((result) => {
         if (result.isConfirmed) {
           this.router.navigate(['/login']);
@@ -203,16 +206,21 @@ export class BookDetails implements OnInit {
     }
 
     const bookId = book.id || book._id;
+
+    this.isAdding.set(true);
+
     this.cartService.addToCart(bookId!, 1).subscribe({
       next: () => {
         // Silent success - cart count updates via CartService tap
+        this.isAdding.set(false);
       },
       error: (err) => {
+        this.isAdding.set(false);
         Swal.fire({
           title: 'Error',
           text: err?.error?.message || 'Could not add item to cart. Please try again.',
           icon: 'error',
-          confirmButtonColor: '#2d1a12',
+          confirmButtonColor: '#2d1a12'
         });
       }
     });
