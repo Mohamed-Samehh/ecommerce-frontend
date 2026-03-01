@@ -5,9 +5,9 @@
   <img src="https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
 </p>
 
-# 📚 WyrnHole — E-Commerce Bookstore (Frontend)
+# 📚 WyrmHole — E-Commerce Bookstore (Frontend)
 
-The **frontend** application for WyrnHole, a full-stack e-commerce bookstore platform built with the **MEAN** stack. This Angular 21 app provides a modern storefront for customers and a comprehensive admin dashboard — with SSR support, lazy loading, and role-based access control.
+The **frontend** application for WyrmHole, a full-stack e-commerce bookstore platform built with the **MEAN** stack. This Angular 21 app provides a modern storefront for customers and a comprehensive admin dashboard — with SSR support, lazy loading, and role-based access control.
 
 > 🔗 **Backend Repository:** [ecommerce-backend](https://github.com/Mohamed-Samehh/ecommerce-backend)
 
@@ -175,8 +175,8 @@ Deployed on **Vercel** with Angular SSR.
 
 - **Alaa Abdallah**
 - **Andrew**
-- **Mohammed Abdelhaq**
-- **Mohammed Sameh**
+- **Mohamed Abdelhaq**
+- **Mohamed Sameh**
 
 ---
 
@@ -187,5 +187,5 @@ This project is licensed under the **ISC License**.
 ---
 
 <p align="center">
-  Made with ❤️ by the WyrnHole Team
+  Made with ❤️ by the WyrmHole Team
 </p>
