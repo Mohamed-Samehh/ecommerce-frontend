@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of} from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { CartCountResponse, CartResponse } from '../../interfaces/cart';
 import { inject } from '@angular/core';
@@ -19,7 +19,7 @@ export class CartService { // talk to backend api
   getCart(): Observable<CartResponse> {
     return this.http.get<CartResponse>(this.apiUrl).pipe(
       catchError(() => {
-        console.warn('Cart fetch failed (401). Forcing empty cart.');
+        // console.warn('Cart fetch failed (401). Forcing empty cart.');
         const emptyCartFallback: CartResponse = {
           status: 'error',
           data: {
@@ -56,7 +56,7 @@ export class CartService { // talk to backend api
           (res) => this.cartCount.set(res.data.count) // modify glob var with count of books types not quantity (dec. req to show totalquant. in badge)
         ),
         catchError(() => {
-          console.warn('Cart count failed (probably not logged in). Setting count to 0.');
+          // console.warn('Cart count failed (probably not logged in). Setting count to 0.');
           this.cartCount.set(0);
 
           return of({ status: 'error', data: { items: [],count: 0 } } as CartCountResponse); // safe fake response

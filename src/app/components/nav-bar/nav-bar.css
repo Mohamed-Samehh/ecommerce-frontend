@@ -1,7 +1,153 @@
-.text-primary-color {
-  color: var(--text-color) ;
+/* --- Navbar Base --- */
+.wyrm-navbar {
+  background-color: var(--footer-bg-color); /* Deep dark wood tone */
+  border-bottom: 1px solid rgba(217, 168, 108, 0.15); /* Subtle golden rim */
+  padding: 0.8rem 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 1050;
 }
-.logo-image{
-  width: 6rem;
-  height: 6rem;
+
+/* --- Brand & Logo --- */
+.wyrm-logo {
+  height: 45px; /* Sleek, premium size */
+  width: auto;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 15px rgba(217, 168, 108, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.wyrm-brand:hover .wyrm-logo {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(217, 168, 108, 0.4);
+}
+
+.wyrm-brand-text {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--badge--color); /* Golden Bronze */
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* --- Navigation Links --- */
+.wyrm-nav-link {
+  font-family: var(--main-font);
+  color: var(--primary-color-bg) !important; /* Cream color */
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  position: relative;
+  padding: 0.5rem 0 !important;
+  transition: color 0.3s ease;
+}
+
+/* The Magical Sliding Underline */
+.wyrm-nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: var(--badge--color);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.wyrm-nav-link:hover, 
+.wyrm-nav-link.active {
+  color: var(--badge--color) !important;
+}
+
+.wyrm-nav-link:hover::after, 
+.wyrm-nav-link.active::after {
+  width: 100%;
+}
+
+/* --- Buttons --- */
+.wyrm-login-btn {
+  border: 1px solid var(--badge--color);
+  color: var(--badge--color);
+  font-family: var(--main-font);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 24px;
+  border-radius: var(--radius-full);
+  transition: all 0.3s ease;
+}
+
+.wyrm-login-btn:hover {
+  background-color: var(--badge--color);
+  color: var(--footer-bg-color);
+  box-shadow: 0 0 20px rgba(217, 168, 108, 0.4);
+  transform: translateY(-2px);
+}
+
+.wyrm-logout-btn {
+  color: #e74c3c;
+  background: transparent;
+  border: none;
+  font-family: var(--main-font);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.wyrm-logout-btn:hover {
+  color: #ff6b6b;
+  text-shadow: 0 0 10px rgba(231, 76, 60, 0.4);
+}
+
+/* --- Cart Icon --- */
+.wyrm-cart-link {
+  color: var(--primary-color-bg);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+}
+
+.wyrm-cart-link:hover, 
+.wyrm-cart-link.active {
+  color: var(--badge--color);
+  background: rgba(217, 168, 108, 0.1);
+  border-color: rgba(217, 168, 108, 0.3);
+  transform: scale(1.05);
+}
+
+.wyrm-cart-badge {
+  top: 5px !important;
+  left: 35px !important;
+  background-color: var(--highlighted-text-color); /* Deep red/brown */
+  color: #ffffff;
+  font-size: 0.65rem;
+  border: 2px solid var(--footer-bg-color);
+  padding: 0.4em 0.6em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* --- Mobile Toggle (Hamburger Menu) --- */
+.wyrm-toggler {
+  border: none;
+  color: var(--badge--color);
+  font-size: 1.5rem;
+  padding: 0;
+}
+
+.wyrm-toggler:focus {
+  box-shadow: none;
+  outline: none;
 }

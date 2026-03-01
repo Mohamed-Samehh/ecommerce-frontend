@@ -1,95 +1,119 @@
 <app-nav-bar></app-nav-bar>
 
-<div class="container my-4">
-  <div *ngIf="isLoading()" class="d-flex justify-content-center py-5">
-    <div class="spinner-border text-color" role="status"></div>
-  </div>
+<div *ngIf="isLoading()" class="d-flex justify-content-center py-5 my-5">
+  <div class="spinner-border" style="color: var(--badge--color);" role="status"></div>
+</div>
 
-  <div *ngIf="error()" class="alert alert-danger">
-    {{ error() }}
-  </div>
+<div *ngIf="error()" class="container my-5 alert alert-danger custom-alert text-center shadow-sm">
+  <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ error() }}
+</div>
 
-  @if (book(); as b) {
-  <div class="book-detail-wrapper shadow-lg">
-    <div class="row g-0">
-      <!-- Left: Cover Image -->
-      <div class="col-12 col-md-5 book-cover-section">
-        <div class="cover-container">
-          <img [src]="b.coverImage" [alt]="b.name" class="img-fluid main-cover" />
-          <div class="price-overlay">
-            <span class="price-tag">${{ b.price }}</span>
+@if (book(); as b) {
+<div class="grand-detail-backdrop">
+  <div class="container-xl position-relative h-100">
+    <div class="pt-4 pb-2">
+       <a routerLink="/explore" class="back-link"><i class="fa-solid fa-arrow-left me-2"></i> Return to Archive</a>
+    </div>
+  </div>
+</div>
+
+<div class="container-xl grand-book-container">
+  <div class="row g-5">
+    
+    <div class="col-lg-4 col-md-5 d-flex justify-content-center">
+      <div class="grand-cover-wrapper">
+        <img [src]="b.coverImage" [alt]="b.name" class="img-fluid grand-cover" />
+        <div class="grand-price-tag">
+          <span>${{ b.price }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8 col-md-7 grand-book-info">
+      <div class="info-header mb-4">
+        <h1 class="grand-book-title display-4 mb-2">{{ b.name }}</h1>
+        <p class="grand-author-name">Penned by <span class="highlight-author">{{ authorName(b.author) }}</span></p>
+      </div>
+
+      <div class="d-flex flex-wrap align-items-center gap-4 mb-4 pb-4 grand-divider-bottom">
+        
+        <div class="grand-rating-box" *ngIf="b.averageRating != null">
+          <span class="rating-number">{{ b.averageRating | number:'1.1-1' }}</span>
+          <div class="stars-and-reviews">
+            <i class="fa-solid fa-star golden-star"></i>
+            <span class="review-count">({{ b.reviewCount || 0 }} Reviews)</span>
           </div>
+        </div>
+        
+        <div class="grand-stock-status">
+          <span class="status-pill" 
+                [class.in-stock]="b.stock > 2" 
+                [class.low-stock]="b.stock > 0 && b.stock <= 2" 
+                [class.out-stock]="b.stock <= 0">
+            <i class="fa-solid" 
+               [class.fa-check-double]="b.stock > 2" 
+               [class.fa-hourglass-half]="b.stock > 0 && b.stock <= 2" 
+               [class.fa-xmark]="b.stock <= 0"></i>
+            {{ b.stock > 2 ? 'Abundant Supply' : (b.stock > 0 ? 'Limited Editions Remain' : 'Out of Print') }}
+          </span>
         </div>
       </div>
 
-      <!-- Right: Content -->
-      <div class="col-12 col-md-7 book-content-section p-4 p-lg-5">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <div>
-            <h1 class="book-title">{{ b.name }}</h1>
-            <p class="book-author"><span class="label">By</span> {{ authorName(b.author) }}</p>
+      <div class="grand-synopsis mb-5">
+        <h4 class="section-heading mb-3"><i class="fa-solid fa-feather me-2"></i> Synopsis</h4>
+        <p class="synopsis-text">{{ b.description || 'Delve into this magnificent tale, acclaimed by scholars and readers alike.' }}</p>
+      </div>
+
+      <div class="grand-action-area p-4 rounded-4 shadow-sm">
+        <div class="row align-items-center g-4">
+          <div class="col-sm-6 text-center text-sm-start">
+            <p class="mb-0 text-muted small text-uppercase" style="letter-spacing: 1px;">Acquire this piece</p>
+            <h2 class="mb-0 price-display">${{ b.price }}</h2>
           </div>
-          <div class="rating-box" *ngIf="b.averageRating != null">
-            <span class="rating-val">{{ b.averageRating }}</span>
-            <div class="rating-meta">
-              <i class="fa-solid fa-star"></i>
-              <span>({{ b.reviewCount || 0 }} reviews)</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="status-indicators mb-4">
-          <span class="status-pill" [class.in-stock]="b.stock > 2" [class.low-stock]="b.stock <= 2">
-            <i class="fa-solid" [class.fa-check-circle]="b.stock > 2"
-              [class.fa-exclamation-triangle]="b.stock <= 2"></i>
-            {{ b.stock > 2 ? 'In Stock' : (b.stock > 0 ? 'Low Stock' : 'Out of Stock') }}
-          </span>
-        </div>
-
-        <div class="description-section">
-          <h5 class="section-title">Description</h5>
-          <p class="book-desc">{{ b.description || 'Experience this masterpiece that critics and readers alike are
-            raving about.' }}</p>
-        </div>
-
-        <div class="action-section mt-auto pt-4">
-          <div class="d-flex flex-wrap gap-3">
-            <button class="btn btn-primary add-to-cart-btn" (click)="addToCart(b)" [disabled]="b.stock <= 0">
-              <i class="fa-solid fa-cart-plus"></i>
-              {{ b.stock > 0 ? 'Add to cart' : 'Out of Stock' }}
+          <div class="col-sm-6 text-center text-sm-end">
+            <button class="btn grand-add-btn w-100" (click)="addToCart(b)" [disabled]="b.stock <= 0 || isAdding()">
+              @if(isAdding()) {
+                <i class="fa-solid fa-spinner fa-spin me-2"></i> Securing...
+              } @else {
+                <i class="fa-solid fa-bookmark me-2"></i> {{ b.stock > 0 ? 'Add to Collection' : 'Unavailable' }}
+              }
             </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div id="reviews-section" class="mt-5">
-    <h3 class="text-color fw-bold mb-4">Customer Reviews</h3>
-
-    <div class="mb-4">
-      @if (isCheckingEligibility()) {
-      <div class="text-muted small py-2">Checking if you can review...</div>
-      } @else if (canReview()) {
-      <app-review-form [bookId]="b.id || b._id" [hasAlreadyReviewed]="hasAlreadyReviewed()"
-        [initialRating]="userReviewRating()" [initialComment]="userReviewComment()"
-        (reviewAdded)="onReviewAdded()"></app-review-form>
-      } @else {
-      <div class="alert alert-light border rounded-4 py-3 shadow-sm">
-        <p class="mb-0 text-muted small">
-          <i class="fa-solid fa-circle-info me-2 text-primary"></i>
-          Only customers who purchased and received this book can leave a review.
-        </p>
-      </div>
-      }
-    </div>
-
-    <div class="mt-5 pt-3 border-top">
-      <h4 class="h6 fw-bold text-color mb-4">All Community Feedback</h4>
-      <app-reviews-list #reviewsList [bookId]="b.id || b._id"></app-reviews-list>
-    </div>
-  </div>
-  }
 </div>
+
+<div class="container-xl mt-5 pt-5 mb-5 grand-reviews-section border-top">
+   <div class="row justify-content-center">
+     <div class="col-lg-10">
+       <div class="text-center mb-5">
+         <span class="golden-eyebrow">Reader's Ledger</span>
+         <h3 class="grand-reviews-title mt-2">Community Reflections</h3>
+       </div>
+
+       <div class="mb-5 pb-5 grand-divider-bottom">
+        @if (isCheckingEligibility()) {
+        <div class="text-center text-muted small py-4"><i class="fa-solid fa-spinner fa-spin me-2"></i> Consulting the ledgers...</div>
+        } @else if (canReview()) {
+        <app-review-form [bookId]="b.id || b._id" [hasAlreadyReviewed]="hasAlreadyReviewed()"
+          [initialRating]="userReviewRating()" [initialComment]="userReviewComment()"
+          (reviewAdded)="onReviewAdded()"></app-review-form>
+        } @else {
+        <div class="grand-restricted-alert text-center py-4 px-3 rounded-3">
+          <i class="fa-solid fa-lock mb-3 fs-3" style="color: var(--badge--color);"></i>
+          <p class="mb-0 text-muted">Only patrons who have acquired this masterpiece may leave a reflection.</p>
+        </div>
+        }
+      </div>
+
+      <div class="mt-4">
+        <app-reviews-list #reviewsList [bookId]="b.id || b._id"></app-reviews-list>
+      </div>
+     </div>
+   </div>
+</div>
+}
 
 <app-footer></app-footer>

@@ -1,102 +1,121 @@
-<div class="cart-page">
+<div class="wyrm-cart-page">
   <app-nav-bar></app-nav-bar>
 
-  <div class="cart-container">
-    <div class="cart-header">
-      <h1 class="cart-title">Your Cart</h1>
-      <p class="item-count">{{ cart?.items?.length || 0 }} items</p>
+  <div class="wyrm-hero-section cart-hero d-flex align-items-center justify-content-center text-center">
+    <div class="container-xl position-relative z-2">
+      <span class="golden-eyebrow"><i class="fa-solid fa-bag-shopping me-2"></i> Your Satchel</span>
+      <h1 class="wyrm-title mt-2 mb-3">Acquisitions Ledger</h1>
+      <p class="wyrm-subtitle">{{ cart?.items?.length || 0 }} artifacts await your claim.</p>
     </div>
+    <div class="hero-overlay"></div>
+  </div>
 
+  <div class="container-xl wyrm-cart-container">
+    
     @if (loading) {
-    <div class="loading-state">
-      <i class="fas fa-spinner fa-spin"></i>
-      <p>Loading your cart...</p>
+    <div class="wyrm-empty-state text-center py-5">
+      <i class="fa-solid fa-spinner fa-spin empty-icon mb-3" style="color: var(--badge--color);"></i>
+      <h3 class="empty-title">Consulting the Ledger...</h3>
     </div>
-    } @else if (!cart || !cart.items || cart.items.length === 0) {
-    <div class="empty-cart">
-      <i class="fas fa-shopping-cart empty-icon"></i>
-      <h2>Your cart is empty</h2>
-      <p>Add some books to get started!</p>
-      <button class="btn-continue" routerLink="/">
-        Continue Shopping
+    } 
+    @else if (!cart || !cart.items || cart.items.length === 0) {
+    <div class="wyrm-empty-state text-center py-5">
+      <i class="fa-solid fa-scroll empty-icon mb-4"></i>
+      <h3 class="empty-title">Your Satchel is Empty</h3>
+      <p class="empty-subtitle mb-4">You have not selected any tomes for your collection.</p>
+      <button class="btn wyrm-btn-outline" routerLink="/explore">
+        <i class="fa-solid fa-compass me-2"></i> Return to Archive
       </button>
     </div>
-    } @else {
-    <div class="cart-content">
-      <div class="cart-items-section">
-        @for (item of cart.items; track item._id) {
-        <div class="cart-item">
-          <img [src]="item.book.coverImage" [alt]="item.book.name" class="book-cover" />
+    } 
+    @else {
+    <div class="row g-4 g-lg-5 align-items-start">
+      
+      <div class="col-lg-8">
+      
 
-          <div class="item-info">
-            <h3 class="book-title">{{ item.book.name }}</h3>
-            <p class="book-author">{{ item.book.author || 'Unknown Author' }}</p>
-            @if (item.book.averageRating) {
-            <div class="book-rating">
-              @for (star of [1,2,3,4,5]; track star) {
-              <i class="fas fa-star" [class.filled]="star <= item.book.averageRating"
-                [class.empty]="star > item.book.averageRating">
-              </i>
-              }
+        <div class="wyrm-cart-list d-flex flex-column gap-3">
+          @for (item of cart.items; track item._id) {
+          <div class="wyrm-cart-item card border-0 p-3 p-md-4">
+            <div class="row g-3 g-md-4 align-items-center">
+              
+              <div class="col-4 col-sm-3 col-md-2">
+                <img [src]="item.book.coverImage" [alt]="item.book.name" class="wyrm-cart-cover shadow-sm" />
+              </div>
+
+              <div class="col-8 col-sm-9 col-md-5 d-flex flex-column justify-content-center">
+                <h6 class="wyrm-cart-author mb-1 text-truncate">{{ item.book.author}}</h6>
+                <h3 class="wyrm-cart-book-title mb-2">{{ item.book.name }}</h3>
+                @if (item.book.averageRating) {
+                <div class="wyrm-cart-rating d-flex align-items-center gap-1">
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <i class="fa-solid fa-star" [class.filled-star]="star <= item.book.averageRating" [class.empty-star]="star > item.book.averageRating"></i>
+                  }
+                </div>
+                }
+              </div>
+
+              <div class="col-6 col-md-3 d-flex justify-content-md-center align-items-center mt-3 mt-md-0">
+                <div class="wyrm-qty-wrapper shadow-sm">
+                  <button class="qty-btn" (click)="changeQuantity(item, -1)" [disabled]="item.quantity <= 1">
+                    <i class="fa-solid fa-minus"></i>
+                  </button>
+                  <input type="number" class="qty-input" [value]="item.quantity" readonly min="1" [max]="item.book.stock" />
+                  <button class="qty-btn" (click)="changeQuantity(item, 1)" [disabled]="item.quantity >= item.book.stock">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-6 col-md-2 d-flex flex-row flex-md-column justify-content-between align-items-end align-items-md-end mt-3 mt-md-0 h-100 py-md-2">
+                <div class="wyrm-cart-price">${{ item.book.price | number:'1.2-2' }}</div>
+                <button class="btn btn-remove" (click)="removeItem(item)" title="Remove item">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+
             </div>
-            }
           </div>
-
-          <div class="item-price">
-            ${{ item.book.price | number:'1.2-2' }}
-          </div>
-
-          <div class="quantity-controls">
-            <button class="qty-btn" (click)="changeQuantity(item, -1)" [disabled]="item.quantity <= 1">
-              <i class="fas fa-minus"></i>
-            </button>
-
-            <input type="number" class="qty-input" [value]="item.quantity" readonly min="1" [max]="item.book.stock" />
-
-            <button class="qty-btn" (click)="changeQuantity(item, 1)" [disabled]="item.quantity >= item.book.stock">
-              <i class="fas fa-plus"></i>
-            </button>
-          </div>
-
-          <button class="btn-remove" (click)="removeItem(item)">
-            <i class="fas fa-trash-alt"></i>
-          </button>
+          }
         </div>
-        }
       </div>
 
-      <div class="order-summary">
-        <h3 class="summary-title">Order Summary</h3>
+      <div class="col-lg-4">
+        <div class="wyrm-summary-card card border-0 p-4 sticky-top" style="top: 100px;">
+          <h3 class="summary-title"><i class="fa-solid fa-file-invoice me-2"></i> The Reckoning</h3>
+          
+          <div class="summary-line mt-4">
+            <span class="label">Subtotal</span>
+            <span class="value">${{ itemTotal | number:'1.2-2' }}</span>
+          </div>
 
-        <div class="summary-line">
-          <span class="label">Subtotal</span>
-          <span class="value">${{ itemTotal | number:'1.2-2' }}</span>
-        </div>
+          <div class="summary-line">
+            <span class="label">Shipping</span>
+            <span class="value shipping-value">
+              ${{ shipping | number:'1.2-2' }}
+            </span>
+          </div>
 
-        <div class="summary-line">
-          <span class="label">Shipping</span>
-          <span class="value shipping-value">
-            ${{ shipping | number:'1.2-2' }}
-          </span>
-        </div>
-
-        @if (itemTotal <= 1000) { <p class="free-shipping-text">
-          <i class="fas fa-truck"></i>
-          Spend ${{ (1000 - itemTotal) | number:'1.2-2' }} more to get <strong>Discounted Shipping!</strong>
-          </p>
+          @if (itemTotal <= 1000) { 
+          <div class="wyrm-shipping-alert mt-2 mb-3 px-3 py-2 rounded-3">
+            <i class="fa-solid fa-truck-fast me-2"></i>
+            Acquire <strong>${{ (1000 - itemTotal) | number:'1.2-2' }}</strong> more for discounted transit!
+          </div>
           }
 
-          <div class="summary-divider"></div>
+          <div class="wyrm-divider my-4"></div>
 
-          <div class="summary-total">
-            <span class="label">Total</span>
-            <span class="value">${{ total | number:'1.2-2' }}</span>
+          <div class="summary-total mb-4">
+            <span class="label">Total Tribute  </span>
+            <span class="value wyrm-total-price">${{ total | number:'1.2-2' }}</span>
           </div>
 
-          <button class="btn-checkout" (click)="proceedToCheckout()">
-            Proceed to Checkout
+          <button class="btn wyrm-checkout-btn w-100" (click)="proceedToCheckout()">
+            <i class="fa-solid fa-feather-pointed me-2"></i> Proceed to Checkout
           </button>
+        </div>
       </div>
+
     </div>
     }
   </div>

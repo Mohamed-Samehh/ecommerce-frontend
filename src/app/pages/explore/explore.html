@@ -1,19 +1,31 @@
 <app-nav-bar></app-nav-bar>
-<div class="container my-4 w-75">
-  <div class="row g-3 mb-3">
-    <div class="col-lg-10">
+
+<div class="wyrm-hero-section">
+  <div class="container-xl position-relative h-100 d-flex flex-column justify-content-center align-items-center text-center px-3">
+    <div class="hero-content mt-4">
+      <span class="golden-eyebrow"><i class="fa-solid fa-meteor me-2"></i>Welcome to WyrmHole</span>
+      <h1 class="wyrm-title mt-3 mb-4">Step Into Another World</h1>
+      <p class="wyrm-subtitle">Journey through our curated portals of timeless classics and modern wonders.</p>
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+</div>
+
+<div class="container-xl floating-search-container px-3 px-xl-0">
+  <div class="row g-0 align-items-center search-glass-panel">
+    <div class="col-12 col-md-8 p-3 p-md-4 border-end-md">
       <app-search-bar [categories]="categories()" [authors]="authors()" (query)="handleQuery($event)"></app-search-bar>
     </div>
-    <div class="col-lg-2 d-flex align-items-center">
-      <div class="dropdown">
-        <button class="btn button-color dropdown-toggle" type="button" data-bs-toggle="dropdown">
-          {{ selectedLabel }}
+    <div class="col-12 col-md-4 p-3 p-md-4 d-flex justify-content-center justify-content-md-end border-top-mobile">
+      <div class="dropdown w-100">
+        <button class="btn wyrm-dropdown-btn dropdown-toggle w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown">
+          <span><i class="fa-solid fa-sort me-2"></i> {{ selectedLabel }}</span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-custom">
+        <ul class="dropdown-menu wyrm-dropdown-menu w-100 shadow-lg mt-3">
           @for (option of sortOptions; track option.value) {
           <li>
-            <a class="dropdown-item drop-category" (click)="onSortChange(option.value)">
-              {{ option.label }}
+            <a class="dropdown-item py-3 px-4 wyrm-drop-item" (click)="onSortChange(option.value)">
+              <i class="fa-solid fa-khanda me-2 opacity-50"></i> {{ option.label }}
             </a>
           </li>
           }
@@ -23,34 +35,45 @@
   </div>
 </div>
 
-
-<div class="row g-1 m-1 mb-5">
-  <div class="col-lg-2 col-md-3">
-    <app-filter (filterChange)="handleFilterCategories($event)" [categories]="categories()"></app-filter>
-    <app-min-max-slider (range)="handlePriceChange($event)"></app-min-max-slider>
-  </div>
-
-  <div class="col-lg-10 col-md-9">
-    @if(books().length === 0){
-    <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
-      <h3 class="text-color">No books found :C</h3>
+<div class="container-xl mb-5 mt-5 pt-4 px-3 px-xl-0">
+  <div class="row g-4 g-lg-5">
+    
+    <div class="col-12 col-lg-3">
+      <div class="wyrm-sidebar sticky-top">
+        <div class="sidebar-header">
+          <h4 class="sidebar-title"><i class="fa-solid fa-compass me-2"></i> Navigate By</h4>
+        </div>
+        <div class="sidebar-body p-4">
+          <app-filter (filterChange)="handleFilterCategories($event)" [categories]="categories()"></app-filter>
+          <div class="wyrm-divider my-4"></div>
+          <app-min-max-slider (range)="handlePriceChange($event)"></app-min-max-slider>
+        </div>
+      </div>
     </div>
-    }
 
-    <div class="row g-3 m-1">
-      @for(book of books(); track book._id) {
-      <div class=" col-lg-4 col-xxl-3  col-md-6 d-flex justify-content-center">
-        <app-book-card [routerLink]="['/book', book._id]" [book]="book"></app-book-card>
+    <div class="col-12 col-lg-9">
+      @if(books().length === 0){
+      <div class="wyrm-empty-state text-center">
+        <i class="fa-solid fa-dungeon empty-icon mb-4"></i>
+        <h3 class="empty-title">The Portal is Closed</h3>
+        <p class="empty-subtitle">We couldn't find any tomes matching your exact search. Try different keywords.</p>
       </div>
       }
+
+      <div class="row g-4 book-grid">
+        @for(book of books(); track book._id) {
+        <div class="col-12 col-sm-6 col-xl-4 d-flex justify-content-center book-wrapper">
+          <app-book-card class="w-100" [routerLink]="['/book', book._id]" [book]="book"></app-book-card>
+        </div>
+        }
+      </div>
+
+      <div class="d-flex justify-content-center mt-5 pt-5">
+        <app-pagenation (emittedCurrentPage)="handlePageChange($event)" [totalNumberOfBooks]="totalNumberOfBooks()"
+          [pageSize]="pageSize"></app-pagenation>
+      </div>
     </div>
   </div>
 </div>
 
-
-<div class="d-flex justify-content-center">
-  <app-pagenation (emittedCurrentPage)="handlePageChange($event)" [totalNumberOfBooks]="totalNumberOfBooks()"
-    [pageSize]="pageSize"></app-pagenation>
-
-</div>
 <app-footer></app-footer>
