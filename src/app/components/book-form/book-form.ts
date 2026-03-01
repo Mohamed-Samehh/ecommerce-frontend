@@ -18,7 +18,7 @@ export class BookForm {
     authorid: ['', Validators.required],
     description: ['']
   });
-  formData = output<FormData>();
+  formData = output<FormData|null>();
 
   onSubmit() {
     if (this.bookForm.valid) {
@@ -27,13 +27,21 @@ export class BookForm {
       tempFormData.append('name', formValues.name??'');
       tempFormData.append('price', formValues.price??'0');
       tempFormData.append('stock', formValues.stock??'0');
-      tempFormData.append('categories', formValues.categories?? '');
-      tempFormData.append('authorid', formValues.authorid ?? '');
+      tempFormData.append('authorId', formValues.authorid ?? '');
       tempFormData.append('description', formValues.description ?? '');
 
+      const categories = formValues.categories ?? '';
+      if (categories) {
+        const categoryArray = categories.split(',').map(cat => cat.trim())
+
+        categoryArray.forEach(cat => {
+          tempFormData.append('categories', cat);
+        });
+      }
       if (this.selectedFile) {
         tempFormData.append('image', this.selectedFile);
       }
+      console.log('Form submitted with data:', tempFormData);
       this.formData.emit(tempFormData);
     } else {
       console.log('Form is invalid');
@@ -41,9 +49,10 @@ export class BookForm {
   }
   onCancel() {
     console.log('Form cancelled');
-    // Here you would typically navigate back to the previous page or reset the form
+    this.formData.emit(null);
   }
   onFileChange(event: Event) {
+    this.selectedFile = (event.target as HTMLInputElement).files?.[0] ?? null;
 
   }
 }

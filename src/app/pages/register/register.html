@@ -1,232 +1,127 @@
-<div class="auth-page d-flex flex-column">
+<div class="wyrm-auth-page d-flex flex-column">
   <app-nav-bar></app-nav-bar>
 
-  <div class="flex-grow-1 row g-0 mb-3">
-    <div class="col-12 auth-left d-flex align-items-center justify-content-center p-4 p-xl-5">
-      <div class="auth-form-wrapper card border-0 shadow-sm rounded-4 p-4 p-md-5" style="background-color: var(--cards--bg-color);">
+  <div class="flex-grow-1 row g-0 wyrm-auth-backdrop">
+    <div class="col-12 d-flex align-items-center justify-content-center p-4 p-xl-5">
+      
+      <div class="wyrm-auth-card card border-0 rounded-4 p-4 p-md-5">
         <div class="row g-4 align-items-center">
+          
           <div class="col-12 col-lg-7 auth-form-panel mx-auto">
-
-        @if (step() === 'details') {
-          <h1 class="h3 fw-bold mb-1">Register</h1>
-          <p class="text-muted small mb-4">Join us and start your journey today!</p>
-
-          <form [formGroup]="registerForm" (ngSubmit)="submitDetails()" novalidate>
-            <!-- First Name + Last Name -->
-            <div class="row g-2 mb-3">
-              <div class="col-6">
-                <input
-                  id="firstName"
-                  type="text"
-                  formControlName="firstName"
-                  class="form-control auth-input"
-                  [class.is-invalid]="firstNameCtrl.invalid && firstNameCtrl.touched"
-                  placeholder="First Name"
-                  autocomplete="given-name"
-                />
-                <div class="invalid-feedback">
-                  @if (firstNameCtrl.hasError('required')) {
-                    First name is required.
-                  } @else if (firstNameCtrl.hasError('minlength')) {
-                    Min 2 characters.
-                  } @else if (firstNameCtrl.hasError('maxlength')) {
-                    Max 50 characters.
-                  }
-                </div>
-              </div>
-              <div class="col-6">
-                <input
-                  id="lastName"
-                  type="text"
-                  formControlName="lastName"
-                  class="form-control auth-input"
-                  [class.is-invalid]="lastNameCtrl.invalid && lastNameCtrl.touched"
-                  placeholder="Last Name"
-                  autocomplete="family-name"
-                />
-                <div class="invalid-feedback">
-                  @if (lastNameCtrl.hasError('required')) {
-                    Last name is required.
-                  } @else if (lastNameCtrl.hasError('minlength')) {
-                    Min 2 characters.
-                  } @else if (lastNameCtrl.hasError('maxlength')) {
-                    Max 50 characters.
-                  }
-                </div>
-              </div>
+            <div class="d-flex align-items-center gap-2 mb-4">
+              <span class="golden-eyebrow"><i class="fa-solid fa-scroll me-2"></i> The Ledger</span>
             </div>
 
-            <!-- Email -->
-            <div class="mb-3">
-              <input
-                id="email"
-                type="email"
-                formControlName="email"
-                class="form-control auth-input"
-                [class.is-invalid]="emailCtrl.invalid && emailCtrl.touched"
-                placeholder="Email"
-                autocomplete="email"
-              />
-              <div class="invalid-feedback">
-                @if (emailCtrl.hasError('required')) {
-                  Email is required.
-                } @else if (emailCtrl.hasError('email')) {
-                  Please enter a valid email address.
+            @if (step() === 'details') {
+              <h1 class="wyrm-auth-title mb-2">Begin Your Journey.</h1>
+              <p class="wyrm-auth-subtitle mb-4">Inscribe your details to access the archives.</p>
+
+              <form [formGroup]="registerForm" (ngSubmit)="submitDetails()" novalidate>
+                
+                <div class="row g-3 mb-3">
+                  <div class="col-6">
+                    <input id="firstName" type="text" formControlName="firstName" class="form-control wyrm-auth-input"
+                      [class.is-invalid]="firstNameCtrl.invalid && firstNameCtrl.touched" placeholder="First Name" />
+                    <div class="invalid-feedback">
+                      @if (firstNameCtrl.hasError('required')) { Required. } 
+                      @else if (firstNameCtrl.hasError('minlength')) { Min 2 chars. }
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <input id="lastName" type="text" formControlName="lastName" class="form-control wyrm-auth-input"
+                      [class.is-invalid]="lastNameCtrl.invalid && lastNameCtrl.touched" placeholder="Last Name" />
+                    <div class="invalid-feedback">
+                      @if (lastNameCtrl.hasError('required')) { Required. } 
+                      @else if (lastNameCtrl.hasError('minlength')) { Min 2 chars. }
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <input id="email" type="email" formControlName="email" class="form-control wyrm-auth-input"
+                    [class.is-invalid]="emailCtrl.invalid && emailCtrl.touched" placeholder="Email Address" />
+                  <div class="invalid-feedback">
+                    @if (emailCtrl.hasError('required')) { Email is required. } 
+                    @else if (emailCtrl.hasError('email')) { Invalid email. }
+                  </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                  <div class="col-7">
+                    <input id="dob" type="date" formControlName="dob" class="form-control wyrm-auth-input"
+                      [class.is-invalid]="dobCtrl.invalid && dobCtrl.touched" [max]="maxDob" />
+                    <div class="invalid-feedback">
+                      @if (dobCtrl.hasError('required')) { Date is required. } 
+                      @else if (dobCtrl.hasError('futureDate')) { Cannot be in the future. }
+                    </div>
+                  </div>
+                  <div class="col-5 d-flex align-items-center">
+                    <small class="wyrm-auth-subtitle">Date of Birth</small>
+                  </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                  <div class="col-6">
+                    <input id="password" type="password" formControlName="password" class="form-control wyrm-auth-input"
+                      [class.is-invalid]="passwordCtrl.invalid && passwordCtrl.touched" placeholder="Password" />
+                    <div class="invalid-feedback">
+                      @if (passwordCtrl.hasError('required')) { Required. } 
+                      @else if (passwordCtrl.hasError('minlength')) { Min 8 chars. }
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <input id="confirmPassword" type="password" formControlName="confirmPassword" class="form-control wyrm-auth-input"
+                      [class.is-invalid]="(confirmPasswordCtrl.invalid && confirmPasswordCtrl.touched) || passwordMismatch" placeholder="Confirm" />
+                    <div class="invalid-feedback">
+                      @if (confirmPasswordCtrl.hasError('required') && confirmPasswordCtrl.touched) { Please confirm. } 
+                      @else if (passwordMismatch) { Passwords mismatch. }
+                    </div>
+                  </div>
+                </div>
+
+                @if (errorMessage()) {
+                  <div class="alert wyrm-alert py-2 small mb-3" role="alert"><i class="fa-solid fa-triangle-exclamation me-2"></i>{{ errorMessage() }}</div>
                 }
-              </div>
-            </div>
 
-            <!-- Date of Birth -->
-            <div class="row g-2 mb-3">
-              <div class="col-6">
-                <input
-                  id="dob"
-                  type="date"
-                  formControlName="dob"
-                  class="form-control auth-input"
-                  [class.is-invalid]="dobCtrl.invalid && dobCtrl.touched"
-                  [max]="maxDob"
-                  autocomplete="bday"
-                  
-                />
-                <div class="invalid-feedback">
-                  @if (dobCtrl.hasError('required')) {
-                    Date of birth is required.
-                  } @else if (dobCtrl.hasError('futureDate')) {
-                    Date of birth cannot be in the future.
+                <button type="submit" class="btn wyrm-auth-btn w-100 mt-2" [disabled]="isLoading()">
+                  @if (isLoading()) {
+                    <i class="fa-solid fa-spinner fa-spin me-2"></i> Inscribing…
+                  } @else {
+                    <i class="fa-solid fa-feather-pointed me-2"></i> Register
                   }
-                </div>
-              </div>
-              <div class="col-6 d-flex align-items-center">
-                <small class="text-muted">Date of birth</small>
-              </div>
-            </div>
+                </button>
+              </form>
 
-            <!-- Password + Confirm Password -->
-            <div class="row g-2 mb-4">
-              <div class="col-6">
-                <input
-                  id="password"
-                  type="password"
-                  formControlName="password"
-                  class="form-control auth-input"
-                  [class.is-invalid]="passwordCtrl.invalid && passwordCtrl.touched"
-                  placeholder="Password"
-                  autocomplete="new-password"
-                />
-                <div class="invalid-feedback">
-                  @if (passwordCtrl.hasError('required')) {
-                    Password is required.
-                  } @else if (passwordCtrl.hasError('minlength')) {
-                    Min 8 characters.
-                  } @else if (passwordCtrl.hasError('pattern')) {
-                    Use at least one letter and one number.
-                  }
-                </div>
-              </div>
-              <div class="col-6">
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  formControlName="confirmPassword"
-                  class="form-control auth-input"
-                  [class.is-invalid]="(confirmPasswordCtrl.invalid && confirmPasswordCtrl.touched) || passwordMismatch"
-                  placeholder="Confirm Password"
-                  autocomplete="new-password"
-                />
-                <div class="invalid-feedback">
-                  @if (confirmPasswordCtrl.hasError('required') && confirmPasswordCtrl.touched) {
-                    Please confirm your password.
-                  } @else if (passwordMismatch) {
-                    Passwords do not match.
-                  }
-                </div>
-              </div>
-            </div>
-
-            @if (errorMessage()) {
-              <div class="alert alert-danger py-2 small mb-3" role="alert">{{ errorMessage() }}</div>
+              <p class="text-center small wyrm-auth-footer mt-4 mb-0">
+                Already hold a key? <a routerLink="/login" class="wyrm-auth-link">Enter here</a>
+              </p>
             }
 
-            <button
-              type="submit"
-              class="btn btn-auth-primary w-100"
-              [disabled]="isLoading()"
-            >
-              @if (isLoading()) {
-                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                Creating account…
-              } @else {
-                Register
-              }
-            </button>
-          </form>
+            @if (step() === 'otp') {
+              <h1 class="wyrm-auth-title mb-2">Seal of Authenticity</h1>
+              <p class="wyrm-auth-subtitle mb-4">We sent a 6-digit runic code to <strong>{{ email() }}</strong></p>
 
-          <p class="text-center small text-muted mt-4 mb-0">
-            Already have an account?
-            <a routerLink="/login" class="auth-link">Sign in</a>
-          </p>
-        }
-
-        @if (step() === 'otp') {
-          <h1 class="h3 fw-bold mb-1">Verify your email</h1>
-          <p class="text-muted small mb-4">
-            We sent a 6-digit code to <strong>{{ email() }}</strong>
-          </p>
-
-          <form [formGroup]="otpForm" (ngSubmit)="submitOtp()" novalidate>
-            <div class="mb-4">
-              <label for="otp" class="form-label fw-semibold">One-time password</label>
-              <input
-                id="otp"
-                type="text"
-                inputmode="numeric"
-                formControlName="otp"
-                class="form-control auth-input text-center otp-input"
-                [class.is-invalid]="otpCtrl.invalid && otpCtrl.touched"
-                placeholder="123456"
-                maxlength="6"
-                autocomplete="one-time-code"
-              />
-              <div class="invalid-feedback">
-                @if (otpCtrl.hasError('required')) {
-                  OTP is required.
-                } @else if (otpCtrl.hasError('pattern')) {
-                  OTP must be exactly 6 digits.
-                }
-              </div>
-            </div>
-
-            @if (errorMessage()) {
-              <div class="alert alert-danger py-2 small mb-3" role="alert">{{ errorMessage() }}</div>
+              <form [formGroup]="otpForm" (ngSubmit)="submitOtp()" novalidate>
+                <div class="mb-4">
+                  <label for="otp" class="form-label wyrm-label fw-semibold">One-time password</label>
+                  <input id="otp" type="text" inputmode="numeric" formControlName="otp" class="form-control wyrm-auth-input text-center otp-input"
+                    [class.is-invalid]="otpCtrl.invalid && otpCtrl.touched" placeholder="• • • • • •" maxlength="6" />
+                </div>
+                @if (errorMessage()) { <div class="alert wyrm-alert py-2 small mb-3">{{ errorMessage() }}</div> }
+                <button type="submit" class="btn wyrm-auth-btn w-100" [disabled]="isLoading()">
+                  @if (isLoading()) { <i class="fa-solid fa-spinner fa-spin me-2"></i> Verifying… } @else { Activate Account }
+                </button>
+              </form>
+              <button type="button" class="btn btn-link p-0 wyrm-back-btn small mt-4" (click)="goBack()">
+                <i class="fa fa-arrow-left me-1"></i> Return to registration
+              </button>
             }
-
-            <button
-              type="submit"
-              class="btn btn-auth-primary w-100"
-              [disabled]="isLoading()"
-            >
-              @if (isLoading()) {
-                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                Verifying…
-              } @else {
-                Verify &amp; Activate Account
-              }
-            </button>
-          </form>
-
-          <button
-            type="button"
-            class="btn btn-link p-0 text-muted text-decoration-none small mt-3"
-            (click)="goBack()"
-          >
-            <i class="fa fa-arrow-left me-1"></i> Back to registration
-          </button>
-        }
           </div>
 
-          <div class="col-lg-5 d-none d-lg-flex justify-content-center">
-            <img src="sign.png" alt="" class="auth-image" />
+          <div class="col-lg-5 d-none d-lg-flex justify-content-center align-items-center">
+            <div class="wyrm-image-container">
+              <img src="sign.png" alt="WyrmHole Registry" class="wyrm-auth-image" />
+            </div>
           </div>
         </div>
       </div>

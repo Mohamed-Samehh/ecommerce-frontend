@@ -105,6 +105,40 @@
                     <div class="form-text">Email address cannot be changed.</div>
                   </div>
 
+                  <!-- Password -->
+                  <div class="col-12 col-sm-6">
+                    <label for="password" class="form-label fw-semibold small" style="color:#6d5b54">New Password</label>
+                    <input
+                      id="password"
+                      type="password"
+                      formControlName="password"
+                      class="form-control"
+                      [class.is-invalid]="passwordCtrl.invalid && passwordCtrl.touched"
+                      [readOnly]="!isEditMode()"
+                      [class.profile-readonly]="!isEditMode()"
+                      placeholder="Leave blank to keep current password"
+                    />
+                    <div class="invalid-feedback">
+                      @if (passwordCtrl.hasError('minlength')) { Minimum 8 characters. }
+                      @else if (passwordCtrl.hasError('pattern')) { Must include at least one letter and one number. }
+                    </div>
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div class="col-12 col-sm-6">
+                    <label for="confirmPassword" class="form-label fw-semibold small" style="color:#6d5b54">Confirm Password</label>
+                    <input
+                      id="confirmPassword"
+                      type="password"
+                      formControlName="confirmPassword"
+                      class="form-control"
+                      [class.is-invalid]="(confirmPasswordCtrl.touched && confirmPasswordCtrl.value !== passwordCtrl.value)"
+                      [readOnly]="!isEditMode()"
+                      [class.profile-readonly]="!isEditMode()"
+                    />
+                    <div class="invalid-feedback">Password confirmation does not match.</div>
+                  </div>
+
                 </div>
               </form>
 

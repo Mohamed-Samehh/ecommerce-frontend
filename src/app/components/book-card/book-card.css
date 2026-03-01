@@ -1,85 +1,123 @@
-/* Card Base & Hover Animation */
-.card-bg {
-  background-color: var(--cards--bg-color);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  /* Soft border */
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
-  cursor: pointer;
+/* --- Card Container & Persistent Glow --- */
+.wyrm-card-link {
+  color: inherit;
 }
 
-.shadow-hover:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12) !important;
+.wyrm-card {
+  background-color: var(--cards--bg-color); 
+  border: 1px solid rgba(217, 168, 108, 0.3) !important; 
+  border-radius: var(--radius-md); 
+  box-shadow: 0 10px 20px rgba(45, 26, 18, 0.05);
+  /* Smooth transition for the glow effect */
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
-/* Image Scaling Effect */
-.card-img-top {
-  transition: transform 0.5s ease;
+/* The Intense, Persistent Magical Glow */
+.wyrm-card:hover {
+  transform: translateY(-8px);
+  border-color: #f1c40f !important; /* Bright magical gold border */
+  box-shadow: 0 19px 24px rgba(45, 26, 18, 0.1), 0 0 15px rgba(217, 168, 108, 0.25) !important;}
+
+/* --- Image & Wrapper --- */
+.wyrm-image-wrapper {
+  height: 22rem; 
+  width: 100%;
+  border-bottom: 2px solid var(--badge--color);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
-.card-bg:hover .card-img-top {
+.wyrm-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.wyrm-card:hover .wyrm-card-img {
   transform: scale(1.05);
 }
 
-/* Premium Badge Styling */
-.badge.card-bg {
-  backdrop-filter: blur(8px);
-  background-color: rgba(255, 255, 255, 0.8) !important;
-  /* Semi-transparent */
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-/* Typography & Spacing */
-.card-title {
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--text-color);
-  margin-bottom: 0.5rem;
-}
-
-.card-body h6 {
-  font-size: 0.9rem;
-  opacity: 0.7;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.card-text {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: var(--text-color);
-  opacity: 0.8;
-  margin-bottom: 1.5rem;
-}
-
-/* Button Refinement */
-.button-color {
-  border-radius: 50px;
-  /* Pill shape */
-  font-weight: 600;
-  transition: all 0.3s ease;
-  border: none;
-  color: var(--button-text-color);
-  background-color: var(--button-bg-color);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.button-color:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px var(--highlighted-text-color);
-}
-
-.text-truncate-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  height: 3rem;
-  overflow: hidden;
-}
-
-.button-color:focus {
-  color: var(--button-text-color);
+/* --- Badges --- */
+.wyrm-price-badge {
   background-color: var(--highlighted-text-color);
+  color: #ffffff;
+  padding: 8px 16px;
+  font-family: var(--main-font);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+/* --- Card Typography --- */
+.wyrm-card-author {
+  font-family: var(--main-font);
+  color: var(--badge--color); 
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.wyrm-card-title {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: var(--text-color);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.wyrm-card-divider { border-bottom: 1px solid rgba(45, 26, 18, 0.1); }
+.wyrm-rating-text { font-size: 0.85rem; color: var(--selection-color); font-family: var(--main-font); }
+.wyrm-card-desc { font-size: 0.95rem; line-height: 1.6; color: var(--text-color); opacity: 0.75; }
+.text-truncate-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal; }
+
+/* --- Solid Brown Action Button --- */
+.wyrm-card-btn-solid {
+  background-color: var(--button-bg-color); /* Brown background */
+  color: var(--button-text-color);
+  border: none;
+  border-radius: var(--radius-full); 
+  padding: 12px 20px;
+  font-family: var(--main-font);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.wyrm-card-btn-solid:hover:not(:disabled) {
+  background-color: var(--highlighted-text-color);
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(115, 42, 16, 0.4);
+  transform: translateY(-2px);
+}
+
+.wyrm-stock-indicator {
+  font-family: var(--main-font);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.stock-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+/* Deep, rich status colors with a tiny matching glow on the dot */
+.status-available { color: #2D6A4F; }
+.status-available .stock-dot { background-color: #2D6A4F; box-shadow: 0 0 4px rgba(45, 106, 79, 0.6); }
+
+.status-low { color: #996515; }
+.status-low .stock-dot { background-color: #996515; box-shadow: 0 0 4px rgba(153, 101, 21, 0.6); }
+
+.status-out { color: #C0392B; }
+.status-out .stock-dot { background-color: #C0392B; box-shadow: 0 0 4px rgba(192, 57, 43, 0.6); }
