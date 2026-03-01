@@ -174,8 +174,19 @@ export class AdminBooks implements OnInit {
     console.log('Editing book with id:', id);
 
   }
-  addBook(){
+  addBook(formData: FormData){
     this.formMode.set(null);
-    console.log('Navigating to add book form');
+    this.bookServiceApi.createBook(formData).subscribe({
+      next: (data) => {
+        const newBook = data.data;
+        this.books.update(arr => [...arr, newBook]);
+        console.log('Book added successfully:', newBook);
+        Swal.fire('Success!', 'Book added successfully', 'success');
+      },
+      error: (err) => {
+        Swal.fire('Error!', err.message, 'error');
+        console.error('Error adding book:', err);
+      }
+    });
   }
 }

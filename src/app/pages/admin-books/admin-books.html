@@ -1,5 +1,5 @@
 @if(formMode()){
-<app-book-form (formData)="addBook()"></app-book-form>
+<app-book-form (formData)="addBook($event)"></app-book-form>
 }@else {
 <div class="admin-page-container">
   <header class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
@@ -75,7 +75,7 @@
                       style="object-fit: cover;">
                     <div>
                       <div class="fw-bold text-dark">{{ book.name }}</div>
-                      <small class="text-muted">{{ book.authorId || 'Unknown Author' }}</small>
+                      <small class="text-muted">{{ book.author || 'Unknown Author' }}</small>
                     </div>
                   </div>
                 </td>
